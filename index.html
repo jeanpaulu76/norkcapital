@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -100,7 +100,7 @@ nav{
 
 /* LOAN TYPES BAR - GREEN */
 .loan-bar{background:var(--green);display:flex;overflow-x:auto}
-.loan-pill{flex:1;min-width:120px;text-align:center;padding:1.1rem 0.8rem;font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);border-right:1px solid rgba(255,255,255,0.2);transition:all 0.2s;white-space:nowrap}
+a.loan-pill{text-decoration:none;color:inherit;} .loan-pill{flex:1;min-width:120px;text-align:center;padding:1.1rem 0.8rem;font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);border-right:1px solid rgba(255,255,255,0.2);transition:all 0.2s;white-space:nowrap}
 .loan-pill:last-child{border-right:none}
 .loan-pill:hover{background:var(--green-dark);color:var(--white)}
 .loan-pill span{display:block;font-size:1rem;margin-bottom:0.3rem}
@@ -267,12 +267,12 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
 
 <!-- LOAN BAR -->
 <div class="loan-bar">
-  <div class="loan-pill"><span>🔨</span>Fix & Flip</div>
-  <div class="loan-pill"><span>🌉</span>Bridge Loans</div>
-  <div class="loan-pill"><span>🏘️</span>Rental / DSCR</div>
-  <div class="loan-pill"><span>🏗️</span>New Construction</div>
-  <div class="loan-pill"><span>💼</span>Commercial</div>
-  <div class="loan-pill"><span>🔄</span>Cash-Out Refi</div>
+  <a href="fix-and-flip.html" class="loan-pill"><span>🔨</span>Fix & Flip</a>
+  <a href="bridge.html" class="loan-pill"><span>🌉</span>Bridge Loans</a>
+  <a href="dscr.html" class="loan-pill"><span>🏘️</span>Rental / DSCR</a>
+  <a href="construction.html" class="loan-pill"><span>🏗️</span>New Construction</a>
+  <a href="commercial.html" class="loan-pill"><span>💼</span>Commercial</a>
+  <a href="cashout.html" class="loan-pill"><span>🔄</span>Cash-Out Refi</a>
   <div class="loan-pill"><span>🤝</span>Partner Lending</div>
 </div>
 
@@ -293,7 +293,7 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
   <div class="about-content">
     <div class="section-tag">About Nork Capital</div>
     <h2>Private Lending Built for Real Estate Investors</h2>
-    <p>Nork Capital Lending is the private financing arm of Nork Group — a Miami-based real estate investment firm with over 30 years of combined experience. We understand investors because we are investors.</p>
+    <p>Nork Capital Lending is the private financing arm of Nork Group — a Miami-based real estate investment firm with over 20 years of combined experience. We understand investors because we are investors.</p>
     <p>We provide fast, asset-based lending decisions — no income verification, no lengthy bank processes. Just a straightforward evaluation of the deal and property, with funding in days not weeks.</p>
     <div class="about-features">
       <div class="afeat"><div class="afeat-title">No Income Verification</div><div class="afeat-desc">Approval based on property value & deal strength</div></div>
@@ -316,7 +316,7 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
     <div class="pcard"><div class="pcard-num">02</div><div class="pcard-icon">🌉</div><div class="pcard-title">Bridge Loans</div><p class="pcard-desc">Fast bridge financing to acquire before your current property sells or to bridge to long-term financing.</p><div class="pcard-rates">→ Up to 75% LTV · 12–24 months</div><a href="bridge.html" style="display:block;margin-top:0.8rem;font-family:Montserrat,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-decoration:none;">Learn More →</a></div>
     <div class="pcard"><div class="pcard-num">03</div><div class="pcard-icon">🏘️</div><div class="pcard-title">DSCR / Rental Hold</div><p class="pcard-desc">Long-term rental loans based on property income — not your personal income. Build your portfolio faster.</p><div class="pcard-rates">→ 30-year amortization · No income docs</div><a href="dscr.html" style="display:block;margin-top:0.8rem;font-family:Montserrat,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-decoration:none;">Learn More →</a></div>
     <div class="pcard"><div class="pcard-num">04</div><div class="pcard-icon">🏗️</div><div class="pcard-title">New Construction</div><p class="pcard-desc">Ground-up construction financing for residential and commercial projects. Funds released in milestone draws.</p><div class="pcard-rates">→ Up to 85% of cost · 12–24 months</div><a href="construction.html" style="display:block;margin-top:0.8rem;font-family:Montserrat,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-decoration:none;">Learn More →</a></div>
-    <div class="pcard"><div class="pcard-num">05</div><div class="pcard-icon">💼</div><div class="pcard-title">Commercial Loans</div><p class="pcard-desc">Office, retail, warehouse, multifamily, and mixed-use properties. Creative structures for deals banks won't touch.</p><div class="pcard-rates">→ Up to 0M · Custom terms</div></div>
+    <div class="pcard"><div class="pcard-num">05</div><div class="pcard-icon">💼</div><div class="pcard-title">Commercial Loans</div><p class="pcard-desc">Office, retail, warehouse, multifamily, and mixed-use properties. Creative structures for deals banks won't touch.</p><div class="pcard-rates">→ Up to $25M · Custom terms</div><a href="commercial.html" style="display:block;margin-top:0.8rem;font-family:Montserrat,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-decoration:none;">Learn More →</a></div>
     <div class="pcard"><div class="pcard-num">06</div><div class="pcard-icon">🔄</div><div class="pcard-title">Cash-Out Refinance</div><p class="pcard-desc">Pull equity from existing investment properties to fund your next acquisition. No seasoning required.</p><div class="pcard-rates">→ Up to 70% LTV · 12–36 months</div><a href="cashout.html" style="display:block;margin-top:0.8rem;font-family:Montserrat,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-decoration:none;">Learn More →</a></div>
   </div>
 </section>
@@ -347,7 +347,7 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
     <div class="rcard"><div class="rcard-val">8–12%</div><div class="rcard-label">Interest Rates</div><p class="rcard-desc">Competitive rates based on deal strength and borrower profile</p></div>
     <div class="rcard"><div class="rcard-val">90%</div><div class="rcard-label">Max LTC</div><p class="rcard-desc">Up to 90% of purchase + rehab on Fix & Flip</p></div>
     <div class="rcard"><div class="rcard-val">48hr</div><div class="rcard-label">Pre-Approval</div><p class="rcard-desc">Make competitive offers with confidence</p></div>
-    <div class="rcard"><div class="rcard-val">0M</div><div class="rcard-label">Max Loan</div><p class="rcard-desc">From residential flips to large commercial deals</p></div>
+    <div class="rcard"><div class="rcard-val">$25M</div><div class="rcard-label">Max Loan</div><p class="rcard-desc">From residential flips to large commercial deals</p></div>
   </div>
 </section>
 
@@ -378,7 +378,7 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
 <section class="cta" id="apply">
   <h2>Ready to <span class="green">Close Hard?</span></h2>
   <p>Apply in minutes. Get pre-approved in 48 hours. Fund your next deal with Nork Capital Lending.</p>
-  <a href="mailto:tc@nork.group" class="btn-green">Apply Now — Free Pre-Approval</a>
+  <a href="mailto:inquiry@norkcapitallending.com" class="btn-green">Apply Now — Free Pre-Approval</a>
 </section>
 
 <!-- FOOTER -->
@@ -392,12 +392,12 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
     <div class="footer-col">
       <h4>Loan Programs</h4>
       <ul>
-        <li><a href="#programs">Fix & Flip</a></li>
-        <li><a href="#programs">Bridge Loans</a></li>
-        <li><a href="#programs">DSCR / Rental</a></li>
-        <li><a href="#programs">New Construction</a></li>
-        <li><a href="#programs">Commercial</a></li>
-        <li><a href="#programs">Cash-Out Refi</a></li>
+        <li><a href="fix-and-flip.html">Fix & Flip</a></li>
+        <li><a href="bridge.html">Bridge Loans</a></li>
+        <li><a href="dscr.html">DSCR / Rental</a></li>
+        <li><a href="construction.html">New Construction</a></li>
+        <li><a href="commercial.html">Commercial</a></li>
+        <li><a href="cashout.html">Cash-Out Refi</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -416,7 +416,7 @@ footer{background:var(--dark2);padding:4rem 2.5rem 2rem;border-top:3px solid var
       <address>
         20200 West Dixie Highway<br>Suite 902<br>Aventura, FL 33180<br><br>
         <a href="tel:7865560029">Call: (786) 556-0029</a><br>
-        <a href="mailto:tc@nork.group">tc@nork.group</a>
+        <a href="mailto:inquiry@norkcapitallending.com">inquiry@norkcapitallending.com</a>
       </address>
     </div>
   </div>
