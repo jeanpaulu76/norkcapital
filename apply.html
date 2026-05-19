@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apply Now — Nork Capital Lending</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#3DB33D;--green2:#4CC94C;--green-dark:#2A8C2A;--dark:#1C1C1C;--dark2:#222222;--white:#FFFFFF;--text:#1A1A1A;--muted:#666666}
+body{font-family:"Open Sans",sans-serif;background:var(--dark2);color:var(--white);min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;justify-content:space-between;align-items:center;padding:0 2.5rem;height:70px;background:var(--dark);border-bottom:2px solid var(--green)}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-brand-text{font-family:"Montserrat",sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.2}
+.line1{color:#fff}.line2{color:var(--green);font-size:0.62rem;letter-spacing:4px}
+.nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-family:"Montserrat",sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s}
+.nav-back:hover{color:var(--green)}
+
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 1.5rem;position:relative;overflow:hidden}
+main::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 40%,rgba(61,179,61,0.07) 0%,transparent 70%)}
+
+.header{text-align:center;margin-bottom:3.5rem;position:relative;z-index:2}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(61,179,61,0.35);background:rgba(61,179,61,0.1);padding:0.3rem 0.9rem;border-radius:20px;font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);font-weight:700;font-family:"Montserrat",sans-serif;margin-bottom:1.2rem}
+.header h1{font-family:"Montserrat",sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:0.6rem}
+.header h1 span{color:var(--green)}
+.header p{color:rgba(255,255,255,0.55);font-size:0.88rem;max-width:480px;margin:0 auto;line-height:1.8}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:900px;width:100%;position:relative;z-index:2}
+.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:2.2rem 1.8rem;cursor:pointer;text-decoration:none;color:inherit;transition:all 0.3s;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start}
+.card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--green);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+.card:hover{border-color:rgba(61,179,61,0.4);background:rgba(61,179,61,0.05);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+.card:hover::before{transform:scaleX(1)}
+.card-icon{font-size:2.2rem;margin-bottom:1.2rem}
+.card-title{font-family:"Montserrat",sans-serif;font-size:0.9rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;color:#fff}
+.card-desc{font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:1.2rem;flex:1}
+.card-arrow{font-family:"Montserrat",sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:0.4rem}
+.card:hover .card-arrow{gap:0.7rem}
+
+.note{text-align:center;margin-top:2.5rem;font-size:0.72rem;color:rgba(255,255,255,0.3);position:relative;z-index:2;max-width:500px;line-height:1.7}
+
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,0.06);padding:1.2rem 2.5rem;text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.2);font-family:"Montserrat",sans-serif;letter-spacing:1px;text-transform:uppercase}
+
+@media(max-width:700px){nav{padding:0 1rem}.cards{grid-template-columns:1fr;gap:1rem}.header h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-text"><div class="line1">NORK CAPITAL</div><div class="line2">LENDING</div></div>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<main>
+  <div class="header">
+    <div class="tag">⚡ Free Pre-Approval · No Credit Impact</div>
+    <h1>Choose Your <span>Loan Type</span></h1>
+    <p>Select the program that best fits your deal. Get pre-terms in less than 24 hours. This application will not affect your credit score.</p>
+  </div>
+
+  <div class="cards">
+    <a href="apply-fix-flip.html" class="card">
+      <div class="card-icon">🔨</div>
+      <div class="card-title">Fix &amp; Flip / Bridge</div>
+      <div class="card-desc">Short-term financing to purchase and renovate. We lend on ARV so you can maximize profit. Fast closings in 7–14 days.</div>
+      <div class="card-arrow">Start Application →</div>
+    </a>
+    <a href="apply-rental.html" class="card">
+      <div class="card-icon">🏘️</div>
+      <div class="card-title">Rental / DSCR Loan</div>
+      <div class="card-desc">Long-term financing based on the property's rental income — not your personal tax returns. Build your portfolio faster.</div>
+      <div class="card-arrow">Start Application →</div>
+    </a>
+    <a href="mailto:inquiry@norkcapitallending.com" class="card">
+      <div class="card-icon">💼</div>
+      <div class="card-title">Commercial / Other</div>
+      <div class="card-desc">Multifamily 5+, mixed-use, retail, office, new construction, or cash-out refinance. Our team will match you to the right program.</div>
+      <div class="card-arrow">Contact Us →</div>
+    </a>
+  </div>
+
+  <p class="note">🔒 Your information is secure and never sold. By submitting you consent to being contacted about your inquiry. This does not affect your credit score.</p>
+</main>
+
+<footer>© 2026 Nork Capital Lending · A Nork Group Company · inquiry@norkcapitallending.com</footer>
+</body>
+</html>

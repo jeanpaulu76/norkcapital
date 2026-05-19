@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rental / DSCR Loan Application — Nork Capital Lending</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#3DB33D;--green2:#4CC94C;--green-dark:#2A8C2A;--dark:#1C1C1C;--dark2:#1a1a2e;--card:#242438;--white:#FFFFFF;--muted:rgba(255,255,255,0.55)}
+body{font-family:"Open Sans",sans-serif;background:var(--dark2);color:var(--white);min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;justify-content:space-between;align-items:center;padding:0 2.5rem;height:70px;background:#111118;border-bottom:2px solid var(--green)}
+.nav-brand-text{font-family:"Montserrat",sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.2;text-decoration:none;display:block}
+.line1{color:#fff}.line2{color:var(--green);font-size:0.62rem;letter-spacing:4px;display:block}
+.nav-back{color:rgba(255,255,255,0.5);text-decoration:none;font-family:"Montserrat",sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+.nav-back:hover{color:var(--green)}
+.progress-wrap{background:#111118;border-bottom:1px solid rgba(255,255,255,0.06);padding:1.2rem 2.5rem}
+.progress-inner{max-width:700px;margin:0 auto}
+.step-labels{display:flex;justify-content:space-between;margin-bottom:0.8rem}
+.step-lbl{font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:0.3rem}
+.step-lbl.active{color:var(--green)}.step-lbl.done{color:rgba(255,255,255,0.6)}
+.step-lbl .num{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.55rem}
+.step-lbl.done .num,.step-lbl.active .num{background:var(--green);border-color:var(--green);color:#fff}
+.bar-track{height:3px;background:rgba(255,255,255,0.1);border-radius:2px}
+.bar-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.4s}
+main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
+main::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 0%,rgba(61,179,61,0.06) 0%,transparent 70%)}
+.form-card{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:2.5rem;max-width:700px;width:100%;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.step-header{margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.step-num{font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:0.4rem}
+.step-title{font-family:"Montserrat",sans-serif;font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:-0.3px;margin-bottom:0.3rem}
+.step-sub{font-size:0.78rem;color:var(--muted);line-height:1.6}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.grid-1{margin-bottom:1.2rem}
+.field label{display:block;font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.5rem}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:0.85rem 1rem;font-size:0.85rem;font-family:"Open Sans",sans-serif;color:#fff;transition:border-color 0.2s,background 0.2s;outline:none}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.2)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);background:rgba(61,179,61,0.06)}
+.field select option{background:#2a2a3e;color:#fff}
+.field textarea{resize:vertical;min-height:90px}
+.computed-row{display:flex;gap:1.5rem;margin:1rem 0;flex-wrap:wrap}
+.computed-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:0.8rem 1.2rem;flex:1;min-width:130px}
+.computed-label{font-family:"Montserrat",sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem}
+.computed-val{font-family:"Montserrat",sans-serif;font-size:1.1rem;font-weight:800;color:var(--green)}
+.insight{background:rgba(61,179,61,0.08);border:1px solid rgba(61,179,61,0.25);border-radius:4px;padding:0.9rem 1.1rem;margin:1.2rem 0;font-size:0.78rem;color:rgba(255,255,255,0.75);line-height:1.6}
+.insight strong{color:var(--green)}
+.btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.07)}
+.btn-back{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:0.75rem 1.5rem;border-radius:4px;font-family:"Montserrat",sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-back:hover{border-color:rgba(255,255,255,0.5);color:#fff}
+.btn-next{background:var(--green);color:#fff;border:none;padding:0.85rem 2.2rem;border-radius:4px;font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.btn-next:hover{background:var(--green2)}
+.btn-next:disabled{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);cursor:not-allowed}
+.success-screen{text-align:center;padding:3rem 2rem}
+.success-icon{font-size:3.5rem;margin-bottom:1rem}
+.success-screen h2{font-family:"Montserrat",sans-serif;font-size:1.4rem;font-weight:900;text-transform:uppercase;margin-bottom:0.7rem}
+.success-screen h2 span{color:var(--green)}
+.success-screen p{color:var(--muted);font-size:0.83rem;line-height:1.8;max-width:400px;margin:0 auto 1.5rem}
+.success-details{background:rgba(61,179,61,0.08);border:1px solid rgba(61,179,61,0.25);border-radius:4px;padding:1.2rem;text-align:left;max-width:380px;margin:0 auto 2rem;font-size:0.78rem;line-height:1.9;color:rgba(255,255,255,0.7)}
+.success-details strong{color:var(--green);font-family:"Montserrat",sans-serif;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase}
+footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1rem 2.5rem;text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.2);font-family:"Montserrat",sans-serif;letter-spacing:1px;text-transform:uppercase}
+.step-panel{display:none}.step-panel.active{display:block}
+.required{color:var(--green)}
+.dscr-badge{display:inline-block;background:rgba(61,179,61,0.15);border:1px solid rgba(61,179,61,0.3);color:var(--green);font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:3px;margin-bottom:1rem}
+@media(max-width:600px){nav{padding:0 1rem}.grid-2{grid-template-columns:1fr}.form-card{padding:1.5rem}.computed-row{flex-direction:column}.progress-wrap{padding:1rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="apply.html" class="nav-brand-text"><span class="line1">NORK CAPITAL</span><span class="line2">LENDING</span></a>
+  <a href="apply.html" class="nav-back">← Choose Loan Type</a>
+</nav>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="step-labels">
+      <span class="step-lbl active" id="lbl1"><span class="num">1</span>Property Info</span>
+      <span class="step-lbl" id="lbl2"><span class="num">2</span>Rental Income</span>
+      <span class="step-lbl" id="lbl3"><span class="num">3</span>Borrower Profile</span>
+      <span class="step-lbl" id="lbl4"><span class="num">4</span>Contact</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="barFill" style="width:25%"></div></div>
+  </div>
+</div>
+
+<main>
+<div class="form-card">
+
+<!-- STEP 1: Property Info -->
+<div class="step-panel active" id="step1">
+  <div class="step-header">
+    <div class="step-num">Step 1 of 4</div>
+    <div class="step-title">Property Information</div>
+    <div class="step-sub">Tell us about the rental property. DSCR loans qualify based on the property's income — not yours.</div>
+  </div>
+  <div class="dscr-badge">🏘️ DSCR / Rental Hold Loan</div>
+  <div class="grid-2">
+    <div class="field"><label>Purchase Price or Current Value <span class="required">*</span></label><input type="number" id="propValue" placeholder="350000" oninput="calcDSCR()"/></div>
+    <div class="field"><label>Loan Amount Requested <span class="required">*</span></label><input type="number" id="loanAmount" placeholder="280000" oninput="calcDSCR()"/></div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Property State <span class="required">*</span></label>
+      <select id="propState">
+        <option value="">Select state...</option>
+        <option value="FL" selected>FL — Florida</option>
+        <option value="GA">GA — Georgia</option>
+        <option value="TX">TX — Texas</option>
+        <option value="NC">NC — North Carolina</option>
+        <option value="SC">SC — South Carolina</option>
+        <option value="TN">TN — Tennessee</option>
+        <option value="AL">AL — Alabama</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field"><label>Property Type <span class="required">*</span></label>
+      <select id="propType">
+        <option value="">Select type...</option>
+        <option value="Single Family">Single Family</option>
+        <option value="Duplex (2-unit)">Duplex (2-unit)</option>
+        <option value="Triplex (3-unit)">Triplex (3-unit)</option>
+        <option value="Fourplex (4-unit)">Fourplex (4-unit)</option>
+        <option value="Short-Term Rental (STR)">Short-Term Rental (Airbnb/VRBO)</option>
+        <option value="Mid-Term Rental">Mid-Term Rental</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-1 field"><label>Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33180"/></div>
+  <div class="grid-2">
+    <div class="field"><label>Purchase or Refinance? <span class="required">*</span></label>
+      <select id="loanPurpose">
+        <option value="Purchase">Purchase</option>
+        <option value="Rate & Term Refinance">Rate & Term Refinance</option>
+        <option value="Cash-Out Refinance">Cash-Out Refinance</option>
+      </select>
+    </div>
+    <div class="field"><label>Desired Loan Term</label>
+      <select id="loanTerm">
+        <option value="30-Year Fixed">30-Year Fixed</option>
+        <option value="5/1 ARM">5/1 ARM</option>
+        <option value="7/1 ARM">7/1 ARM</option>
+        <option value="Interest Only">Interest Only</option>
+      </select>
+    </div>
+  </div>
+  <div class="btn-row">
+    <a href="apply.html" class="btn-back">← Back</a>
+    <button class="btn-next" onclick="goStep(2)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 2: Rental Income / DSCR -->
+<div class="step-panel" id="step2">
+  <div class="step-header">
+    <div class="step-num">Step 2 of 4</div>
+    <div class="step-title">Rental Income &amp; DSCR</div>
+    <div class="step-sub">We qualify the loan based on the property's rental income vs. the mortgage payment. No personal income docs required.</div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Current Monthly Rent (or Market Rent) <span class="required">*</span></label><input type="number" id="monthlyRent" placeholder="2500" oninput="calcDSCR()"/></div>
+    <div class="field"><label>Estimated Monthly PITI Payment</label><input type="number" id="pitiPayment" placeholder="1800" oninput="calcDSCR()"/></div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Annual Property Taxes</label><input type="number" id="propTaxes" placeholder="4200" oninput="calcDSCR()"/></div>
+    <div class="field"><label>Monthly HOA (if applicable)</label><input type="number" id="hoa" placeholder="0" oninput="calcDSCR()"/></div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Is Property Currently Leased?</label>
+      <select id="isLeased">
+        <option value="Yes — active lease">Yes — active lease</option>
+        <option value="No — vacant">No — currently vacant</option>
+        <option value="Short-term rental">Short-term rental (STR)</option>
+        <option value="Owner occupied transitioning">Owner-occupied / transitioning</option>
+      </select>
+    </div>
+    <div class="field"><label>Lease End Date (if leased)</label>
+      <input type="text" id="leaseEnd" placeholder="MM/YYYY or N/A"/>
+    </div>
+  </div>
+
+  <div class="computed-row" id="dscrRow" style="display:none">
+    <div class="computed-box"><div class="computed-label">Estimated DSCR</div><div class="computed-val" id="dscrVal">—</div></div>
+    <div class="computed-box"><div class="computed-label">Loan-to-Value</div><div class="computed-val" id="ltvVal">—</div></div>
+    <div class="computed-box"><div class="computed-label">Monthly Rent</div><div class="computed-val" id="rentDisplay">—</div></div>
+  </div>
+  <div class="insight" id="dscrInsight" style="display:none"></div>
+
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+    <button class="btn-next" onclick="goStep(3)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 3: Borrower Profile -->
+<div class="step-panel" id="step3">
+  <div class="step-header">
+    <div class="step-num">Step 3 of 4</div>
+    <div class="step-title">Borrower Profile</div>
+    <div class="step-sub">DSCR lenders focus on the property income and your credit profile. No tax returns or income verification required.</div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Estimated Credit Score <span class="required">*</span></label>
+      <select id="credit">
+        <option value="">Select range...</option>
+        <option value="Below 620">Below 620</option>
+        <option value="620-659">620–659</option>
+        <option value="660-699">660–699</option>
+        <option value="700-739">700–739</option>
+        <option value="740+">740 or above</option>
+      </select>
+    </div>
+    <div class="field"><label>Taking Title As <span class="required">*</span></label>
+      <select id="entity">
+        <option value="">Select...</option>
+        <option value="LLC">LLC</option>
+        <option value="Individual">Individual</option>
+        <option value="Corporation">Corporation</option>
+        <option value="LP">Limited Partnership</option>
+        <option value="Trust">Trust</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Number of Investment Properties Owned</label>
+      <select id="propOwned">
+        <option value="0">0 — first investment</option>
+        <option value="1-2">1–2 properties</option>
+        <option value="3-5">3–5 properties</option>
+        <option value="6-10">6–10 properties</option>
+        <option value="10+">10+ properties</option>
+      </select>
+    </div>
+    <div class="field"><label>Liquidity / Cash Reserves <span class="required">*</span></label>
+      <select id="liquidity">
+        <option value="">Select range...</option>
+        <option value="Under $25k">Under $25k</option>
+        <option value="$25k-$50k">$25k – $50k</option>
+        <option value="$50k-$100k">$50k – $100k</option>
+        <option value="$100k-$250k">$100k – $250k</option>
+        <option value="$250k+">$250k+</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label>Bankruptcy in Last 7 Years?</label>
+      <select id="bankruptcy">
+        <option value="No">No</option>
+        <option value="Yes — discharged">Yes — discharged</option>
+      </select>
+    </div>
+    <div class="field"><label>Timeline</label>
+      <select id="timeline">
+        <option value="ASAP">ASAP — under 30 days</option>
+        <option value="30-60 days">30–60 days</option>
+        <option value="60-90 days">60–90 days</option>
+        <option value="Just exploring">Just exploring</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-1 field"><label>Anything Unusual About This Deal? (Optional)</label><textarea id="dealNotes" placeholder="Prior foreclosure, title issues, condition of property, STR restrictions, or any other details..."></textarea></div>
+  <div class="insight">💡 <strong>No income docs needed.</strong> DSCR approval is based on the property's rental income and your credit profile — not your W-2s or tax returns.</div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep(2)">← Back</button>
+    <button class="btn-next" onclick="goStep(4)">Final Step →</button>
+  </div>
+</div>
+
+<!-- STEP 4: Contact -->
+<div class="step-panel" id="step4">
+  <div class="step-header">
+    <div class="step-num">Step 4 of 4</div>
+    <div class="step-title">Where Should We Send Your Pre-Terms?</div>
+    <div class="step-sub">We will review your DSCR scenario and send you lender options and pre-terms within 24 hours.</div>
+  </div>
+  <form id="mainForm" onsubmit="handleSubmit(event)">
+    <div class="grid-2">
+      <div class="field"><label>First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
+      <div class="field"><label>Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Email <span class="required">*</span></label><input type="email" id="emailField" placeholder="you@example.com" required/></div>
+      <div class="field"><label>Phone <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Preferred Callback Time</label>
+        <select id="callbackTime">
+          <option value="Morning (9am-12pm)">Morning (9am–12pm)</option>
+          <option value="Afternoon (12pm-5pm)">Afternoon (12pm–5pm)</option>
+          <option value="Evening (5pm-7pm)">Evening (5pm–7pm)</option>
+          <option value="Anytime">Anytime</option>
+        </select>
+      </div>
+      <div class="field"><label>Best Contact Method</label>
+        <select id="contactMethod">
+          <option value="Phone call">Phone call</option>
+          <option value="Text message">Text message</option>
+          <option value="Email">Email</option>
+          <option value="WhatsApp">WhatsApp</option>
+        </select>
+      </div>
+    </div>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
+    <div class="btn-row">
+      <button type="button" class="btn-back" onclick="goStep(3)">← Back</button>
+      <button type="submit" class="btn-next" id="submitBtn">Get My Pre-Terms →</button>
+    </div>
+  </form>
+</div>
+
+<!-- SUCCESS -->
+<div class="step-panel" id="stepSuccess">
+  <div class="success-screen">
+    <div class="success-icon">✅</div>
+    <h2>Application <span>Submitted!</span></h2>
+    <p>Your DSCR rental loan scenario has been received. A Nork Capital specialist will review and reach out within 24 hours with pre-terms and lender options.</p>
+    <div class="success-details">
+      <div><strong>What Happens Next</strong></div>
+      <div>1. We review your DSCR scenario</div>
+      <div>2. We match you to best-fit lenders</div>
+      <div>3. You receive pre-terms within 24 hours</div>
+      <div>4. We guide you from approval to closing</div>
+    </div>
+    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none">Back to Home</a>
+  </div>
+</div>
+
+</div>
+</main>
+<footer>© 2026 Nork Capital Lending · inquiry@norkcapitallending.com · (786) 556-0029</footer>
+
+<script>
+let currentStep = 1;
+
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  currentStep = n;
+  const pct = (n/4)*100;
+  document.getElementById('barFill').style.width = pct+'%';
+  for(let i=1;i<=4;i++){
+    const lbl = document.getElementById('lbl'+i);
+    lbl.className = 'step-lbl';
+    if(i < n) lbl.classList.add('done');
+    if(i === n) lbl.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function calcDSCR(){
+  const rent = parseFloat(document.getElementById('monthlyRent')?.value)||0;
+  const piti = parseFloat(document.getElementById('pitiPayment')?.value)||0;
+  const hoa = parseFloat(document.getElementById('hoa')?.value)||0;
+  const propVal = parseFloat(document.getElementById('propValue')?.value)||0;
+  const loanAmt = parseFloat(document.getElementById('loanAmount')?.value)||0;
+
+  if(rent > 0 && piti > 0){
+    const totalPayment = piti + hoa;
+    const dscr = (rent / totalPayment).toFixed(2);
+    const ltv = propVal > 0 ? ((loanAmt/propVal)*100).toFixed(1)+'%' : '—';
+    document.getElementById('dscrVal').textContent = dscr;
+    document.getElementById('ltvVal').textContent = ltv;
+    document.getElementById('rentDisplay').textContent = '$'+rent.toLocaleString()+'/mo';
+    document.getElementById('dscrRow').style.display = 'flex';
+    const ins = document.getElementById('dscrInsight');
+    const d = parseFloat(dscr);
+    if(d >= 1.25){ins.innerHTML='✅ <strong>Excellent DSCR.</strong> At '+dscr+' your property generates strong positive cash flow. Most lenders will have excellent programs for this scenario.';ins.style.display='block';}
+    else if(d >= 1.0){ins.innerHTML='💡 <strong>Qualifying DSCR.</strong> At '+dscr+' the property covers its payment. Most DSCR programs start at 1.0 and your scenario should qualify with good credit.';ins.style.display='block';}
+    else{ins.innerHTML='⚠️ <strong>Below 1.0 DSCR.</strong> At '+dscr+' the rent does not fully cover the payment. Some lenders offer programs below 1.0 — we will find the best fit for your scenario.';ins.style.display='block';}
+  }
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const payload = {
+    '_subject': 'New DSCR / Rental Loan Application — Nork Capital Lending',
+    '_replyto': document.getElementById('emailField').value,
+    'Loan Type': 'DSCR / Rental Hold',
+    'Property Value': document.getElementById('propValue').value,
+    'Loan Amount': document.getElementById('loanAmount').value,
+    'Property State': document.getElementById('propState').value,
+    'Property Type': document.getElementById('propType').value,
+    'Property Address': document.getElementById('propAddress').value,
+    'Loan Purpose': document.getElementById('loanPurpose').value,
+    'Loan Term': document.getElementById('loanTerm').value,
+    'Monthly Rent': document.getElementById('monthlyRent').value,
+    'PITI Payment': document.getElementById('pitiPayment').value,
+    'Property Taxes Annual': document.getElementById('propTaxes').value,
+    'HOA Monthly': document.getElementById('hoa').value,
+    'Is Leased': document.getElementById('isLeased').value,
+    'Estimated DSCR': document.getElementById('dscrVal').textContent,
+    'LTV': document.getElementById('ltvVal').textContent,
+    'Credit Score': document.getElementById('credit').value,
+    'Entity': document.getElementById('entity').value,
+    'Properties Owned': document.getElementById('propOwned').value,
+    'Liquidity': document.getElementById('liquidity').value,
+    'Bankruptcy': document.getElementById('bankruptcy').value,
+    'Timeline': document.getElementById('timeline').value,
+    'Deal Notes': document.getElementById('dealNotes').value,
+    'First Name': document.getElementById('firstName').value,
+    'Last Name': document.getElementById('lastName').value,
+    'Email': document.getElementById('emailField').value,
+    'Phone': document.getElementById('phone').value,
+    'Callback Time': document.getElementById('callbackTime').value,
+    'Contact Method': document.getElementById('contactMethod').value
+  };
+
+  fetch('https://formspree.io/f/mgoqvynl', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify(payload)
+  }).then(r=>{
+    if(r.ok){
+      document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('stepSuccess').classList.add('active');
+      document.getElementById('barFill').style.width='100%';
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      btn.textContent = 'Get My Pre-Terms →';
+      btn.disabled = false;
+      alert('There was an issue submitting. Please email inquiry@norkcapitallending.com directly.');
+    }
+  }).catch(()=>{
+    btn.textContent = 'Get My Pre-Terms →';
+    btn.disabled = false;
+    alert('Connection error. Please email inquiry@norkcapitallending.com directly.');
+  });
+}
+</script>
+</body>
+</html>
