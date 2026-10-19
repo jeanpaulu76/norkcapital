@@ -324,7 +324,7 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 
 </div>
 </main>
-<footer>© 2026 Nork Capital Lending · inquiry@norkcapitallending.com · (786) 556-0029</footer>
+<footer>© 2026 Nork Capital Lending · tc@nork.group · (786) 556-0029</footer>
 
 <script>
 let currentStep = 1;
@@ -406,7 +406,7 @@ function handleSubmit(e){
     'Contact Method': document.getElementById('contactMethod').value
   };
 
-  fetch('https://formspree.io/f/mgoqvynl', {
+  fetch('https://formspree.io/f/xanokwbb', {
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
     body: JSON.stringify(payload)
@@ -419,12 +419,12 @@ function handleSubmit(e){
     } else {
       btn.textContent = 'Get My Pre-Terms →';
       btn.disabled = false;
-      alert('There was an issue submitting. Please email inquiry@norkcapitallending.com directly.');
+      alert('There was an issue submitting. Please email tc@nork.group directly.');
     }
   }).catch(()=>{
     btn.textContent = 'Get My Pre-Terms →';
     btn.disabled = false;
-    alert('Connection error. Please email inquiry@norkcapitallending.com directly.');
+    alert('Connection error. Please email tc@nork.group directly.');
   });
 }
 </script>

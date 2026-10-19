@@ -20,6 +20,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .nav-links a:hover,.nav-links a.active{color:var(--green)}
 .nav-cta{background:var(--green);color:#fff;border:none;padding:0.55rem 1.4rem;font-family:"Montserrat",sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;text-decoration:none;border-radius:3px}
 .nav-cta:hover{background:var(--green2)}
+.nav-portal{background:transparent;color:#fff;border:1.5px solid var(--green);padding:0.5rem 1.2rem;font-family:"Montserrat",sans-serif;font-size:0.66rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none;border-radius:3px;margin-right:0.8rem}
+.nav-portal:hover{background:var(--green);color:#fff}
 .page-hero{min-height:60vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:100px 2.5rem 60px;background:var(--dark2);position:relative;overflow:hidden}
 .page-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(61,179,61,0.06) 0%,transparent 70%)}
 .ph-content{position:relative;z-index:2}
@@ -138,116 +140,131 @@ footer{background:var(--dark2);padding:2rem 2.5rem;border-top:3px solid var(--gr
     <div class="nav-brand-text"><div class="line1">NORK CAPITAL</div><div class="line2">LENDING</div></div>
   </a>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="index.html#programs">Loan Programs</a></li>
-    <li><a href="index.html#how">How It Works</a></li>
-    <li><a href="index.html#markets">Markets</a></li>
-    <li><a href="affiliate.html">Affiliate Programs</a></li>
-    <li><a href="lenders.html">Lenders</a></li>
+    <li><a href="index.html" data-es="Inicio">Home</a></li>
+    <li><a href="index.html#programs" data-es="Programas de Préstamo">Loan Programs</a></li>
+    <li><a href="index.html#how" data-es="Cómo Funciona">How It Works</a></li>
+    <li><a href="index.html#markets" data-es="Mercados">Markets</a></li>
+    <li><a href="affiliate.html" data-es="Programa de Afiliados">Affiliate Programs</a></li>
+    <li><a href="lenders.html" data-es="Prestamistas">Lenders</a></li>
   </ul>
-  <a href="index.html#apply" class="nav-cta">Apply Now</a>
+  <button id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green,#3DB33D);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800;font-family:Montserrat,sans-serif;margin-right:0.6rem">ES</button><a href="affiliate-portal.html" class="nav-portal" data-es="Portal de Socios">Partner Login</a>
+  <a href="apply.html" class="nav-cta" data-es="Aplicar">Apply Now</a>
 </nav>
 
 <section class="page-hero">
   <div class="ph-content">
-    <div class="ph-tag">💼 Partner With Nork Capital</div>
-    <h1>Become an <span class="green">Affiliate</span><br>&amp; Earn Up To 25%</h1>
+    <div class="ph-tag" data-es="💼 Asciéate con Nork Capital">💼 Partner With Nork Capital</div>
+    <h1 data-es-html="Conviértete en <span class='green'>Afiliado</span><br>y Gana Hasta 25%">Become an <span class="green">Affiliate</span><br>&amp; Earn Up To 25%</h1>
     <div class="ph-divider"></div>
-    <p class="ph-sub">Refer real estate investors to Nork Capital Lending and earn up to 25% of the total broker origination fee — paid every time your client closes a deal with us.</p>
+    <p class="ph-sub" data-es="Refiere inversionistas de bienes raíces a Nork Capital Lending y gana hasta el 25% de la comisión total de originación — pagada cada vez que tu cliente cierra un negocio con nosotros.">Refer real estate investors to Nork Capital Lending and earn up to 25% of the total broker origination fee — paid every time your client closes a deal with us.</p>
     <ul class="ph-bullets">
-      <li>25% of origination fees on every closed loan</li>
-      <li>Lifetime client referral — get paid on every future deal</li>
-      <li>$500 same-day payment on "Hand Off" referrals</li>
-      <li>First-time self-referral rebate available</li>
-      <li>Open to Realtors, Investors, Wholesalers &amp; Loan Originators</li>
+      <li data-es="25% de las comisiones de originación en cada préstamo cerrado">25% of origination fees on every closed loan</li>
+      <li data-es="Referido de cliente de por vida — cobra en cada negocio futuro">Lifetime client referral — get paid on every future deal</li>
+      <li data-es="Pago de $500 el mismo día en referidos “Hand Off”">$500 same-day payment on "Hand Off" referrals</li>
+      <li data-es="Reembolso disponible para tu primer auto-referido">First-time self-referral rebate available</li>
+      <li data-es="Abierto a Realtors, Inversionistas, Mayoristas y Originadores de Préstamos">Open to Realtors, Investors, Wholesalers &amp; Loan Originators</li>
     </ul>
     <div class="ph-actions">
-      <a href="mailto:tc@nork.group" class="btn-green">Register as an Affiliate</a>
-      <a href="#how" class="btn-outline">How It Works</a>
+      <a href="affiliate-register.html" class="btn-green" data-es="Regístrate como Afiliado">Register as an Affiliate</a>
+      <a href="#how" class="btn-outline" data-es="Cómo Funciona">How It Works</a>
     </div>
   </div>
   <div class="ph-img">
     <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&q=80" alt="Affiliate Partnership"/>
-    <div class="ph-img-badge">Earn Up To 25%</div>
+    <div class="ph-img-badge" data-es="Gana Hasta 25%">Earn Up To 25%</div>
   </div>
 </section>
 
 <div class="hbar">
-  <div class="hbar-label">Affiliate Program Highlights</div>
+  <div class="hbar-label" data-es="Aspectos del Programa de Afiliados">Affiliate Program Highlights</div>
   <div class="hbar-grid">
-    <div class="hbox"><div class="hbox-val">25%</div><div class="hbox-label">Max Commission</div></div>
-    <div class="hbox"><div class="hbox-val">$500</div><div class="hbox-label">Hand-Off Bonus</div></div>
-    <div class="hbox"><div class="hbox-val">∞</div><div class="hbox-label">Lifetime Clients</div></div>
-    <div class="hbox"><div class="hbox-val">48hr</div><div class="hbox-label">Loan Approvals</div></div>
-    <div class="hbox"><div class="hbox-val">Free</div><div class="hbox-label">To Join</div></div>
+    <div class="hbox"><div class="hbox-val">25%</div><div class="hbox-label" data-es="Comisión Máxima">Max Commission</div></div>
+    <div class="hbox"><div class="hbox-val">$500</div><div class="hbox-label" data-es="Bono Hand-Off">Hand-Off Bonus</div></div>
+    <div class="hbox"><div class="hbox-val">∞</div><div class="hbox-label" data-es="Clientes de por Vida">Lifetime Clients</div></div>
+    <div class="hbox"><div class="hbox-val">48hr</div><div class="hbox-label" data-es="Aprobaciones">Loan Approvals</div></div>
+    <div class="hbox"><div class="hbox-val" data-es="Gratis">Free</div><div class="hbox-label" data-es="Para Unirse">To Join</div></div>
   </div>
 </div>
 
 <section class="section-w" id="how">
-  <div class="sec-header fade-up"><span class="sec-tag">How It Works</span><h2>Three Ways to Earn as an Affiliate</h2><p>Choose the level of involvement that works for you — from a simple introduction to full loan participation.</p></div>
+  <div class="sec-header fade-up"><span class="sec-tag" data-es="Cómo Funciona">How It Works</span><h2 data-es="Tres Formas de Ganar como Afiliado">Three Ways to Earn as an Affiliate</h2><p data-es="Elige el nivel de participación que mejor te funcione — desde una simple presentación hasta la participación total en el préstamo.">Choose the level of involvement that works for you — from a simple introduction to full loan participation.</p></div>
   <div class="cards-3 fade-up">
     <div class="card">
       <div class="card-icon">🤝</div>
-      <div class="card-title">The Hand Off — $500</div>
-      <p class="card-desc">Refer a client who is actively seeking a loan to purchase a real estate investment and receive $500 on the same day the property closes. Simple introduction, fast reward.</p>
+      <div class="card-title" data-es="El Hand Off — $500">The Hand Off — $500</div>
+      <p class="card-desc" data-es="Refiere a un cliente que esté buscando activamente un préstamo para comprar una inversión inmobiliaria y recibe $500 el mismo día en que la propiedad cierra. Presentación simple, recompensa rápida.">Refer a client who is actively seeking a loan to purchase a real estate investment and receive $500 on the same day the property closes. Simple introduction, fast reward.</p>
     </div>
     <div class="card">
       <div class="card-icon">📋</div>
-      <div class="card-title">The Full Assist — 25%</div>
-      <p class="card-desc">Refer a client AND actively participate in gathering all the documents necessary to process and fund the loan. Earn 25% of the total origination fees paid to Nork Capital.</p>
+      <div class="card-title" data-es="La Asistencia Total — 25%">The Full Assist — 25%</div>
+      <p class="card-desc" data-es="Refiere a un cliente Y participa activamente reuniendo todos los documentos necesarios para procesar y financiar el préstamo. Gana el 25% del total de las comisiones de originación pagadas a Nork Capital.">Refer a client AND actively participate in gathering all the documents necessary to process and fund the loan. Earn 25% of the total origination fees paid to Nork Capital.</p>
     </div>
     <div class="card">
       <div class="card-icon">🎯</div>
-      <div class="card-title">Self Referral — 25% Rebate</div>
-      <p class="card-desc">Get a one-time 25% rebate of Nork Capital origination fees from your very own first closing with us. A great way to get started and benefit from the program personally.</p>
+      <div class="card-title" data-es="Auto-Referido — 25% de Reembolso">Self Referral — 25% Rebate</div>
+      <p class="card-desc" data-es="Obtén un reembolso único del 25% de las comisiones de originación de Nork Capital en tu propio primer cierre con nosotros. Una excelente forma de comenzar y beneficiarte del programa personalmente.">Get a one-time 25% rebate of Nork Capital origination fees from your very own first closing with us. A great way to get started and benefit from the program personally.</p>
     </div>
   </div>
 </section>
 
 <section class="section-g">
-  <div class="sec-header fade-up"><span class="sec-tag">Lifetime Earning Potential</span><h2>Your Clients Are Yours — Forever</h2><p>Every unique client referral is an infinity client. Every time they close a future deal with us, you get paid.</p></div>
+  <div class="sec-header fade-up"><span class="sec-tag" data-es="Potencial de Ganancia de por Vida">Lifetime Earning Potential</span><h2 data-es="Tus Clientes Son Tuyos — Para Siempre">Your Clients Are Yours — Forever</h2><p data-es="Cada referido único es un cliente infinito. Cada vez que cierran un negocio futuro con nosotros, tú cobras.">Every unique client referral is an infinity client. Every time they close a future deal with us, you get paid.</p></div>
   <div class="split fade-up">
     <div>
-      <h2>True Profit Share</h2>
-      <p>25% of origination fees paid to Nork Capital on every loan your referred clients close — not just the first one. As long as your client keeps investing, you keep earning.</p>
-      <p>Our affiliate program is open to all real estate professionals including Realtors®, investors, wholesalers, and loan originators. If you know investors who need financing, you qualify.</p>
-      <a href="mailto:tc@nork.group" class="btn-green" style="margin-top:1rem;display:inline-block">Join the Affiliate Program</a>
+      <h2 data-es="Verdadera Participación en Ganancias">True Profit Share</h2>
+      <p data-es="25% de las comisiones de originación pagadas a Nork Capital en cada préstamo que cierren tus clientes referidos — no solo el primero. Mientras tu cliente siga invirtiendo, tú sigues ganando.">25% of origination fees paid to Nork Capital on every loan your referred clients close — not just the first one. As long as your client keeps investing, you keep earning.</p>
+      <p data-es="Nuestro programa de afiliados está abierto a todos los profesionales de bienes raíces, incluyendo Realtors®, inversionistas, mayoristas y originadores de préstamos. Si conoces inversionistas que necesitan financiamiento, calificas.">Our affiliate program is open to all real estate professionals including Realtors®, investors, wholesalers, and loan originators. If you know investors who need financing, you qualify.</p>
+      <a href="affiliate-register.html" class="btn-green" style="margin-top:1rem;display:inline-block" data-es="Únete al Programa de Afiliados">Join the Affiliate Program</a>
     </div>
     <div class="term-list">
-      <div class="term-row light-row"><span class="term-lbl">Commission</span><span class="term-val" style="color:var(--text)">25% of Origination Fees</span></div>
-      <div class="term-row light-row"><span class="term-lbl">Hand-Off Bonus</span><span class="term-val" style="color:var(--text)">$500 at Close</span></div>
-      <div class="term-row light-row"><span class="term-lbl">Client Ownership</span><span class="term-val" style="color:var(--text)">Lifetime / Perpetual</span></div>
-      <div class="term-row light-row"><span class="term-lbl">Payment Timing</span><span class="term-val" style="color:var(--text)">At Loan Closing</span></div>
-      <div class="term-row light-row"><span class="term-lbl">Eligible Professionals</span><span class="term-val" style="color:var(--text)">Realtors, Investors, Wholesalers, LOs</span></div>
-      <div class="term-row light-row"><span class="term-lbl">Cost to Join</span><span class="term-val" style="color:var(--text)">Free</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Comisión">Commission</span><span class="term-val" style="color:var(--text)" data-es="25% de Comisiones de Originación">25% of Origination Fees</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Bono Hand-Off">Hand-Off Bonus</span><span class="term-val" style="color:var(--text)" data-es="$500 al Cierre">$500 at Close</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Propiedad del Cliente">Client Ownership</span><span class="term-val" style="color:var(--text)" data-es="De por Vida / Perpetua">Lifetime / Perpetual</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Momento de Pago">Payment Timing</span><span class="term-val" style="color:var(--text)" data-es="Al Cierre del Préstamo">At Loan Closing</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Profesionales Elegibles">Eligible Professionals</span><span class="term-val" style="color:var(--text)" data-es="Realtors, Inversionistas, Mayoristas, LOs">Realtors, Investors, Wholesalers, LOs</span></div>
+      <div class="term-row light-row"><span class="term-lbl" data-es="Costo de Unirse">Cost to Join</span><span class="term-val" style="color:var(--text)" data-es="Gratis">Free</span></div>
     </div>
   </div>
 </section>
 
 <section class="section-d">
-  <div class="sec-header fade-up light"><span class="sec-tag">What We Finance</span><h2>Loan Products You Can Refer</h2><p class="light">Up to 90% purchase + 100% renovation on fix &amp; flip, plus bridge, DSCR, new construction, and commercial.</p></div>
+  <div class="sec-header fade-up light"><span class="sec-tag" data-es="Lo Que Financiamos">What We Finance</span><h2 data-es="Productos de Préstamo Que Puedes Referir">Loan Products You Can Refer</h2><p class="light" data-es="Hasta 90% de compra + 100% de renovación en fix &amp; flip, más bridge, DSCR, nueva construcción y comercial.">Up to 90% purchase + 100% renovation on fix &amp; flip, plus bridge, DSCR, new construction, and commercial.</p></div>
   <div class="cards-4 fade-up">
-    <div class="card dark"><div class="card-icon">🔨</div><div class="card-title">Fix &amp; Flip</div><p class="card-desc">Up to 90% purchase + 100% rehab. 48hr pre-approval. 6–18 month terms.</p></div>
-    <div class="card dark"><div class="card-icon">🌉</div><div class="card-title">Bridge Loans</div><p class="card-desc">Fast short-term capital. Close in 7–14 days. Up to 75% LTV.</p></div>
-    <div class="card dark"><div class="card-icon">🏘️</div><div class="card-title">DSCR / Rental</div><p class="card-desc">Qualify on rental income — not tax returns. 30-year options available.</p></div>
-    <div class="card dark"><div class="card-icon">🏗️</div><div class="card-title">New Construction</div><p class="card-desc">Ground-up construction with milestone draws. 12–18 month terms.</p></div>
+    <div class="card dark"><div class="card-icon">🔨</div><div class="card-title">Fix &amp; Flip</div><p class="card-desc" data-es="Hasta 90% de compra + 100% de rehabilitación. Pre-aprobación en 48hr. Plazos de 6–18 meses.">Up to 90% purchase + 100% rehab. 48hr pre-approval. 6–18 month terms.</p></div>
+    <div class="card dark"><div class="card-icon">🌉</div><div class="card-title" data-es="Préstamos Puente">Bridge Loans</div><p class="card-desc" data-es="Capital rápido a corto plazo. Cierra en 7–14 días. Hasta 75% LTV.">Fast short-term capital. Close in 7–14 days. Up to 75% LTV.</p></div>
+    <div class="card dark"><div class="card-icon">🏘️</div><div class="card-title" data-es="DSCR / Alquiler">DSCR / Rental</div><p class="card-desc" data-es="Califica con el ingreso de alquiler — no con declaraciones de impuestos. Opciones a 30 años disponibles.">Qualify on rental income — not tax returns. 30-year options available.</p></div>
+    <div class="card dark"><div class="card-icon">🏗️</div><div class="card-title" data-es="Nueva Construcción">New Construction</div><p class="card-desc" data-es="Construcción desde cero con desembolsos por etapas. Plazos de 12–18 meses.">Ground-up construction with milestone draws. 12–18 month terms.</p></div>
   </div>
 </section>
 
 <section class="section-w">
-  <div class="sec-header fade-up"><span class="sec-tag">Get Started</span><h2>How to Register as an Affiliate</h2></div>
+  <div class="sec-header fade-up"><span class="sec-tag" data-es="Comienza">Get Started</span><h2 data-es="Cómo Registrarte como Afiliado">How to Register as an Affiliate</h2></div>
   <div class="steps fade-up">
-    <div class="step"><div class="step-num">1</div><div class="step-title">Contact Us</div><p class="step-desc">Reach out by email or phone to set up your affiliate profile. We'll walk you through the registration process and set you up in our system.</p></div>
-    <div class="step"><div class="step-num">2</div><div class="step-title">Start Referring</div><p class="step-desc">Send us your client's information. We handle the loan process from application to close while you stay in the loop every step of the way.</p></div>
-    <div class="step"><div class="step-num">3</div><div class="step-title">Get Paid</div><p class="step-desc">Receive your commission at closing — every time your client closes a deal with Nork Capital. Lifetime earning on every referred client.</p></div>
+    <div class="step"><div class="step-num">1</div><div class="step-title" data-es="Contáctanos">Contact Us</div><p class="step-desc" data-es="Comunícate por correo o teléfono para crear tu perfil de afiliado. Te guiaremos por el proceso de registro y te configuraremos en nuestro sistema.">Reach out by email or phone to set up your affiliate profile. We'll walk you through the registration process and set you up in our system.</p></div>
+    <div class="step"><div class="step-num">2</div><div class="step-title" data-es="Comienza a Referir">Start Referring</div><p class="step-desc" data-es="Envíanos la información de tu cliente. Nosotros manejamos el proceso del préstamo desde la solicitud hasta el cierre mientras te mantenemos informado en cada paso.">Send us your client's information. We handle the loan process from application to close while you stay in the loop every step of the way.</p></div>
+    <div class="step"><div class="step-num">3</div><div class="step-title" data-es="Cobra">Get Paid</div><p class="step-desc" data-es="Recibe tu comisión al cierre — cada vez que tu cliente cierra un negocio con Nork Capital. Ganancia de por vida en cada cliente referido.">Receive your commission at closing — every time your client closes a deal with Nork Capital. Lifetime earning on every referred client.</p></div>
   </div>
 </section>
 
 <section class="cta-section" id="apply">
-  <h2>Ready to Start <span class="green">Earning?</span></h2>
-  <p>Join our affiliate program today. Free to register, no minimums, and you earn every time your client closes a deal with Nork Capital Lending.</p>
-  <a href="mailto:tc@nork.group" class="btn-green">Register as an Affiliate</a>
+  <h2 data-es-html="¿Listo para Empezar a <span class='green'>Ganar?</span>">Ready to Start <span class="green">Earning?</span></h2>
+  <p data-es="Únete a nuestro programa de afiliados hoy. Registro gratis, sin mínimos, y ganas cada vez que tu cliente cierra un negocio con Nork Capital Lending.">Join our affiliate program today. Free to register, no minimums, and you earn every time your client closes a deal with Nork Capital Lending.</p>
+  <a href="affiliate-register.html" class="btn-green">Register as an Affiliate</a>
 </section>
+
+<section class="cta-section" style="border-top:1px solid rgba(255,255,255,0.08)">
+  <span class="sec-tag" style="display:block;margin-bottom:1rem" data-es="Socios Existentes">Existing Partners</span>
+  <h2 data-es-html="¿Ya eres <span class='green'>Afiliado?</span>">Already an <span class="green">Affiliate?</span></h2>
+  <p data-es="Accede a tu portal de socios para enviar nuevas oportunidades de clientes, seguir tu cartera en tiempo real y ver crecer tus comisiones.">Access your partner portal to submit new client opportunities, track your pipeline in real time, and watch your commissions grow.</p>
+  <a href="affiliate-portal.html" class="btn-green" style="margin-bottom:1rem" data-es="Entrar al Portal">Portal Login</a>
+</section>
+
+<section class="cta-section" id="connect" style="background:linear-gradient(135deg,#1a1a1a 0%,#0d0d0d 100%)">
+  <h2 data-es-html="¿Listo para Asociarte con <span class='green'>Nork Capital Lending?</span>">Ready to Partner with <span class="green">Nork Capital Lending?</span></h2>
+  <p data-es="Ya seas agente de bienes raíces, mayorista, corredor hipotecario o inversionista — construyamos algo juntos. Únete a nuestra creciente red de socios que ganan en cada negocio cerrado.">Whether you're a real estate agent, wholesaler, mortgage broker, or investor — let's build something together. Join our growing network of partners earning on every closed deal.</p>
+  <a href="affiliate-register.html" class="btn-green" data-es="Conectemos">Let's Connect</a>
+</section>
+
 <footer>
   <div class="footer-inner">
     <a href="index.html" class="footer-brand">
@@ -255,19 +272,39 @@ footer{background:var(--dark2);padding:2rem 2.5rem;border-top:3px solid var(--gr
       <div class="footer-brand-text"><div class="n1">NORK CAPITAL</div><div class="n2">LENDING</div></div>
     </a>
     <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="index.html#programs">Loan Programs</a>
-      <a href="affiliate.html">Affiliate</a>
-      <a href="lenders.html">Lenders</a>
-      <a href="index.html#apply">Apply Now</a>
+      <a href="index.html" data-es="Inicio">Home</a>
+      <a href="index.html#programs" data-es="Programas">Loan Programs</a>
+      <a href="affiliate.html" data-es="Afiliados">Affiliate</a>
+      <a href="lenders.html" data-es="Prestamistas">Lenders</a>
+      <a href="apply.html" data-es="Aplicar">Apply Now</a>
     </div>
-    <div class="footer-copy">© 2026 Nork Capital Lending · A Nork Group Company</div>
+    <div class="footer-copy"><span data-es="&copy; 2026 Nork Capital Lending &middot; Una compañía de Nork Group">© 2026 Nork Capital Lending · A Nork Group Company</span></div>
   </div>
 </footer>
 <script>
 const obs=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting)i.target.classList.add("visible")})},{threshold:0.1});
 document.querySelectorAll(".fade-up").forEach(el=>obs.observe(el));
 document.querySelectorAll(".faq-item").forEach(item=>{item.addEventListener("click",()=>item.classList.toggle("open"))});
+</script>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
 </script>
 </body>
 </html>

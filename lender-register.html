@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Start Lending — Nork Capital Lending</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#3DB33D;--green2:#4CC94C;--dark:#1C1C1C;--dark2:#1a1a2e;--card:#242438;--white:#FFFFFF;--muted:rgba(255,255,255,0.55)}
+body{font-family:"Open Sans",sans-serif;background:var(--dark2);color:var(--white);min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;justify-content:space-between;align-items:center;padding:0 2.5rem;height:70px;background:#111118;border-bottom:2px solid var(--green)}
+.nav-brand{font-family:"Montserrat",sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.2;text-decoration:none;display:block}
+.line1{color:#fff;display:block}.line2{color:var(--green);font-size:0.62rem;letter-spacing:4px;display:block}
+.nav-back{color:rgba(255,255,255,0.5);text-decoration:none;font-family:"Montserrat",sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+.nav-back:hover{color:var(--green)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:4rem 1.5rem;position:relative;overflow:hidden}
+main::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 30%,rgba(61,179,61,0.07) 0%,transparent 70%)}
+.form-card{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:3rem;max-width:580px;width:100%;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.form-top{text-align:center;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.form-icon{font-size:2.5rem;margin-bottom:0.8rem}
+.form-tag{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(61,179,61,0.35);background:rgba(61,179,61,0.1);padding:0.25rem 0.8rem;border-radius:20px;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:700;font-family:"Montserrat",sans-serif;margin-bottom:0.8rem}
+.form-title{font-family:"Montserrat",sans-serif;font-size:1.3rem;font-weight:900;text-transform:uppercase;margin-bottom:0.4rem}
+.form-title span{color:var(--green)}
+.form-sub{color:var(--muted);font-size:0.78rem;line-height:1.7}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.grid-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.grid-1{margin-bottom:1.2rem}
+.field label{display:block;font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.5rem}
+.field input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:0.85rem 1rem;font-size:0.85rem;font-family:"Open Sans",sans-serif;color:#fff;transition:border-color 0.2s;outline:none}
+.field input::placeholder{color:rgba(255,255,255,0.2)}
+.field input:focus{border-color:var(--green);background:rgba(61,179,61,0.06)}
+.required{color:var(--green)}
+.section-divider{font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:0.5rem 0;margin-bottom:0.8rem;border-bottom:1px solid rgba(61,179,61,0.2)}
+.benefits{background:rgba(61,179,61,0.06);border:1px solid rgba(61,179,61,0.2);border-radius:4px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.9}
+.benefits strong{color:var(--green);font-family:"Montserrat",sans-serif;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:0.4rem}
+.btn-submit{width:100%;background:var(--green);color:#fff;border:none;padding:1rem;border-radius:4px;font-family:"Montserrat",sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:0.5rem}
+.btn-submit:hover{background:var(--green2)}
+.btn-submit:disabled{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);cursor:not-allowed}
+.fine-print{text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.25);margin-top:1rem;line-height:1.7}
+.success-screen{text-align:center;padding:2rem 1rem;display:none}
+.success-screen.show{display:block}
+.success-icon{font-size:3rem;margin-bottom:1rem}
+.success-screen h3{font-family:"Montserrat",sans-serif;font-size:1.1rem;font-weight:900;text-transform:uppercase;margin-bottom:0.5rem}
+.success-screen h3 span{color:var(--green)}
+.success-screen p{color:var(--muted);font-size:0.8rem;line-height:1.8;margin-bottom:1.5rem}
+footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1rem 2.5rem;text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.2);font-family:"Montserrat",sans-serif;letter-spacing:1px;text-transform:uppercase}
+@media(max-width:500px){nav{padding:0 1rem}.grid-2,.grid-3{grid-template-columns:1fr}.form-card{padding:1.8rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><span class="line1">NORK CAPITAL</span><span class="line2">LENDING</span></a>
+  <div style="display:flex;align-items:center;gap:0.8rem"><button class="nav-back" id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800">ES</button><a href="lenders.html" class="nav-back" data-es="← Prestamistas Privados">← Private Lenders</a></div>
+</nav>
+<main>
+  <div class="form-card">
+    <div id="formContent">
+      <div class="form-top">
+        <div class="form-icon">💰</div>
+        <div class="form-tag" data-es="Préstamos Privados">Private Lending</div>
+        <div class="form-title" data-es-html="Comienza a <span>Prestar Hoy</span>">Start <span>Lending Today</span></div>
+        <p class="form-sub" data-es="Únete a nuestra red de prestamistas privados y comienza a ganar retornos anuales del 8–15% garantizados por bienes raíces. 100% administrado — sin dolores de cabeza de ser propietario.">Join our network of private lenders and start earning 8–15% annual returns secured by real estate. 100% fully serviced — no landlord headaches.</p>
+      </div>
+      <div class="benefits">
+        <strong data-es="Beneficios del Prestamista">Lender Benefits</strong>
+        <span data-es-html="✅ Retornos anuales del 8.0% al 15%<br>✅ Posición de 1er Gravámen — garantizado por bienes raíces<br>✅ Pagos mensuales por depósito directo<br>✅ Administración de préstamos 100% gestionada<br>✅ Elige los préstamos que deseas financiar">✅ 8.0% to 15% annual returns<br>✅ 1st Lien Position — secured by real estate<br>✅ Monthly direct deposit payments<br>✅ 100% fully serviced loan management<br>✅ Choose the loans you want to fund</span>
+      </div>
+      <form id="lenderForm" onsubmit="handleSubmit(event)">
+        <div class="section-divider" data-es="Información Personal">Personal Information</div>
+        <div class="grid-2">
+          <div class="field"><label data-es-html="Nombre <span class='required'>*</span>">First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
+          <div class="field"><label data-es-html="Apellido <span class='required'>*</span>">Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
+        </div>
+        <div class="grid-1 field"><label data-es-html="Correo Electrónico <span class='required'>*</span>">Email Address <span class="required">*</span></label><input type="email" id="email" placeholder="you@example.com" required/></div>
+        <div class="grid-1 field"><label data-es-html="Número de Teléfono <span class='required'>*</span>">Phone Number <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
+        <div class="grid-1 field"><label data-es="Corporación o Nombre del Negocio">Corporation or Business Name</label><input type="text" id="company" placeholder="Your LLC or Company (optional)" data-es-ph="Tu LLC o Empresa (opcional)"/></div>
+        <div class="section-divider" style="margin-top:0.5rem" data-es-html="Dirección del Negocio <span class='required'>*</span>">Business Address <span class="required">*</span></div>
+        <div class="grid-1 field"><label data-es-html="Dirección <span class='required'>*</span>">Street Address <span class="required">*</span></label><input type="text" id="street" placeholder="123 Main Street" data-es-ph="Calle 123" required/></div>
+        <div class="grid-3">
+          <div class="field"><label data-es-html="Ciudad <span class='required'>*</span>">City <span class="required">*</span></label><input type="text" id="city" placeholder="Miami" required/></div>
+          <div class="field"><label data-es="Estado">State</label><input type="text" id="state" placeholder="FL"/></div>
+          <div class="field"><label data-es-html="Código Postal <span class='required'>*</span>">ZIP Code <span class="required">*</span></label><input type="text" id="zip" placeholder="33180" required/></div>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn" data-es="Confirmar y Continuar →">Confirm &amp; Continue →</button>
+      </form>
+      <p class="fine-print" data-es="🔒 Tu información está segura y solo se usará para configurar tu cuenta de prestamista. No se requiere verificación de crédito.">🔒 Your information is secure and will only be used to set up your lender account. No credit check required.</p>
+    </div>
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <h3 data-es-html="¡Registro <span>Recibido!</span>">Registration <span>Received!</span></h3>
+      <p data-es="Gracias por tu interés en prestar con Nork Capital. Un miembro de nuestro equipo se comunicará contigo dentro de 24 horas para conversar sobre las oportunidades disponibles y ayudarte a comenzar.">Thank you for your interest in lending with Nork Capital. A member of our team will reach out within 24 hours to discuss available opportunities and get you started.</p>
+      <a href="index.html" style="display:inline-block;background:var(--green);color:#fff;padding:0.8rem 2rem;border-radius:4px;font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-decoration:none" data-es="Volver al Inicio">Back to Home</a>
+    </div>
+  </div>
+</main>
+<footer><span data-es="&copy; 2026 Nork Capital Lending &middot; tc@nork.group">© 2026 Nork Capital Lending · tc@nork.group</span></footer>
+<script>
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = (localStorage.getItem('nork_lang')==='es'?'Enviando...':'Submitting...');
+  btn.disabled = true;
+  const addr = document.getElementById('street').value+', '+document.getElementById('city').value+', '+document.getElementById('state').value+' '+document.getElementById('zip').value;
+  fetch('https://formspree.io/f/mgoqvynl',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      '_subject':'New Private Lender Registration — Nork Capital Lending',
+      'Form Type':'Lender Registration',
+      'First Name':document.getElementById('firstName').value,
+      'Last Name':document.getElementById('lastName').value,
+      'Email':document.getElementById('email').value,
+      'Phone':document.getElementById('phone').value,
+      'Business Name':document.getElementById('company').value,
+      'Business Address':addr,
+      '_replyto':document.getElementById('email').value
+    })
+  }).then(r=>{
+    if(r.ok){document.getElementById('formContent').style.display='none';document.getElementById('successScreen').classList.add('show');}
+    else{btn.textContent=(localStorage.getItem('nork_lang')==='es'?'Confirmar y Continuar →':'Confirm & Continue →');btn.disabled=false;alert('Error / Error al enviar. tc@nork.group');}
+  }).catch(()=>{btn.textContent=(localStorage.getItem('nork_lang')==='es'?'Confirmar y Continuar →':'Confirm & Continue →');btn.disabled=false;alert('Connection error / Error de conexión. tc@nork.group');});
+}
+</script>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.querySelectorAll('[data-es-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-en-ph')) el.setAttribute('data-en-ph', el.getAttribute('placeholder')||'');
+      el.setAttribute('placeholder',(lang==='es')?el.getAttribute('data-es-ph'):el.getAttribute('data-en-ph'));
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
+</script>
+</body>
+</html>
