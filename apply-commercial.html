@@ -87,17 +87,17 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <body>
 <nav>
   <a href="apply.html" class="nav-brand"><span class="line1">NORK CAPITAL</span><span class="line2">LENDING</span></a>
-  <a href="apply.html" class="nav-back">← Choose Loan Type</a>
+  <button id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green,#3DB33D);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800;font-family:Montserrat,sans-serif;margin-right:0.6rem;vertical-align:middle">ES</button><a href="apply.html" class="nav-back" data-es="← Elegir Tipo de Préstamo">← Choose Loan Type</a>
 </nav>
 
 <div class="progress-wrap">
   <div class="progress-inner">
     <div class="step-labels">
-      <span class="step-lbl active" id="lbl1"><span class="num">1</span>Loan Type</span>
-      <span class="step-lbl" id="lbl2"><span class="num">2</span>Property Info</span>
-      <span class="step-lbl" id="lbl3"><span class="num">3</span>Loan Details</span>
-      <span class="step-lbl" id="lbl4"><span class="num">4</span>Borrower Profile</span>
-      <span class="step-lbl" id="lbl5"><span class="num">5</span>Contact</span>
+      <span class="step-lbl active" id="lbl1" data-es-html="<span class='num'>1</span>Tipo de Préstamo"><span class="num">1</span>Loan Type</span>
+      <span class="step-lbl" id="lbl2" data-es-html="<span class='num'>2</span>Info de Propiedad"><span class="num">2</span>Property Info</span>
+      <span class="step-lbl" id="lbl3" data-es-html="<span class='num'>3</span>Detalles del Préstamo"><span class="num">3</span>Loan Details</span>
+      <span class="step-lbl" id="lbl4" data-es-html="<span class='num'>4</span>Perfil del Prestatario"><span class="num">4</span>Borrower Profile</span>
+      <span class="step-lbl" id="lbl5" data-es-html="<span class='num'>5</span>Contacto"><span class="num">5</span>Contact</span>
     </div>
     <div class="bar-track"><div class="bar-fill" id="barFill" style="width:20%"></div></div>
   </div>
@@ -109,269 +109,269 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <!-- STEP 1: Loan Type -->
 <div class="step-panel active" id="step1">
   <div class="step-header">
-    <div class="step-num">Step 1 of 5</div>
-    <div class="step-title">Select Your Commercial Loan Type</div>
-    <div class="step-sub">Choose the program that best describes your project so we can match you to the right financing.</div>
+    <div class="step-num" data-es="Paso 1 de 5">Step 1 of 5</div>
+    <div class="step-title" data-es="Selecciona tu Tipo de Préstamo Comercial">Select Your Commercial Loan Type</div>
+    <div class="step-sub" data-es="Elige el programa que mejor describe tu proyecto para emparejarte con el financiamiento adecuado.">Choose the program that best describes your project so we can match you to the right financing.</div>
   </div>
   <div class="loan-types" style="grid-template-columns:repeat(2,1fr)">
-    <div class="loan-btn" onclick="selectLoan(this,'Commercial Purchase')"><div class="loan-btn-icon">🏢</div><div class="loan-btn-label">Commercial Purchase</div></div>
-    <div class="loan-btn" onclick="selectLoan(this,'Multifamily 5+')"><div class="loan-btn-icon">🏘️</div><div class="loan-btn-label">Multifamily 5+</div></div>
-    <div class="loan-btn" onclick="selectLoan(this,'New Construction')"><div class="loan-btn-icon">🏗️</div><div class="loan-btn-label">New Construction</div></div>
-    <div class="loan-btn" onclick="selectLoan(this,'Mixed-Use')"><div class="loan-btn-icon">🏬</div><div class="loan-btn-label">Mixed-Use</div></div>
-    <div class="loan-btn" onclick="selectLoan(this,'Cash-Out Refinance')"><div class="loan-btn-icon">🔄</div><div class="loan-btn-label">Cash-Out Refinance</div></div>
-    <div class="loan-btn" onclick="selectLoan(this,'Other Commercial')"><div class="loan-btn-icon">💼</div><div class="loan-btn-label">Other / Not Sure</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'Commercial Purchase')"><div class="loan-btn-icon">🏢</div><div class="loan-btn-label" data-es="Compra Comercial">Commercial Purchase</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'Multifamily 5+')"><div class="loan-btn-icon">🏘️</div><div class="loan-btn-label" data-es="Multifamiliar 5+">Multifamily 5+</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'New Construction')"><div class="loan-btn-icon">🏗️</div><div class="loan-btn-label" data-es="Nueva Construcción">New Construction</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'Mixed-Use')"><div class="loan-btn-icon">🏬</div><div class="loan-btn-label" data-es="Uso Mixto">Mixed-Use</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'Cash-Out Refinance')"><div class="loan-btn-icon">🔄</div><div class="loan-btn-label" data-es="Refinanciamiento con Retiro">Cash-Out Refinance</div></div>
+    <div class="loan-btn" onclick="selectLoan(this,'Other Commercial')"><div class="loan-btn-icon">💼</div><div class="loan-btn-label" data-es="Otro / No Estoy Seguro">Other / Not Sure</div></div>
   </div>
   <input type="hidden" id="loanType" value="">
   <div class="btn-row">
-    <a href="apply.html" class="btn-back">← Back</a>
-    <button class="btn-next" onclick="goStep(2)" id="btn1" disabled>Continue →</button>
+    <a href="apply.html" class="btn-back" data-es="← Atrás">← Back</a>
+    <button class="btn-next" onclick="goStep(2)" id="btn1" disabled data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 2: Property Info -->
 <div class="step-panel" id="step2">
   <div class="step-header">
-    <div class="step-num">Step 2 of 5</div>
-    <div class="step-title">Property Information</div>
-    <div class="step-sub">Tell us about the property you're financing.</div>
+    <div class="step-num" data-es="Paso 2 de 5">Step 2 of 5</div>
+    <div class="step-title" data-es="Información de la Propiedad">Property Information</div>
+    <div class="step-sub" data-es="Cuéntanos sobre la propiedad que vas a financiar.">Tell us about the property you're financing.</div>
   </div>
-  <div class="grid-1 field"><label>Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33101"/></div>
+  <div class="grid-1 field"><label data-es-html="Dirección de la Propiedad <span class='required'>*</span>">Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33101" data-es-ph="Calle 123, Miami, FL 33101"/></div>
   <div class="grid-2">
-    <div class="field"><label>Property State <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Estado de la Propiedad <span class='required'>*</span>">Property State <span class="required">*</span></label>
       <select id="propState">
-        <option value="">Select state...</option>
-        <option value="FL" selected>FL — Florida</option>
-        <option value="GA">GA — Georgia</option>
-        <option value="TX">TX — Texas</option>
-        <option value="NC">NC — North Carolina</option>
-        <option value="SC">SC — South Carolina</option>
-        <option value="TN">TN — Tennessee</option>
-        <option value="Other">Other</option>
+        <option value="" data-es="Selecciona estado...">Select state...</option>
+        <option value="FL" selected data-es="FL — Florida">FL — Florida</option>
+        <option value="GA" data-es="GA — Georgia">GA — Georgia</option>
+        <option value="TX" data-es="TX — Texas">TX — Texas</option>
+        <option value="NC" data-es="NC — Carolina del Norte">NC — North Carolina</option>
+        <option value="SC" data-es="SC — Carolina del Sur">SC — South Carolina</option>
+        <option value="TN" data-es="TN — Tennessee">TN — Tennessee</option>
+        <option value="Other" data-es="Otro">Other</option>
       </select>
     </div>
-    <div class="field"><label>Property Type <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Tipo de Propiedad <span class='required'>*</span>">Property Type <span class="required">*</span></label>
       <select id="propType">
-        <option value="">Select type...</option>
-        <option value="Office">Office</option>
-        <option value="Retail">Retail</option>
-        <option value="Warehouse / Industrial">Warehouse / Industrial</option>
-        <option value="Multifamily 5+">Multifamily 5+</option>
-        <option value="Mixed-Use">Mixed-Use</option>
-        <option value="Hotel / Hospitality">Hotel / Hospitality</option>
-        <option value="Self-Storage">Self-Storage</option>
-        <option value="Land / Ground-Up">Land / Ground-Up</option>
-        <option value="Other">Other</option>
+        <option value="" data-es="Selecciona tipo...">Select type...</option>
+        <option value="Office" data-es="Oficina">Office</option>
+        <option value="Retail" data-es="Retail">Retail</option>
+        <option value="Warehouse / Industrial" data-es="Bodega / Industrial">Warehouse / Industrial</option>
+        <option value="Multifamily 5+" data-es="Multifamiliar 5+">Multifamily 5+</option>
+        <option value="Mixed-Use" data-es="Uso Mixto">Mixed-Use</option>
+        <option value="Hotel / Hospitality" data-es="Hotel / Hospitalidad">Hotel / Hospitality</option>
+        <option value="Self-Storage" data-es="Mini-Bodegas">Self-Storage</option>
+        <option value="Land / Ground-Up" data-es="Terreno / Desde Cero">Land / Ground-Up</option>
+        <option value="Other" data-es="Otro">Other</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Loan Purpose <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Propósito del Préstamo <span class='required'>*</span>">Loan Purpose <span class="required">*</span></label>
       <select id="loanPurpose">
-        <option value="">Select purpose...</option>
-        <option value="Purchase">Purchase</option>
-        <option value="Rate & Term Refinance">Rate & Term Refinance</option>
-        <option value="Cash-Out Refinance">Cash-Out Refinance</option>
-        <option value="Construction">New Construction</option>
-        <option value="Renovation / Value-Add">Renovation / Value-Add</option>
+        <option value="" data-es="Selecciona propósito...">Select purpose...</option>
+        <option value="Purchase" data-es="Compra">Purchase</option>
+        <option value="Rate & Term Refinance" data-es="Refinanciamiento de Tasa y Plazo">Rate & Term Refinance</option>
+        <option value="Cash-Out Refinance" data-es="Refinanciamiento con Retiro">Cash-Out Refinance</option>
+        <option value="Construction" data-es="Nueva Construcción">New Construction</option>
+        <option value="Renovation / Value-Add" data-es="Renovación / Valor Agregado">Renovation / Value-Add</option>
       </select>
     </div>
-    <div class="field"><label>Do You Own The Land?</label>
+    <div class="field"><label data-es="¿Eres Dueño del Terreno?">Do You Own The Land?</label>
       <select id="ownLand">
-        <option value="N/A">N/A — Purchasing</option>
-        <option value="Yes">Yes — I own the land</option>
-        <option value="No">No — Need to acquire</option>
+        <option value="N/A" data-es="N/A — Comprando">N/A — Purchasing</option>
+        <option value="Yes" data-es="Sí — soy dueño del terreno">Yes — I own the land</option>
+        <option value="No" data-es="No — necesito adquirirlo">No — Need to acquire</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Is There An Existing Mortgage?</label>
+    <div class="field"><label data-es="¿Hay una Hipoteca Existente?">Is There An Existing Mortgage?</label>
       <select id="existingMortgage">
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
+        <option value="No" data-es="No">No</option>
+        <option value="Yes" data-es="Sí">Yes</option>
       </select>
     </div>
-    <div class="field"><label>Outstanding Balance (if any)</label><input type="number" id="outstandingBalance" placeholder="0"/></div>
+    <div class="field"><label data-es="Saldo Pendiente (si aplica)">Outstanding Balance (if any)</label><input type="number" id="outstandingBalance" placeholder="0"/></div>
   </div>
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(1)">← Back</button>
-    <button class="btn-next" onclick="goStep(3)">Continue →</button>
+    <button class="btn-back" onclick="goStep(1)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(3)" data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 3: Loan Details -->
 <div class="step-panel" id="step3">
   <div class="step-header">
-    <div class="step-num">Step 3 of 5</div>
-    <div class="step-title">Loan Details</div>
-    <div class="step-sub">Tell us the numbers so we can structure the right deal for you.</div>
+    <div class="step-num" data-es="Paso 3 de 5">Step 3 of 5</div>
+    <div class="step-title" data-es="Detalles del Préstamo">Loan Details</div>
+    <div class="step-sub" data-es="Danos los números para estructurar el negocio adecuado para ti.">Tell us the numbers so we can structure the right deal for you.</div>
   </div>
-  <div class="badge">💼 Commercial Financing</div>
+  <div class="badge" data-es="💼 Financiamiento Comercial">💼 Commercial Financing</div>
   <div class="grid-2">
-    <div class="field"><label>Purchase Price / As-Is Value <span class="required">*</span></label><input type="number" id="purchasePrice" placeholder="1500000"/></div>
-    <div class="field"><label>Loan Amount Requested <span class="required">*</span></label><input type="number" id="loanAmount" placeholder="1200000"/></div>
-  </div>
-  <div class="grid-2">
-    <div class="field"><label>After Repair / Stabilized Value</label><input type="number" id="arv" placeholder="2000000"/></div>
-    <div class="field"><label>Acquisition Price (Land)</label><input type="number" id="landPrice" placeholder="0"/></div>
+    <div class="field"><label data-es-html="Precio de Compra / Valor Actual <span class='required'>*</span>">Purchase Price / As-Is Value <span class="required">*</span></label><input type="number" id="purchasePrice" placeholder="1500000"/></div>
+    <div class="field"><label data-es-html="Monto de Préstamo Solicitado <span class='required'>*</span>">Loan Amount Requested <span class="required">*</span></label><input type="number" id="loanAmount" placeholder="1200000"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Total Construction Budget</label><input type="number" id="constructionBudget" placeholder="0"/></div>
-    <div class="field"><label>Construction Costs To Date</label><input type="number" id="constructionToDate" placeholder="0"/></div>
+    <div class="field"><label data-es="Valor Después de Reparación / Estabilizado">After Repair / Stabilized Value</label><input type="number" id="arv" placeholder="2000000"/></div>
+    <div class="field"><label data-es="Precio de Adquisición (Terreno)">Acquisition Price (Land)</label><input type="number" id="landPrice" placeholder="0"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Is The Lot Ready To Build On?</label>
+    <div class="field"><label data-es="Presupuesto Total de Construcción">Total Construction Budget</label><input type="number" id="constructionBudget" placeholder="0"/></div>
+    <div class="field"><label data-es="Costos de Construcción a la Fecha">Construction Costs To Date</label><input type="number" id="constructionToDate" placeholder="0"/></div>
+  </div>
+  <div class="grid-2">
+    <div class="field"><label data-es="¿El Lote Está Listo para Construir?">Is The Lot Ready To Build On?</label>
       <select id="lotReady">
-        <option value="N/A">N/A — Not construction</option>
-        <option value="Yes — within 60 days">Yes — within 60 days</option>
-        <option value="No — needs entitlement">No — needs entitlement</option>
-        <option value="In progress">In progress</option>
+        <option value="N/A" data-es="N/A — No es construcción">N/A — Not construction</option>
+        <option value="Yes — within 60 days" data-es="Sí — dentro de 60 días">Yes — within 60 days</option>
+        <option value="No — needs entitlement" data-es="No — necesita permisos">No — needs entitlement</option>
+        <option value="In progress" data-es="En proceso">In progress</option>
       </select>
     </div>
-    <div class="field"><label>Desired Loan Term</label>
+    <div class="field"><label data-es="Plazo del Préstamo Deseado">Desired Loan Term</label>
       <select id="loanTerm">
-        <option value="12 months">12 months</option>
-        <option value="18 months">18 months</option>
-        <option value="24 months">24 months</option>
-        <option value="36 months">36 months</option>
-        <option value="30-Year Permanent">30-Year Permanent</option>
-        <option value="Flexible">Flexible / Open to options</option>
+        <option value="12 months" data-es="12 meses">12 months</option>
+        <option value="18 months" data-es="18 meses">18 months</option>
+        <option value="24 months" data-es="24 meses">24 months</option>
+        <option value="36 months" data-es="36 meses">36 months</option>
+        <option value="30-Year Permanent" data-es="Permanente a 30 Años">30-Year Permanent</option>
+        <option value="Flexible" data-es="Flexible / Abierto a opciones">Flexible / Open to options</option>
       </select>
     </div>
   </div>
-  <div class="grid-1 field"><label>Additional Deal Notes (Optional)</label><textarea id="dealNotes" placeholder="Describe the project, current occupancy, NOI, any special considerations..."></textarea></div>
-  <div class="insight">💡 <strong>No income docs required.</strong> Commercial loans are approved based on the asset value, project strength, and borrower experience — not personal tax returns.</div>
+  <div class="grid-1 field"><label data-es="Notas Adicionales del Negocio (Opcional)">Additional Deal Notes (Optional)</label><textarea id="dealNotes" placeholder="Describe the project, current occupancy, NOI, any special considerations..." data-es-ph="Describe el proyecto, la ocupación actual, el NOI, o cualquier consideración especial..."></textarea></div>
+  <div class="insight" data-es-html="💡 <strong>No se requieren documentos de ingresos.</strong> Los préstamos comerciales se aprueban según el valor del activo, la solidez del proyecto y la experiencia del prestatario — no las declaraciones de impuestos personales.">💡 <strong>No income docs required.</strong> Commercial loans are approved based on the asset value, project strength, and borrower experience — not personal tax returns.</div>
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(2)">← Back</button>
-    <button class="btn-next" onclick="goStep(4)">Continue →</button>
+    <button class="btn-back" onclick="goStep(2)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(4)" data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 4: Borrower Profile -->
 <div class="step-panel" id="step4">
   <div class="step-header">
-    <div class="step-num">Step 4 of 5</div>
-    <div class="step-title">Borrower Profile</div>
-    <div class="step-sub">Tell us about your experience and financial profile so we can find the best lender match.</div>
+    <div class="step-num" data-es="Paso 4 de 5">Step 4 of 5</div>
+    <div class="step-title" data-es="Perfil del Prestatario">Borrower Profile</div>
+    <div class="step-sub" data-es="Cuéntanos sobre tu experiencia y perfil financiero para encontrar el mejor prestamista.">Tell us about your experience and financial profile so we can find the best lender match.</div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Commercial Experience <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Experiencia Comercial <span class='required'>*</span>">Commercial Experience <span class="required">*</span></label>
       <select id="experience">
-        <option value="">Select...</option>
-        <option value="First commercial deal">First commercial deal</option>
-        <option value="1-2 commercial deals">1–2 completed deals</option>
-        <option value="3-5 commercial deals">3–5 completed deals</option>
-        <option value="5+ commercial deals">5+ completed deals</option>
-        <option value="Seasoned developer">Seasoned developer / sponsor</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="First commercial deal" data-es="Primer negocio comercial">First commercial deal</option>
+        <option value="1-2 commercial deals" data-es="1–2 negocios completados">1–2 completed deals</option>
+        <option value="3-5 commercial deals" data-es="3–5 negocios completados">3–5 completed deals</option>
+        <option value="5+ commercial deals" data-es="5+ negocios completados">5+ completed deals</option>
+        <option value="Seasoned developer" data-es="Desarrollador / patrocinador experimentado">Seasoned developer / sponsor</option>
       </select>
     </div>
-    <div class="field"><label>Taking Title As <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Tomando Título Como <span class='required'>*</span>">Taking Title As <span class="required">*</span></label>
       <select id="entity">
-        <option value="">Select...</option>
-        <option value="LLC">LLC</option>
-        <option value="Corporation">Corporation</option>
-        <option value="LP">Limited Partnership</option>
-        <option value="Individual">Individual</option>
-        <option value="Trust">Trust</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="LLC" data-es="LLC">LLC</option>
+        <option value="Corporation" data-es="Corporación">Corporation</option>
+        <option value="LP" data-es="Sociedad Limitada (LP)">Limited Partnership</option>
+        <option value="Individual" data-es="Individual">Individual</option>
+        <option value="Trust" data-es="Fideicomiso">Trust</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Estimated Credit Score <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Puntaje de Crédito Estimado <span class='required'>*</span>">Estimated Credit Score <span class="required">*</span></label>
       <select id="credit">
-        <option value="">Select range...</option>
-        <option value="Below 620">Below 620</option>
-        <option value="620-659">620–659</option>
-        <option value="660-699">660–699</option>
-        <option value="700-739">700–739</option>
-        <option value="740+">740 or above</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Below 620" data-es="Menos de 620">Below 620</option>
+        <option value="620-659" data-es="620–659">620–659</option>
+        <option value="660-699" data-es="660–699">660–699</option>
+        <option value="700-739" data-es="700–739">700–739</option>
+        <option value="740+" data-es="740 o más">740 or above</option>
       </select>
     </div>
-    <div class="field"><label>Liquidity / Cash Reserves <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Liquidez / Reservas <span class='required'>*</span>">Liquidity / Cash Reserves <span class="required">*</span></label>
       <select id="liquidity">
-        <option value="">Select range...</option>
-        <option value="Under $50k">Under $50k</option>
-        <option value="$50k-$100k">$50k – $100k</option>
-        <option value="$100k-$250k">$100k – $250k</option>
-        <option value="$250k-$500k">$250k – $500k</option>
-        <option value="$500k+">$500k+</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Under $50k" data-es="Menos de $50k">Under $50k</option>
+        <option value="$50k-$100k" data-es="$50k – $100k">$50k – $100k</option>
+        <option value="$100k-$250k" data-es="$100k – $250k">$100k – $250k</option>
+        <option value="$250k-$500k" data-es="$250k – $500k">$250k – $500k</option>
+        <option value="$500k+" data-es="$500k+">$500k+</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Timeline / Urgency <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Plazo / Urgencia <span class='required'>*</span>">Timeline / Urgency <span class="required">*</span></label>
       <select id="timeline">
-        <option value="">Select...</option>
-        <option value="ASAP — under 30 days">ASAP — under 30 days</option>
-        <option value="30-60 days">30–60 days</option>
-        <option value="60-90 days">60–90 days</option>
-        <option value="Just exploring">Just exploring / planning</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="ASAP — under 30 days" data-es="Lo antes posible — menos de 30 días">ASAP — under 30 days</option>
+        <option value="30-60 days" data-es="30–60 días">30–60 days</option>
+        <option value="60-90 days" data-es="60–90 días">60–90 days</option>
+        <option value="Just exploring" data-es="Solo explorando / planeando">Just exploring / planning</option>
       </select>
     </div>
-    <div class="field"><label>Under Contract?</label>
+    <div class="field"><label data-es="¿Bajo Contrato?">Under Contract?</label>
       <select id="underContract">
-        <option value="No">No — not yet</option>
-        <option value="Yes">Yes — under contract</option>
-        <option value="Making offer">Making an offer now</option>
+        <option value="No" data-es="No — todavía no">No — not yet</option>
+        <option value="Yes" data-es="Sí — bajo contrato">Yes — under contract</option>
+        <option value="Making offer" data-es="Haciendo una oferta ahora">Making an offer now</option>
       </select>
     </div>
   </div>
-  <div class="insight">💡 We will match your project and experience with lenders who specialize in commercial deals like yours.</div>
+  <div class="insight" data-es="💡 Emparejaremos tu proyecto y experiencia con prestamistas que se especializan en negocios comerciales como el tuyo.">💡 We will match your project and experience with lenders who specialize in commercial deals like yours.</div>
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(3)">← Back</button>
-    <button class="btn-next" onclick="goStep(5)">Final Step →</button>
+    <button class="btn-back" onclick="goStep(3)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(5)" data-es="Paso Final →">Final Step →</button>
   </div>
 </div>
 
 <!-- STEP 5: Contact -->
 <div class="step-panel" id="step5">
   <div class="step-header">
-    <div class="step-num">Step 5 of 5</div>
-    <div class="step-title">Where Should We Send Your Pre-Terms?</div>
-    <div class="step-sub">We will review your commercial scenario and reach out within 24 hours.</div>
+    <div class="step-num" data-es="Paso 5 de 5">Step 5 of 5</div>
+    <div class="step-title" data-es="¿A Dónde Enviamos tus Pre-Términos?">Where Should We Send Your Pre-Terms?</div>
+    <div class="step-sub" data-es="Revisaremos tu escenario comercial y nos comunicaremos dentro de 24 horas.">We will review your commercial scenario and reach out within 24 hours.</div>
   </div>
   <form id="mainForm" onsubmit="handleSubmit(event)">
     <div class="grid-2">
-      <div class="field"><label>First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
-      <div class="field"><label>Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
+      <div class="field"><label data-es-html="Nombre <span class='required'>*</span>">First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
+      <div class="field"><label data-es-html="Apellido <span class='required'>*</span>">Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Email <span class="required">*</span></label><input type="email" id="emailField" placeholder="you@example.com" required/></div>
-      <div class="field"><label>Phone <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
+      <div class="field"><label data-es-html="Correo <span class='required'>*</span>">Email <span class="required">*</span></label><input type="email" id="emailField" placeholder="you@example.com" required/></div>
+      <div class="field"><label data-es-html="Teléfono <span class='required'>*</span>">Phone <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Company / LLC Name</label><input type="text" id="company" placeholder="Your LLC or Company"/></div>
-      <div class="field"><label>Preferred Callback Time</label>
+      <div class="field"><label data-es="Nombre de la Empresa / LLC">Company / LLC Name</label><input type="text" id="company" placeholder="Your LLC or Company" data-es-ph="Tu LLC o Empresa"/></div>
+      <div class="field"><label data-es="Horario Preferido de Llamada">Preferred Callback Time</label>
         <select id="callbackTime">
-          <option value="Morning (9am-12pm)">Morning (9am–12pm)</option>
-          <option value="Afternoon (12pm-5pm)">Afternoon (12pm–5pm)</option>
-          <option value="Evening (5pm-7pm)">Evening (5pm–7pm)</option>
-          <option value="Anytime">Anytime</option>
+          <option value="Morning (9am-12pm)" data-es="Mañana (9am–12pm)">Morning (9am–12pm)</option>
+          <option value="Afternoon (12pm-5pm)" data-es="Tarde (12pm–5pm)">Afternoon (12pm–5pm)</option>
+          <option value="Evening (5pm-7pm)" data-es="Noche (5pm–7pm)">Evening (5pm–7pm)</option>
+          <option value="Anytime" data-es="Cualquier momento">Anytime</option>
         </select>
       </div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Best Contact Method</label>
+      <div class="field"><label data-es="Mejor Método de Contacto">Best Contact Method</label>
         <select id="contactMethod">
-          <option value="Phone call">Phone call</option>
-          <option value="Text message">Text message</option>
-          <option value="Email">Email</option>
-          <option value="WhatsApp">WhatsApp</option>
+          <option value="Phone call" data-es="Llamada telefónica">Phone call</option>
+          <option value="Text message" data-es="Mensaje de texto">Text message</option>
+          <option value="Email" data-es="Correo electrónico">Email</option>
+          <option value="WhatsApp" data-es="WhatsApp">WhatsApp</option>
         </select>
       </div>
-      <div class="field"><label>How Did You Hear About Us?</label>
+      <div class="field"><label data-es="¿Cómo Nos Conociste?">How Did You Hear About Us?</label>
         <select id="referral">
-          <option value="Google">Google Search</option>
-          <option value="Social Media">Social Media</option>
-          <option value="Referral">Referral</option>
-          <option value="Nork Group">Nork Group</option>
-          <option value="Other">Other</option>
+          <option value="Google" data-es="Búsqueda en Google">Google Search</option>
+          <option value="Social Media" data-es="Redes Sociales">Social Media</option>
+          <option value="Referral" data-es="Referido">Referral</option>
+          <option value="Nork Group" data-es="Nork Group">Nork Group</option>
+          <option value="Other" data-es="Otro">Other</option>
         </select>
       </div>
     </div>
-    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7" data-es="🔒 Sin spam. Tu información se usa solo para revisar el negocio y dar seguimiento. Esto no afecta tu puntaje de crédito.">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
     <div class="btn-row">
-      <button type="button" class="btn-back" onclick="goStep(4)">← Back</button>
-      <button type="submit" class="btn-next" id="submitBtn">Get My Pre-Terms →</button>
+      <button type="button" class="btn-back" onclick="goStep(4)" data-es="← Atrás">← Back</button>
+      <button type="submit" class="btn-next" id="submitBtn" data-es="Obtener mis Pre-Términos →">Get My Pre-Terms →</button>
     </div>
   </form>
 </div>
@@ -380,16 +380,16 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <div class="step-panel" id="stepSuccess">
   <div class="success-screen">
     <div class="success-icon">✅</div>
-    <h2>Application <span>Submitted!</span></h2>
-    <p>Your commercial loan scenario has been received. A Nork Capital specialist will review your deal and reach out within 24 hours with pre-terms and next steps.</p>
+    <h2 data-es-html="¡Solicitud <span>Enviada!</span>">Application <span>Submitted!</span></h2>
+    <p data-es="Hemos recibido tu escenario de préstamo comercial. Un especialista de Nork Capital revisará tu negocio y se comunicará dentro de 24 horas con pre-términos y los próximos pasos.">Your commercial loan scenario has been received. A Nork Capital specialist will review your deal and reach out within 24 hours with pre-terms and next steps.</p>
     <div class="success-details">
-      <div><strong>What Happens Next</strong></div>
-      <div>1. We review your commercial scenario</div>
-      <div>2. We match you to best-fit lenders</div>
-      <div>3. You receive pre-terms within 24 hours</div>
-      <div>4. We guide you from approval to closing</div>
+      <div><strong data-es="Qué Sucede Después">What Happens Next</strong></div>
+      <div data-es="1. Revisamos tu escenario comercial">1. We review your commercial scenario</div>
+      <div data-es="2. Te emparejamos con los prestamistas más adecuados">2. We match you to best-fit lenders</div>
+      <div data-es="3. Recibes pre-términos dentro de 24 horas">3. You receive pre-terms within 24 hours</div>
+      <div data-es="4. Te guiamos desde la aprobación hasta el cierre">4. We guide you from approval to closing</div>
     </div>
-    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none">Back to Home</a>
+    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none" data-es="Volver al Inicio">Back to Home</a>
   </div>
 </div>
 
@@ -487,6 +487,26 @@ function handleSubmit(e){
     alert('Connection error. Please email tc@nork.group directly.');
   });
 }
+</script>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
 </script>
 </body>
 </html>

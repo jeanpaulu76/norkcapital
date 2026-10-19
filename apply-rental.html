@@ -67,16 +67,16 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <body>
 <nav>
   <a href="apply.html" class="nav-brand-text"><span class="line1">NORK CAPITAL</span><span class="line2">LENDING</span></a>
-  <a href="apply.html" class="nav-back">← Choose Loan Type</a>
+  <button id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green,#3DB33D);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800;font-family:Montserrat,sans-serif;margin-right:0.6rem;vertical-align:middle">ES</button><a href="apply.html" class="nav-back" data-es="← Elegir Tipo de Préstamo">← Choose Loan Type</a>
 </nav>
 
 <div class="progress-wrap">
   <div class="progress-inner">
     <div class="step-labels">
-      <span class="step-lbl active" id="lbl1"><span class="num">1</span>Property Info</span>
-      <span class="step-lbl" id="lbl2"><span class="num">2</span>Rental Income</span>
-      <span class="step-lbl" id="lbl3"><span class="num">3</span>Borrower Profile</span>
-      <span class="step-lbl" id="lbl4"><span class="num">4</span>Contact</span>
+      <span class="step-lbl active" id="lbl1" data-es-html="<span class='num'>1</span>Info de Propiedad"><span class="num">1</span>Property Info</span>
+      <span class="step-lbl" id="lbl2" data-es-html="<span class='num'>2</span>Ingreso de Alquiler"><span class="num">2</span>Rental Income</span>
+      <span class="step-lbl" id="lbl3" data-es-html="<span class='num'>3</span>Perfil del Prestatario"><span class="num">3</span>Borrower Profile</span>
+      <span class="step-lbl" id="lbl4" data-es-html="<span class='num'>4</span>Contacto"><span class="num">4</span>Contact</span>
     </div>
     <div class="bar-track"><div class="bar-fill" id="barFill" style="width:25%"></div></div>
   </div>
@@ -88,219 +88,219 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <!-- STEP 1: Property Info -->
 <div class="step-panel active" id="step1">
   <div class="step-header">
-    <div class="step-num">Step 1 of 4</div>
-    <div class="step-title">Property Information</div>
-    <div class="step-sub">Tell us about the rental property. DSCR loans qualify based on the property's income — not yours.</div>
+    <div class="step-num" data-es="Paso 1 de 4">Step 1 of 4</div>
+    <div class="step-title" data-es="Información de la Propiedad">Property Information</div>
+    <div class="step-sub" data-es="Cuéntanos sobre la propiedad de alquiler. Los préstamos DSCR califican según el ingreso de la propiedad — no el tuyo.">Tell us about the rental property. DSCR loans qualify based on the property's income — not yours.</div>
   </div>
-  <div class="dscr-badge">🏘️ DSCR / Rental Hold Loan</div>
+  <div class="dscr-badge" data-es="🏘️ Préstamo DSCR / Alquiler">🏘️ DSCR / Rental Hold Loan</div>
   <div class="grid-2">
-    <div class="field"><label>Purchase Price or Current Value <span class="required">*</span></label><input type="number" id="propValue" placeholder="350000" oninput="calcDSCR()"/></div>
-    <div class="field"><label>Loan Amount Requested <span class="required">*</span></label><input type="number" id="loanAmount" placeholder="280000" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es-html="Precio de Compra o Valor Actual <span class='required'>*</span>">Purchase Price or Current Value <span class="required">*</span></label><input type="number" id="propValue" placeholder="350000" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es-html="Monto de Préstamo Solicitado <span class='required'>*</span>">Loan Amount Requested <span class="required">*</span></label><input type="number" id="loanAmount" placeholder="280000" oninput="calcDSCR()"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Property State <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Estado de la Propiedad <span class='required'>*</span>">Property State <span class="required">*</span></label>
       <select id="propState">
-        <option value="">Select state...</option>
-        <option value="FL" selected>FL — Florida</option>
-        <option value="GA">GA — Georgia</option>
-        <option value="TX">TX — Texas</option>
-        <option value="NC">NC — North Carolina</option>
-        <option value="SC">SC — South Carolina</option>
-        <option value="TN">TN — Tennessee</option>
-        <option value="AL">AL — Alabama</option>
-        <option value="Other">Other</option>
+        <option value="" data-es="Selecciona estado...">Select state...</option>
+        <option value="FL" selected data-es="FL — Florida">FL — Florida</option>
+        <option value="GA" data-es="GA — Georgia">GA — Georgia</option>
+        <option value="TX" data-es="TX — Texas">TX — Texas</option>
+        <option value="NC" data-es="NC — Carolina del Norte">NC — North Carolina</option>
+        <option value="SC" data-es="SC — Carolina del Sur">SC — South Carolina</option>
+        <option value="TN" data-es="TN — Tennessee">TN — Tennessee</option>
+        <option value="AL" data-es="AL — Alabama">AL — Alabama</option>
+        <option value="Other" data-es="Otro">Other</option>
       </select>
     </div>
-    <div class="field"><label>Property Type <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Tipo de Propiedad <span class='required'>*</span>">Property Type <span class="required">*</span></label>
       <select id="propType">
-        <option value="">Select type...</option>
-        <option value="Single Family">Single Family</option>
-        <option value="Duplex (2-unit)">Duplex (2-unit)</option>
-        <option value="Triplex (3-unit)">Triplex (3-unit)</option>
-        <option value="Fourplex (4-unit)">Fourplex (4-unit)</option>
-        <option value="Short-Term Rental (STR)">Short-Term Rental (Airbnb/VRBO)</option>
-        <option value="Mid-Term Rental">Mid-Term Rental</option>
+        <option value="" data-es="Selecciona tipo...">Select type...</option>
+        <option value="Single Family" data-es="Casa Unifamiliar">Single Family</option>
+        <option value="Duplex (2-unit)" data-es="Dúplex (2 unidades)">Duplex (2-unit)</option>
+        <option value="Triplex (3-unit)" data-es="Triplex (3 unidades)">Triplex (3-unit)</option>
+        <option value="Fourplex (4-unit)" data-es="Fourplex (4 unidades)">Fourplex (4-unit)</option>
+        <option value="Short-Term Rental (STR)" data-es="Alquiler a Corto Plazo (Airbnb/VRBO)">Short-Term Rental (Airbnb/VRBO)</option>
+        <option value="Mid-Term Rental" data-es="Alquiler a Mediano Plazo">Mid-Term Rental</option>
       </select>
     </div>
   </div>
-  <div class="grid-1 field"><label>Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33180"/></div>
+  <div class="grid-1 field"><label data-es-html="Dirección de la Propiedad <span class='required'>*</span>">Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33180" data-es-ph="Calle 123, Miami, FL 33180"/></div>
   <div class="grid-2">
-    <div class="field"><label>Purchase or Refinance? <span class="required">*</span></label>
+    <div class="field"><label data-es-html="¿Compra o Refinanciamiento? <span class='required'>*</span>">Purchase or Refinance? <span class="required">*</span></label>
       <select id="loanPurpose">
-        <option value="Purchase">Purchase</option>
-        <option value="Rate & Term Refinance">Rate & Term Refinance</option>
-        <option value="Cash-Out Refinance">Cash-Out Refinance</option>
+        <option value="Purchase" data-es="Compra">Purchase</option>
+        <option value="Rate & Term Refinance" data-es="Refinanciamiento de Tasa y Plazo">Rate & Term Refinance</option>
+        <option value="Cash-Out Refinance" data-es="Refinanciamiento con Retiro">Cash-Out Refinance</option>
       </select>
     </div>
-    <div class="field"><label>Desired Loan Term</label>
+    <div class="field"><label data-es="Plazo del Préstamo Deseado">Desired Loan Term</label>
       <select id="loanTerm">
-        <option value="30-Year Fixed">30-Year Fixed</option>
-        <option value="5/1 ARM">5/1 ARM</option>
-        <option value="7/1 ARM">7/1 ARM</option>
-        <option value="Interest Only">Interest Only</option>
+        <option value="30-Year Fixed" data-es="Fijo a 30 Años">30-Year Fixed</option>
+        <option value="5/1 ARM" data-es="5/1 ARM">5/1 ARM</option>
+        <option value="7/1 ARM" data-es="7/1 ARM">7/1 ARM</option>
+        <option value="Interest Only" data-es="Solo Interés">Interest Only</option>
       </select>
     </div>
   </div>
   <div class="btn-row">
-    <a href="apply.html" class="btn-back">← Back</a>
-    <button class="btn-next" onclick="goStep(2)">Continue →</button>
+    <a href="apply.html" class="btn-back" data-es="← Atrás">← Back</a>
+    <button class="btn-next" onclick="goStep(2)" data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 2: Rental Income / DSCR -->
 <div class="step-panel" id="step2">
   <div class="step-header">
-    <div class="step-num">Step 2 of 4</div>
-    <div class="step-title">Rental Income &amp; DSCR</div>
-    <div class="step-sub">We qualify the loan based on the property's rental income vs. the mortgage payment. No personal income docs required.</div>
+    <div class="step-num" data-es="Paso 2 de 4">Step 2 of 4</div>
+    <div class="step-title" data-es="Ingreso de Alquiler y DSCR">Rental Income &amp; DSCR</div>
+    <div class="step-sub" data-es="Calificamos el préstamo según el ingreso de alquiler de la propiedad frente al pago hipotecario. No se requieren documentos de ingresos personales.">We qualify the loan based on the property's rental income vs. the mortgage payment. No personal income docs required.</div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Current Monthly Rent (or Market Rent) <span class="required">*</span></label><input type="number" id="monthlyRent" placeholder="2500" oninput="calcDSCR()"/></div>
-    <div class="field"><label>Estimated Monthly PITI Payment</label><input type="number" id="pitiPayment" placeholder="1800" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es-html="Alquiler Mensual Actual (o de Mercado) <span class='required'>*</span>">Current Monthly Rent (or Market Rent) <span class="required">*</span></label><input type="number" id="monthlyRent" placeholder="2500" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es="Pago Mensual PITI Estimado">Estimated Monthly PITI Payment</label><input type="number" id="pitiPayment" placeholder="1800" oninput="calcDSCR()"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Annual Property Taxes</label><input type="number" id="propTaxes" placeholder="4200" oninput="calcDSCR()"/></div>
-    <div class="field"><label>Monthly HOA (if applicable)</label><input type="number" id="hoa" placeholder="0" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es="Impuestos Anuales de la Propiedad">Annual Property Taxes</label><input type="number" id="propTaxes" placeholder="4200" oninput="calcDSCR()"/></div>
+    <div class="field"><label data-es="HOA Mensual (si aplica)">Monthly HOA (if applicable)</label><input type="number" id="hoa" placeholder="0" oninput="calcDSCR()"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Is Property Currently Leased?</label>
+    <div class="field"><label data-es="¿La Propiedad Está Actualmente Arrendada?">Is Property Currently Leased?</label>
       <select id="isLeased">
-        <option value="Yes — active lease">Yes — active lease</option>
-        <option value="No — vacant">No — currently vacant</option>
-        <option value="Short-term rental">Short-term rental (STR)</option>
-        <option value="Owner occupied transitioning">Owner-occupied / transitioning</option>
+        <option value="Yes — active lease" data-es="Sí — arrendamiento activo">Yes — active lease</option>
+        <option value="No — vacant" data-es="No — actualmente vacía">No — currently vacant</option>
+        <option value="Short-term rental" data-es="Alquiler a corto plazo (STR)">Short-term rental (STR)</option>
+        <option value="Owner occupied transitioning" data-es="Ocupada por el dueño / en transición">Owner-occupied / transitioning</option>
       </select>
     </div>
-    <div class="field"><label>Lease End Date (if leased)</label>
-      <input type="text" id="leaseEnd" placeholder="MM/YYYY or N/A"/>
+    <div class="field"><label data-es="Fecha de Fin del Arrendamiento (si aplica)">Lease End Date (if leased)</label>
+      <input type="text" id="leaseEnd" placeholder="MM/YYYY or N/A" data-es-ph="MM/AAAA o N/A"/>
     </div>
   </div>
 
   <div class="computed-row" id="dscrRow" style="display:none">
-    <div class="computed-box"><div class="computed-label">Estimated DSCR</div><div class="computed-val" id="dscrVal">—</div></div>
-    <div class="computed-box"><div class="computed-label">Loan-to-Value</div><div class="computed-val" id="ltvVal">—</div></div>
-    <div class="computed-box"><div class="computed-label">Monthly Rent</div><div class="computed-val" id="rentDisplay">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="DSCR Estimado">Estimated DSCR</div><div class="computed-val" id="dscrVal">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="Préstamo-a-Valor">Loan-to-Value</div><div class="computed-val" id="ltvVal">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="Alquiler Mensual">Monthly Rent</div><div class="computed-val" id="rentDisplay">—</div></div>
   </div>
   <div class="insight" id="dscrInsight" style="display:none"></div>
 
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(1)">← Back</button>
-    <button class="btn-next" onclick="goStep(3)">Continue →</button>
+    <button class="btn-back" onclick="goStep(1)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(3)" data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 3: Borrower Profile -->
 <div class="step-panel" id="step3">
   <div class="step-header">
-    <div class="step-num">Step 3 of 4</div>
-    <div class="step-title">Borrower Profile</div>
-    <div class="step-sub">DSCR lenders focus on the property income and your credit profile. No tax returns or income verification required.</div>
+    <div class="step-num" data-es="Paso 3 de 4">Step 3 of 4</div>
+    <div class="step-title" data-es="Perfil del Prestatario">Borrower Profile</div>
+    <div class="step-sub" data-es="Los prestamistas DSCR se enfocan en el ingreso de la propiedad y tu perfil crediticio. No se requieren declaraciones de impuestos ni verificación de ingresos.">DSCR lenders focus on the property income and your credit profile. No tax returns or income verification required.</div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Estimated Credit Score <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Puntaje de Crédito Estimado <span class='required'>*</span>">Estimated Credit Score <span class="required">*</span></label>
       <select id="credit">
-        <option value="">Select range...</option>
-        <option value="Below 620">Below 620</option>
-        <option value="620-659">620–659</option>
-        <option value="660-699">660–699</option>
-        <option value="700-739">700–739</option>
-        <option value="740+">740 or above</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Below 620" data-es="Menos de 620">Below 620</option>
+        <option value="620-659" data-es="620–659">620–659</option>
+        <option value="660-699" data-es="660–699">660–699</option>
+        <option value="700-739" data-es="700–739">700–739</option>
+        <option value="740+" data-es="740 o más">740 or above</option>
       </select>
     </div>
-    <div class="field"><label>Taking Title As <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Tomando Título Como <span class='required'>*</span>">Taking Title As <span class="required">*</span></label>
       <select id="entity">
-        <option value="">Select...</option>
-        <option value="LLC">LLC</option>
-        <option value="Individual">Individual</option>
-        <option value="Corporation">Corporation</option>
-        <option value="LP">Limited Partnership</option>
-        <option value="Trust">Trust</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="LLC" data-es="LLC">LLC</option>
+        <option value="Individual" data-es="Individual">Individual</option>
+        <option value="Corporation" data-es="Corporación">Corporation</option>
+        <option value="LP" data-es="Sociedad Limitada (LP)">Limited Partnership</option>
+        <option value="Trust" data-es="Fideicomiso">Trust</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Number of Investment Properties Owned</label>
+    <div class="field"><label data-es="Número de Propiedades de Inversión">Number of Investment Properties Owned</label>
       <select id="propOwned">
-        <option value="0">0 — first investment</option>
-        <option value="1-2">1–2 properties</option>
-        <option value="3-5">3–5 properties</option>
-        <option value="6-10">6–10 properties</option>
-        <option value="10+">10+ properties</option>
+        <option value="0" data-es="0 — primera inversión">0 — first investment</option>
+        <option value="1-2" data-es="1–2 propiedades">1–2 properties</option>
+        <option value="3-5" data-es="3–5 propiedades">3–5 properties</option>
+        <option value="6-10" data-es="6–10 propiedades">6–10 properties</option>
+        <option value="10+" data-es="10+ propiedades">10+ properties</option>
       </select>
     </div>
-    <div class="field"><label>Liquidity / Cash Reserves <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Liquidez / Reservas <span class='required'>*</span>">Liquidity / Cash Reserves <span class="required">*</span></label>
       <select id="liquidity">
-        <option value="">Select range...</option>
-        <option value="Under $25k">Under $25k</option>
-        <option value="$25k-$50k">$25k – $50k</option>
-        <option value="$50k-$100k">$50k – $100k</option>
-        <option value="$100k-$250k">$100k – $250k</option>
-        <option value="$250k+">$250k+</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Under $25k" data-es="Menos de $25k">Under $25k</option>
+        <option value="$25k-$50k" data-es="$25k – $50k">$25k – $50k</option>
+        <option value="$50k-$100k" data-es="$50k – $100k">$50k – $100k</option>
+        <option value="$100k-$250k" data-es="$100k – $250k">$100k – $250k</option>
+        <option value="$250k+" data-es="$250k+">$250k+</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Bankruptcy in Last 7 Years?</label>
+    <div class="field"><label data-es="¿Bancarrota en los Últimos 7 Años?">Bankruptcy in Last 7 Years?</label>
       <select id="bankruptcy">
-        <option value="No">No</option>
-        <option value="Yes — discharged">Yes — discharged</option>
+        <option value="No" data-es="No">No</option>
+        <option value="Yes — discharged" data-es="Sí — liquidada">Yes — discharged</option>
       </select>
     </div>
-    <div class="field"><label>Timeline</label>
+    <div class="field"><label data-es="Plazo">Timeline</label>
       <select id="timeline">
-        <option value="ASAP">ASAP — under 30 days</option>
-        <option value="30-60 days">30–60 days</option>
-        <option value="60-90 days">60–90 days</option>
-        <option value="Just exploring">Just exploring</option>
+        <option value="ASAP" data-es="Lo antes posible — menos de 30 días">ASAP — under 30 days</option>
+        <option value="30-60 days" data-es="30–60 días">30–60 days</option>
+        <option value="60-90 days" data-es="60–90 días">60–90 days</option>
+        <option value="Just exploring" data-es="Solo explorando">Just exploring</option>
       </select>
     </div>
   </div>
-  <div class="grid-1 field"><label>Anything Unusual About This Deal? (Optional)</label><textarea id="dealNotes" placeholder="Prior foreclosure, title issues, condition of property, STR restrictions, or any other details..."></textarea></div>
-  <div class="insight">💡 <strong>No income docs needed.</strong> DSCR approval is based on the property's rental income and your credit profile — not your W-2s or tax returns.</div>
+  <div class="grid-1 field"><label data-es="¿Algo Inusual Sobre Este Negocio? (Opcional)">Anything Unusual About This Deal? (Optional)</label><textarea id="dealNotes" placeholder="Prior foreclosure, title issues, condition of property, STR restrictions, or any other details..." data-es-ph="Ejecución hipotecaria previa, problemas de título, condición de la propiedad, restricciones de STR, o cualquier otro detalle..."></textarea></div>
+  <div class="insight" data-es-html="💡 <strong>No se necesitan documentos de ingresos.</strong> La aprobación DSCR se basa en el ingreso de alquiler de la propiedad y tu perfil crediticio — no en tus W-2 o declaraciones de impuestos.">💡 <strong>No income docs needed.</strong> DSCR approval is based on the property's rental income and your credit profile — not your W-2s or tax returns.</div>
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(2)">← Back</button>
-    <button class="btn-next" onclick="goStep(4)">Final Step →</button>
+    <button class="btn-back" onclick="goStep(2)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(4)" data-es="Paso Final →">Final Step →</button>
   </div>
 </div>
 
 <!-- STEP 4: Contact -->
 <div class="step-panel" id="step4">
   <div class="step-header">
-    <div class="step-num">Step 4 of 4</div>
-    <div class="step-title">Where Should We Send Your Pre-Terms?</div>
-    <div class="step-sub">We will review your DSCR scenario and send you lender options and pre-terms within 24 hours.</div>
+    <div class="step-num" data-es="Paso 4 de 4">Step 4 of 4</div>
+    <div class="step-title" data-es="¿A Dónde Enviamos tus Pre-Términos?">Where Should We Send Your Pre-Terms?</div>
+    <div class="step-sub" data-es="Revisaremos tu escenario DSCR y te enviaremos opciones de prestamistas y pre-términos dentro de 24 horas.">We will review your DSCR scenario and send you lender options and pre-terms within 24 hours.</div>
   </div>
   <form id="mainForm" onsubmit="handleSubmit(event)">
     <div class="grid-2">
-      <div class="field"><label>First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
-      <div class="field"><label>Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
+      <div class="field"><label data-es-html="Nombre <span class='required'>*</span>">First Name <span class="required">*</span></label><input type="text" id="firstName" placeholder="Jean Paul" required/></div>
+      <div class="field"><label data-es-html="Apellido <span class='required'>*</span>">Last Name <span class="required">*</span></label><input type="text" id="lastName" placeholder="Smith" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Email <span class="required">*</span></label><input type="email" id="emailField" placeholder="you@example.com" required/></div>
-      <div class="field"><label>Phone <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
+      <div class="field"><label data-es-html="Correo <span class='required'>*</span>">Email <span class="required">*</span></label><input type="email" id="emailField" placeholder="you@example.com" required/></div>
+      <div class="field"><label data-es-html="Teléfono <span class='required'>*</span>">Phone <span class="required">*</span></label><input type="tel" id="phone" placeholder="(786) 000-0000" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Preferred Callback Time</label>
+      <div class="field"><label data-es="Horario Preferido de Llamada">Preferred Callback Time</label>
         <select id="callbackTime">
-          <option value="Morning (9am-12pm)">Morning (9am–12pm)</option>
-          <option value="Afternoon (12pm-5pm)">Afternoon (12pm–5pm)</option>
-          <option value="Evening (5pm-7pm)">Evening (5pm–7pm)</option>
-          <option value="Anytime">Anytime</option>
+          <option value="Morning (9am-12pm)" data-es="Mañana (9am–12pm)">Morning (9am–12pm)</option>
+          <option value="Afternoon (12pm-5pm)" data-es="Tarde (12pm–5pm)">Afternoon (12pm–5pm)</option>
+          <option value="Evening (5pm-7pm)" data-es="Noche (5pm–7pm)">Evening (5pm–7pm)</option>
+          <option value="Anytime" data-es="Cualquier momento">Anytime</option>
         </select>
       </div>
-      <div class="field"><label>Best Contact Method</label>
+      <div class="field"><label data-es="Mejor Método de Contacto">Best Contact Method</label>
         <select id="contactMethod">
-          <option value="Phone call">Phone call</option>
-          <option value="Text message">Text message</option>
-          <option value="Email">Email</option>
-          <option value="WhatsApp">WhatsApp</option>
+          <option value="Phone call" data-es="Llamada telefónica">Phone call</option>
+          <option value="Text message" data-es="Mensaje de texto">Text message</option>
+          <option value="Email" data-es="Correo electrónico">Email</option>
+          <option value="WhatsApp" data-es="WhatsApp">WhatsApp</option>
         </select>
       </div>
     </div>
-    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7" data-es="🔒 Sin spam. Tu información se usa solo para revisar el negocio y dar seguimiento. Esto no afecta tu puntaje de crédito.">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
     <div class="btn-row">
-      <button type="button" class="btn-back" onclick="goStep(3)">← Back</button>
-      <button type="submit" class="btn-next" id="submitBtn">Get My Pre-Terms →</button>
+      <button type="button" class="btn-back" onclick="goStep(3)" data-es="← Atrás">← Back</button>
+      <button type="submit" class="btn-next" id="submitBtn" data-es="Obtener mis Pre-Términos →">Get My Pre-Terms →</button>
     </div>
   </form>
 </div>
@@ -309,16 +309,16 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <div class="step-panel" id="stepSuccess">
   <div class="success-screen">
     <div class="success-icon">✅</div>
-    <h2>Application <span>Submitted!</span></h2>
-    <p>Your DSCR rental loan scenario has been received. A Nork Capital specialist will review and reach out within 24 hours with pre-terms and lender options.</p>
+    <h2 data-es-html="¡Solicitud <span>Enviada!</span>">Application <span>Submitted!</span></h2>
+    <p data-es="Hemos recibido tu escenario de préstamo DSCR de alquiler. Un especialista de Nork Capital lo revisará y se comunicará dentro de 24 horas con pre-términos y opciones de prestamistas.">Your DSCR rental loan scenario has been received. A Nork Capital specialist will review and reach out within 24 hours with pre-terms and lender options.</p>
     <div class="success-details">
-      <div><strong>What Happens Next</strong></div>
-      <div>1. We review your DSCR scenario</div>
-      <div>2. We match you to best-fit lenders</div>
-      <div>3. You receive pre-terms within 24 hours</div>
-      <div>4. We guide you from approval to closing</div>
+      <div><strong data-es="Qué Sucede Después">What Happens Next</strong></div>
+      <div data-es="1. Revisamos tu escenario DSCR">1. We review your DSCR scenario</div>
+      <div data-es="2. Te emparejamos con los prestamistas más adecuados">2. We match you to best-fit lenders</div>
+      <div data-es="3. Recibes pre-términos dentro de 24 horas">3. You receive pre-terms within 24 hours</div>
+      <div data-es="4. Te guiamos desde la aprobación hasta el cierre">4. We guide you from approval to closing</div>
     </div>
-    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none">Back to Home</a>
+    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none" data-es="Volver al Inicio">Back to Home</a>
   </div>
 </div>
 
@@ -427,6 +427,26 @@ function handleSubmit(e){
     alert('Connection error. Please email tc@nork.group directly.');
   });
 }
+</script>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
 </script>
 </body>
 </html>

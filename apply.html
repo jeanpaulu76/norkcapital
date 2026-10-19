@@ -48,40 +48,60 @@ footer{background:var(--dark);border-top:1px solid rgba(255,255,255,0.06);paddin
   <a href="index.html" class="nav-brand">
     <div class="nav-brand-text"><div class="line1">NORK CAPITAL</div><div class="line2">LENDING</div></div>
   </a>
-  <a href="index.html" class="nav-back">← Back to Home</a>
+  <button id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green,#3DB33D);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800;font-family:Montserrat,sans-serif;margin-right:0.6rem;vertical-align:middle">ES</button><a href="index.html" class="nav-back" data-es="← Volver al Inicio">← Back to Home</a>
 </nav>
 
 <main>
   <div class="header">
-    <div class="tag">⚡ Free Pre-Approval · No Credit Impact</div>
-    <h1>Choose Your <span>Loan Type</span></h1>
-    <p>Select the program that best fits your deal. Get pre-terms in less than 24 hours. This application will not affect your credit score.</p>
+    <div class="tag" data-es="⚡ Pre-Aprobación Gratis · Sin Afectar tu Crédito">⚡ Free Pre-Approval · No Credit Impact</div>
+    <h1 data-es-html="Elige tu <span>Tipo de Préstamo</span>">Choose Your <span>Loan Type</span></h1>
+    <p data-es="Selecciona el programa que mejor se ajuste a tu negocio. Obtén pre-términos en menos de 24 horas. Esta solicitud no afectará tu puntaje de crédito.">Select the program that best fits your deal. Get pre-terms in less than 24 hours. This application will not affect your credit score.</p>
   </div>
 
   <div class="cards">
     <a href="apply-fix-flip.html" class="card">
       <div class="card-icon">🔨</div>
-      <div class="card-title">Fix &amp; Flip / Bridge</div>
-      <div class="card-desc">Short-term financing to purchase and renovate. We lend on ARV so you can maximize profit. Fast closings in 7–14 days.</div>
-      <div class="card-arrow">Start Application →</div>
+      <div class="card-title" data-es="Fix &amp; Flip / Puente">Fix &amp; Flip / Bridge</div>
+      <div class="card-desc" data-es="Financiamiento a corto plazo para comprar y renovar. Prestamos sobre el ARV para que maximices tu ganancia. Cierres rápidos en 7–14 días.">Short-term financing to purchase and renovate. We lend on ARV so you can maximize profit. Fast closings in 7–14 days.</div>
+      <div class="card-arrow" data-es="Comenzar Solicitud →">Start Application →</div>
     </a>
     <a href="apply-rental.html" class="card">
       <div class="card-icon">🏘️</div>
-      <div class="card-title">Rental / DSCR Loan</div>
-      <div class="card-desc">Long-term financing based on the property's rental income — not your personal tax returns. Build your portfolio faster.</div>
-      <div class="card-arrow">Start Application →</div>
+      <div class="card-title" data-es="Alquiler / Préstamo DSCR">Rental / DSCR Loan</div>
+      <div class="card-desc" data-es="Financiamiento a largo plazo basado en el ingreso de alquiler de la propiedad — no en tus declaraciones de impuestos personales. Construye tu portafolio más rápido.">Long-term financing based on the property's rental income — not your personal tax returns. Build your portfolio faster.</div>
+      <div class="card-arrow" data-es="Comenzar Solicitud →">Start Application →</div>
     </a>
     <a href="apply-commercial.html" class="card">
       <div class="card-icon">💼</div>
-      <div class="card-title">Commercial / Other</div>
-      <div class="card-desc">Multifamily 5+, mixed-use, retail, office, new construction, or cash-out refinance. Our team will match you to the right program.</div>
-      <div class="card-arrow">Start Application →</div>
+      <div class="card-title" data-es="Comercial / Otro">Commercial / Other</div>
+      <div class="card-desc" data-es="Multifamiliar 5+, uso mixto, retail, oficina, nueva construcción o refinanciamiento con retiro. Nuestro equipo te emparejará con el programa adecuado.">Multifamily 5+, mixed-use, retail, office, new construction, or cash-out refinance. Our team will match you to the right program.</div>
+      <div class="card-arrow" data-es="Comenzar Solicitud →">Start Application →</div>
     </a>
   </div>
 
-  <p class="note">🔒 Your information is secure and never sold. By submitting you consent to being contacted about your inquiry. This does not affect your credit score.</p>
+  <p class="note" data-es="🔒 Tu información está segura y nunca se vende. Al enviar, consientes a ser contactado sobre tu consulta. Esto no afecta tu puntaje de crédito.">🔒 Your information is secure and never sold. By submitting you consent to being contacted about your inquiry. This does not affect your credit score.</p>
 </main>
 
-<footer>© 2026 Nork Capital Lending · A Nork Group Company · tc@nork.group</footer>
+<footer data-es="© 2026 Nork Capital Lending · Una compañía de Nork Group · tc@nork.group">© 2026 Nork Capital Lending · A Nork Group Company · tc@nork.group</footer>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
+</script>
 </body>
 </html>

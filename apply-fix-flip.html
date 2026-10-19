@@ -94,16 +94,16 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <body>
 <nav>
   <a href="apply.html" class="nav-brand-text"><span class="line1">NORK CAPITAL</span><span class="line2">LENDING</span></a>
-  <a href="apply.html" class="nav-back">← Choose Loan Type</a>
+  <button id="langBtn" onclick="toggleLang()" style="background:transparent;border:1.5px solid var(--green,#3DB33D);color:#fff;width:40px;height:30px;border-radius:3px;cursor:pointer;font-weight:800;font-family:Montserrat,sans-serif;margin-right:0.6rem;vertical-align:middle">ES</button><a href="apply.html" class="nav-back" data-es="← Elegir Tipo de Préstamo">← Choose Loan Type</a>
 </nav>
 
 <div class="progress-wrap">
   <div class="progress-inner">
     <div class="step-labels">
-      <span class="step-lbl active" id="lbl1"><span class="num">1</span>Loan Type</span>
-      <span class="step-lbl" id="lbl2"><span class="num">2</span>Deal Basics</span>
-      <span class="step-lbl" id="lbl3"><span class="num">3</span>Borrower Profile</span>
-      <span class="step-lbl" id="lbl4"><span class="num">4</span>Contact</span>
+      <span class="step-lbl active" id="lbl1" data-es-html="<span class='num'>1</span>Tipo de Préstamo"><span class="num">1</span>Loan Type</span>
+      <span class="step-lbl" id="lbl2" data-es-html="<span class='num'>2</span>Datos del Negocio"><span class="num">2</span>Deal Basics</span>
+      <span class="step-lbl" id="lbl3" data-es-html="<span class='num'>3</span>Perfil del Prestatario"><span class="num">3</span>Borrower Profile</span>
+      <span class="step-lbl" id="lbl4" data-es-html="<span class='num'>4</span>Contacto"><span class="num">4</span>Contact</span>
     </div>
     <div class="bar-track"><div class="bar-fill" id="barFill" style="width:25%"></div></div>
   </div>
@@ -115,171 +115,171 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <!-- STEP 1: Loan Type -->
 <div class="step-panel active" id="step1">
   <div class="step-header">
-    <div class="step-num">Step 1 of 4</div>
-    <div class="step-title">Select Your Loan Type</div>
-    <div class="step-sub">Choose the financing that best describes your deal so we can match you to the right program.</div>
+    <div class="step-num" data-es="Paso 1 de 4">Step 1 of 4</div>
+    <div class="step-title" data-es="Selecciona tu Tipo de Préstamo">Select Your Loan Type</div>
+    <div class="step-sub" data-es="Elige el financiamiento que mejor describe tu negocio para emparejarte con el programa adecuado.">Choose the financing that best describes your deal so we can match you to the right program.</div>
   </div>
   <div class="loan-types">
     <div class="loan-btn" onclick="selectLoan(this,'Fix & Flip')">
       <div class="loan-btn-icon">🔨</div>
-      <div class="loan-btn-label">Fix &amp; Flip</div>
+      <div class="loan-btn-label" data-es="Fix &amp; Flip">Fix &amp; Flip</div>
     </div>
     <div class="loan-btn" onclick="selectLoan(this,'Bridge Loan')">
       <div class="loan-btn-icon">🌉</div>
-      <div class="loan-btn-label">Bridge Loan</div>
+      <div class="loan-btn-label" data-es="Préstamo Puente">Bridge Loan</div>
     </div>
     <div class="loan-btn" onclick="selectLoan(this,'New Construction')">
       <div class="loan-btn-icon">🏗️</div>
-      <div class="loan-btn-label">New Construction</div>
+      <div class="loan-btn-label" data-es="Nueva Construcción">New Construction</div>
     </div>
   </div>
   <input type="hidden" id="loanType" value="">
   <div class="btn-row">
-    <a href="apply.html" class="btn-back">← Back</a>
-    <button class="btn-next" onclick="goStep(2)" id="btn1" disabled>Continue →</button>
+    <a href="apply.html" class="btn-back" data-es="← Atrás">← Back</a>
+    <button class="btn-next" onclick="goStep(2)" id="btn1" disabled data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 2: Deal Basics -->
 <div class="step-panel" id="step2">
   <div class="step-header">
-    <div class="step-num">Step 2 of 4</div>
-    <div class="step-title">Confirm Your Deal Basics</div>
-    <div class="step-sub">We use these numbers to calculate your LTC and LTV. Update anything that has changed.</div>
+    <div class="step-num" data-es="Paso 2 de 4">Step 2 of 4</div>
+    <div class="step-title" data-es="Confirma los Datos de tu Negocio">Confirm Your Deal Basics</div>
+    <div class="step-sub" data-es="Usamos estos números para calcular tu LTC y LTV. Actualiza cualquier dato que haya cambiado.">We use these numbers to calculate your LTC and LTV. Update anything that has changed.</div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Purchase Price <span class="required">*</span></label><input type="number" id="purchasePrice" placeholder="350000" oninput="calcMetrics()"/></div>
-    <div class="field"><label>Rehab Budget</label><input type="number" id="rehabBudget" placeholder="50000" oninput="calcMetrics()"/></div>
+    <div class="field"><label data-es-html="Precio de Compra <span class='required'>*</span>">Purchase Price <span class="required">*</span></label><input type="number" id="purchasePrice" placeholder="350000" oninput="calcMetrics()"/></div>
+    <div class="field"><label data-es="Presupuesto de Renovación">Rehab Budget</label><input type="number" id="rehabBudget" placeholder="50000" oninput="calcMetrics()"/></div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>ARV (After Repair Value) <span class="required">*</span></label><input type="number" id="arv" placeholder="650000" oninput="calcMetrics()"/></div>
-    <div class="field"><label>Property State <span class="required">*</span></label>
+    <div class="field"><label data-es-html="ARV (Valor Después de Reparación) <span class='required'>*</span>">ARV (After Repair Value) <span class="required">*</span></label><input type="number" id="arv" placeholder="650000" oninput="calcMetrics()"/></div>
+    <div class="field"><label data-es-html="Estado de la Propiedad <span class='required'>*</span>">Property State <span class="required">*</span></label>
       <select id="propState">
-        <option value="">Select state...</option>
-        <option value="FL" selected>FL — Florida</option>
-        <option value="GA">GA — Georgia</option>
-        <option value="TX">TX — Texas</option>
-        <option value="NC">NC — North Carolina</option>
-        <option value="SC">SC — South Carolina</option>
-        <option value="TN">TN — Tennessee</option>
-        <option value="AL">AL — Alabama</option>
-        <option value="Other">Other</option>
+        <option value="" data-es="Selecciona estado...">Select state...</option>
+        <option value="FL" selected data-es="FL — Florida">FL — Florida</option>
+        <option value="GA" data-es="GA — Georgia">GA — Georgia</option>
+        <option value="TX" data-es="TX — Texas">TX — Texas</option>
+        <option value="NC" data-es="NC — Carolina del Norte">NC — North Carolina</option>
+        <option value="SC" data-es="SC — Carolina del Sur">SC — South Carolina</option>
+        <option value="TN" data-es="TN — Tennessee">TN — Tennessee</option>
+        <option value="AL" data-es="AL — Alabama">AL — Alabama</option>
+        <option value="Other" data-es="Otro">Other</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Hold Period (Months) <span class="required">*</span></label><input type="number" id="holdPeriod" placeholder="6" min="1" max="36"/></div>
-    <div class="field"><label>Property Type <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Periodo de Retención (Meses) <span class='required'>*</span>">Hold Period (Months) <span class="required">*</span></label><input type="number" id="holdPeriod" placeholder="6" min="1" max="36"/></div>
+    <div class="field"><label data-es-html="Tipo de Propiedad <span class='required'>*</span>">Property Type <span class="required">*</span></label>
       <select id="propType">
-        <option value="">Select type...</option>
-        <option value="Single Family">Single Family</option>
-        <option value="Duplex">Duplex (2-unit)</option>
-        <option value="Triplex">Triplex (3-unit)</option>
-        <option value="Fourplex">Fourplex (4-unit)</option>
-        <option value="Multifamily 5+">Multifamily 5+</option>
-        <option value="Mixed Use">Mixed Use</option>
-        <option value="Commercial">Commercial</option>
+        <option value="" data-es="Selecciona tipo...">Select type...</option>
+        <option value="Single Family" data-es="Casa Unifamiliar">Single Family</option>
+        <option value="Duplex" data-es="Dúplex (2 unidades)">Duplex (2-unit)</option>
+        <option value="Triplex" data-es="Triplex (3 unidades)">Triplex (3-unit)</option>
+        <option value="Fourplex" data-es="Fourplex (4 unidades)">Fourplex (4-unit)</option>
+        <option value="Multifamily 5+" data-es="Multifamiliar 5+">Multifamily 5+</option>
+        <option value="Mixed Use" data-es="Uso Mixto">Mixed Use</option>
+        <option value="Commercial" data-es="Comercial">Commercial</option>
       </select>
     </div>
   </div>
-  <div class="grid-1 field"><label>Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33180"/></div>
+  <div class="grid-1 field"><label data-es-html="Dirección de la Propiedad <span class='required'>*</span>">Property Address <span class="required">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Miami, FL 33180" data-es-ph="Calle 123, Miami, FL 33180"/></div>
 
   <div class="computed-row" id="metricsRow" style="display:none">
-    <div class="computed-box"><div class="computed-label">Total Project Cost</div><div class="computed-val" id="totalCost">—</div></div>
-    <div class="computed-box"><div class="computed-label">Est. LTC</div><div class="computed-val" id="estLTC">—</div></div>
-    <div class="computed-box"><div class="computed-label">Est. LTV (ARV)</div><div class="computed-val" id="estLTV">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="Costo Total del Proyecto">Total Project Cost</div><div class="computed-val" id="totalCost">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="LTC Est.">Est. LTC</div><div class="computed-val" id="estLTC">—</div></div>
+    <div class="computed-box"><div class="computed-label" data-es="LTV Est. (ARV)">Est. LTV (ARV)</div><div class="computed-val" id="estLTV">—</div></div>
   </div>
   <div class="insight" id="insightBox"></div>
 
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(1)">← Back</button>
-    <button class="btn-next" onclick="goStep(3)">Continue →</button>
+    <button class="btn-back" onclick="goStep(1)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(3)" data-es="Continuar →">Continue →</button>
   </div>
 </div>
 
 <!-- STEP 3: Borrower Profile -->
 <div class="step-panel" id="step3">
   <div class="step-header">
-    <div class="step-num">Step 3 of 4</div>
-    <div class="step-title">Tell Us About the Borrower</div>
-    <div class="step-sub">Lenders care most about your experience, credit profile, liquidity, and how you are taking title.</div>
+    <div class="step-num" data-es="Paso 3 de 4">Step 3 of 4</div>
+    <div class="step-title" data-es="Cuéntanos Sobre el Prestatario">Tell Us About the Borrower</div>
+    <div class="step-sub" data-es="A los prestamistas les importa sobre todo tu experiencia, perfil crediticio, liquidez y cómo tomas el título.">Lenders care most about your experience, credit profile, liquidity, and how you are taking title.</div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Experience Level <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Nivel de Experiencia <span class='required'>*</span>">Experience Level <span class="required">*</span></label>
       <select id="experience">
-        <option value="">Select...</option>
-        <option value="First time investor">First time investor</option>
-        <option value="1-2 flips">1–2 flips completed</option>
-        <option value="3-5 flips">3–5 flips completed</option>
-        <option value="6-10 flips">6–10 flips completed</option>
-        <option value="10+ flips">10+ flips completed</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="First time investor" data-es="Inversionista primerizo">First time investor</option>
+        <option value="1-2 flips" data-es="1–2 reventas completadas">1–2 flips completed</option>
+        <option value="3-5 flips" data-es="3–5 reventas completadas">3–5 flips completed</option>
+        <option value="6-10 flips" data-es="6–10 reventas completadas">6–10 flips completed</option>
+        <option value="10+ flips" data-es="10+ reventas completadas">10+ flips completed</option>
       </select>
     </div>
-    <div class="field"><label>Taking Title As <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Tomando Título Como <span class='required'>*</span>">Taking Title As <span class="required">*</span></label>
       <select id="entity">
-        <option value="">Select...</option>
-        <option value="LLC">LLC</option>
-        <option value="Individual">Individual</option>
-        <option value="Corporation">Corporation</option>
-        <option value="LP">Limited Partnership</option>
-        <option value="Trust">Trust</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="LLC" data-es="LLC">LLC</option>
+        <option value="Individual" data-es="Individual">Individual</option>
+        <option value="Corporation" data-es="Corporación">Corporation</option>
+        <option value="LP" data-es="Sociedad Limitada (LP)">Limited Partnership</option>
+        <option value="Trust" data-es="Fideicomiso">Trust</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Estimated Credit Score <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Puntaje de Crédito Estimado <span class='required'>*</span>">Estimated Credit Score <span class="required">*</span></label>
       <select id="credit">
-        <option value="">Select range...</option>
-        <option value="Below 620">Below 620</option>
-        <option value="620-659">620–659</option>
-        <option value="660-699">660–699</option>
-        <option value="700-739">700–739</option>
-        <option value="740+">740 or above</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Below 620" data-es="Menos de 620">Below 620</option>
+        <option value="620-659" data-es="620–659">620–659</option>
+        <option value="660-699" data-es="660–699">660–699</option>
+        <option value="700-739" data-es="700–739">700–739</option>
+        <option value="740+" data-es="740 o más">740 or above</option>
       </select>
     </div>
-    <div class="field"><label>Liquidity / Cash Reserves <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Liquidez / Reservas <span class='required'>*</span>">Liquidity / Cash Reserves <span class="required">*</span></label>
       <select id="liquidity">
-        <option value="">Select range...</option>
-        <option value="Under $25k">Under $25k</option>
-        <option value="$25k-$50k">$25k – $50k</option>
-        <option value="$50k-$100k">$50k – $100k</option>
-        <option value="$100k-$250k">$100k – $250k</option>
-        <option value="$250k+">$250k+</option>
+        <option value="" data-es="Selecciona un rango...">Select range...</option>
+        <option value="Under $25k" data-es="Menos de $25k">Under $25k</option>
+        <option value="$25k-$50k" data-es="$25k – $50k">$25k – $50k</option>
+        <option value="$50k-$100k" data-es="$50k – $100k">$50k – $100k</option>
+        <option value="$100k-$250k" data-es="$100k – $250k">$100k – $250k</option>
+        <option value="$250k+" data-es="$250k+">$250k+</option>
       </select>
     </div>
   </div>
   <div class="grid-2">
-    <div class="field"><label>Timeline / Urgency <span class="required">*</span></label>
+    <div class="field"><label data-es-html="Plazo / Urgencia <span class='required'>*</span>">Timeline / Urgency <span class="required">*</span></label>
       <select id="timeline">
-        <option value="">Select...</option>
-        <option value="ASAP — under 10 days">ASAP — under 10 days</option>
-        <option value="Need to close in ~30 days">Need to close in ~30 days</option>
-        <option value="30-60 days">30–60 days</option>
-        <option value="Just exploring">Just exploring / no rush</option>
+        <option value="" data-es="Selecciona...">Select...</option>
+        <option value="ASAP — under 10 days" data-es="Lo antes posible — menos de 10 días">ASAP — under 10 days</option>
+        <option value="Need to close in ~30 days" data-es="Necesito cerrar en ~30 días">Need to close in ~30 days</option>
+        <option value="30-60 days" data-es="30–60 días">30–60 days</option>
+        <option value="Just exploring" data-es="Solo explorando / sin prisa">Just exploring / no rush</option>
       </select>
     </div>
-    <div class="field"><label>Under Contract?</label>
+    <div class="field"><label data-es="¿Bajo Contrato?">Under Contract?</label>
       <select id="underContract">
-        <option value="No">No — not yet</option>
-        <option value="Yes">Yes — under contract</option>
-        <option value="Making offer">Making an offer now</option>
+        <option value="No" data-es="No — todavía no">No — not yet</option>
+        <option value="Yes" data-es="Sí — bajo contrato">Yes — under contract</option>
+        <option value="Making offer" data-es="Haciendo una oferta ahora">Making an offer now</option>
       </select>
     </div>
   </div>
-  <div class="grid-1 field"><label>Anything Unusual About This Deal? (Optional)</label><textarea id="dealNotes" placeholder="Major rehab issues, title quirks, credit events, or anything you want us to know..."></textarea></div>
-  <div class="insight show">💡 We will match your experience level and timing with lenders who tend to be the best fit for your scenario.</div>
+  <div class="grid-1 field"><label data-es="¿Algo Inusual Sobre Este Negocio? (Opcional)">Anything Unusual About This Deal? (Optional)</label><textarea id="dealNotes" placeholder="Major rehab issues, title quirks, credit events, or anything you want us to know..." data-es-ph="Problemas mayores de renovación, detalles de título, eventos de crédito, o cualquier cosa que quieras que sepamos..."></textarea></div>
+  <div class="insight show" data-es="💡 Emparejaremos tu nivel de experiencia y tus tiempos con prestamistas que suelen ser el mejor ajuste para tu escenario.">💡 We will match your experience level and timing with lenders who tend to be the best fit for your scenario.</div>
   <div class="btn-row">
-    <button class="btn-back" onclick="goStep(2)">← Back</button>
-    <button class="btn-next" onclick="goStep(4)">Final Step →</button>
+    <button class="btn-back" onclick="goStep(2)" data-es="← Atrás">← Back</button>
+    <button class="btn-next" onclick="goStep(4)" data-es="Paso Final →">Final Step →</button>
   </div>
 </div>
 
 <!-- STEP 4: Contact -->
 <div class="step-panel" id="step4">
   <div class="step-header">
-    <div class="step-num">Step 4 of 4</div>
-    <div class="step-title">Where Should We Send Your Pre-Terms?</div>
-    <div class="step-sub">We will use your deal details to prepare the best-fit lender direction and next steps within 24 hours.</div>
+    <div class="step-num" data-es="Paso 4 de 4">Step 4 of 4</div>
+    <div class="step-title" data-es="¿A Dónde Enviamos tus Pre-Términos?">Where Should We Send Your Pre-Terms?</div>
+    <div class="step-sub" data-es="Usaremos los detalles de tu negocio para preparar la mejor orientación de prestamista y los próximos pasos dentro de 24 horas.">We will use your deal details to prepare the best-fit lender direction and next steps within 24 hours.</div>
   </div>
   <form id="mainForm" action="https://formspree.io/f/mgoqvynl" method="POST" onsubmit="handleSubmit(event)">
     <input type="hidden" name="_subject" value="New Fix & Flip Loan Application — Nork Capital"/>
@@ -304,35 +304,35 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
     <input type="hidden" name="Deal Notes" id="h_dealNotes"/>
 
     <div class="grid-2">
-      <div class="field"><label>First Name <span class="required">*</span></label><input type="text" name="First Name" id="firstName" placeholder="Jean Paul" required/></div>
-      <div class="field"><label>Last Name <span class="required">*</span></label><input type="text" name="Last Name" id="lastName" placeholder="Smith" required/></div>
+      <div class="field"><label data-es-html="Nombre <span class='required'>*</span>">First Name <span class="required">*</span></label><input type="text" name="First Name" id="firstName" placeholder="Jean Paul" required/></div>
+      <div class="field"><label data-es-html="Apellido <span class='required'>*</span>">Last Name <span class="required">*</span></label><input type="text" name="Last Name" id="lastName" placeholder="Smith" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Email <span class="required">*</span></label><input type="email" name="Email" id="emailField" placeholder="you@example.com" required oninput="document.getElementById('hiddenEmail').value=this.value"/></div>
-      <div class="field"><label>Phone <span class="required">*</span></label><input type="tel" name="Phone" id="phone" placeholder="(786) 000-0000" required/></div>
+      <div class="field"><label data-es-html="Correo <span class='required'>*</span>">Email <span class="required">*</span></label><input type="email" name="Email" id="emailField" placeholder="you@example.com" required oninput="document.getElementById('hiddenEmail').value=this.value"/></div>
+      <div class="field"><label data-es-html="Teléfono <span class='required'>*</span>">Phone <span class="required">*</span></label><input type="tel" name="Phone" id="phone" placeholder="(786) 000-0000" required/></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Preferred Callback Time</label>
+      <div class="field"><label data-es="Horario Preferido de Llamada">Preferred Callback Time</label>
         <select name="Callback Time" id="callbackTime">
-          <option value="Morning (9am-12pm)">Morning (9am–12pm)</option>
-          <option value="Afternoon (12pm-5pm)">Afternoon (12pm–5pm)</option>
-          <option value="Evening (5pm-7pm)">Evening (5pm–7pm)</option>
-          <option value="Anytime">Anytime</option>
+          <option value="Morning (9am-12pm)" data-es="Mañana (9am–12pm)">Morning (9am–12pm)</option>
+          <option value="Afternoon (12pm-5pm)" data-es="Tarde (12pm–5pm)">Afternoon (12pm–5pm)</option>
+          <option value="Evening (5pm-7pm)" data-es="Noche (5pm–7pm)">Evening (5pm–7pm)</option>
+          <option value="Anytime" data-es="Cualquier momento">Anytime</option>
         </select>
       </div>
-      <div class="field"><label>Best Contact Method</label>
+      <div class="field"><label data-es="Mejor Método de Contacto">Best Contact Method</label>
         <select name="Contact Method">
-          <option value="Phone call">Phone call</option>
-          <option value="Text message">Text message</option>
-          <option value="Email">Email</option>
-          <option value="WhatsApp">WhatsApp</option>
+          <option value="Phone call" data-es="Llamada telefónica">Phone call</option>
+          <option value="Text message" data-es="Mensaje de texto">Text message</option>
+          <option value="Email" data-es="Correo electrónico">Email</option>
+          <option value="WhatsApp" data-es="WhatsApp">WhatsApp</option>
         </select>
       </div>
     </div>
-    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;line-height:1.7" data-es="🔒 Sin spam. Tu información se usa solo para revisar el negocio y dar seguimiento. Esto no afecta tu puntaje de crédito.">🔒 No spam. Your information is used for deal review and follow-up only. This does not affect your credit score.</p>
     <div class="btn-row">
-      <button type="button" class="btn-back" onclick="goStep(3)">← Back</button>
-      <button type="submit" class="btn-next" id="submitBtn">Get My Pre-Terms →</button>
+      <button type="button" class="btn-back" onclick="goStep(3)" data-es="← Atrás">← Back</button>
+      <button type="submit" class="btn-next" id="submitBtn" data-es="Obtener mis Pre-Términos →">Get My Pre-Terms →</button>
     </div>
   </form>
 </div>
@@ -341,23 +341,23 @@ footer{background:#111118;border-top:1px solid rgba(255,255,255,0.05);padding:1r
 <div class="step-panel" id="stepSuccess">
   <div class="success-screen">
     <div class="success-icon">✅</div>
-    <h2>Application <span>Submitted!</span></h2>
-    <p>Your deal has been received. A Nork Capital lending specialist will review your scenario and reach out within 24 hours with pre-terms and next steps.</p>
+    <h2 data-es-html="¡Solicitud <span>Enviada!</span>">Application <span>Submitted!</span></h2>
+    <p data-es="Hemos recibido tu negocio. Un especialista de préstamos de Nork Capital revisará tu escenario y se comunicará dentro de 24 horas con los pre-términos y los próximos pasos.">Your deal has been received. A Nork Capital lending specialist will review your scenario and reach out within 24 hours with pre-terms and next steps.</p>
     <div class="success-details">
-      <div><strong>What Happens Next</strong></div>
-      <div>1. Your deal is reviewed by our team</div>
-      <div>2. We match you to best-fit lenders</div>
-      <div>3. You receive pre-terms within 24 hours</div>
-      <div>4. We guide you to closing</div>
+      <div><strong data-es="Qué Sucede Después">What Happens Next</strong></div>
+      <div data-es="1. Nuestro equipo revisa tu negocio">1. Your deal is reviewed by our team</div>
+      <div data-es="2. Te emparejamos con los prestamistas más adecuados">2. We match you to best-fit lenders</div>
+      <div data-es="3. Recibes pre-términos dentro de 24 horas">3. You receive pre-terms within 24 hours</div>
+      <div data-es="4. Te guiamos hasta el cierre">4. We guide you to closing</div>
     </div>
-    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none">Back to Home</a>
+    <a href="index.html" class="btn-next" style="display:inline-block;text-decoration:none" data-es="Volver al Inicio">Back to Home</a>
   </div>
 </div>
 
 </div>
 </main>
 
-<footer>© 2026 Nork Capital Lending · tc@nork.group · (786) 556-0029</footer>
+<footer data-es="© 2026 Nork Capital Lending · tc@nork.group · (786) 556-0029">© 2026 Nork Capital Lending · tc@nork.group · (786) 556-0029</footer>
 
 <script>
 let currentStep = 1;
@@ -482,6 +482,26 @@ function handleSubmit(e){
     alert('Connection error. Please email tc@nork.group directly.');
   });
 }
+</script>
+<script>
+(function(){
+  function apply(lang){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.textContent);
+      el.textContent=(lang==='es')?el.getAttribute('data-es'):el.getAttribute('data-en');
+    });
+    document.querySelectorAll('[data-es-html]').forEach(function(el){
+      if(!el.hasAttribute('data-en-html')) el.setAttribute('data-en-html', el.innerHTML);
+      el.innerHTML=(lang==='es')?el.getAttribute('data-es-html'):el.getAttribute('data-en-html');
+    });
+    document.documentElement.lang=lang;
+    var b=document.getElementById('langBtn'); if(b) b.textContent=(lang==='es')?'EN':'ES';
+    try{localStorage.setItem('nork_lang',lang);}catch(e){}
+  }
+  window.toggleLang=function(){var c='en';try{c=localStorage.getItem('nork_lang')||'en';}catch(e){}apply(c==='es'?'en':'es');};
+  var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
+  if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
+})();
 </script>
 </body>
 </html>
