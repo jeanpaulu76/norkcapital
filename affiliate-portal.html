@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Partner Portal — Nork Capital Lending</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#3DB33D;--green2:#4CC94C;--dark:#1C1C1C;--dark2:#14141f;--sidebar:#0f1b2d;--sidebar2:#16263d;--card:#1e1e2e;--white:#fff;--muted:rgba(255,255,255,0.55);--line:rgba(255,255,255,0.08)}
+body{font-family:"Open Sans",sans-serif;background:var(--dark2);color:#fff;min-height:100vh}
+
+/* ---------- LOGIN ---------- */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.auth-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 30%,rgba(61,179,61,0.08) 0%,transparent 70%)}
+.auth-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:2.5rem;max-width:420px;width:100%;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.auth-logo{text-align:center;margin-bottom:1.8rem}
+.auth-logo .l1{font-family:"Montserrat",sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:2px;color:#fff;display:block}
+.auth-logo .l2{font-family:"Montserrat",sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:5px;color:var(--green);display:block}
+.auth-tag{text-align:center;font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:0.4rem}
+.auth-title{text-align:center;font-family:"Montserrat",sans-serif;font-size:1.2rem;font-weight:800;text-transform:uppercase;margin-bottom:1.8rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-family:"Montserrat",sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.45rem}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:0.8rem 0.95rem;font-size:0.85rem;font-family:"Open Sans",sans-serif;color:#fff;outline:none;transition:border-color 0.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);background:rgba(61,179,61,0.06)}
+.field select option{background:#1e1e2e}
+.btn{width:100%;background:var(--green);color:#fff;border:none;padding:0.9rem;border-radius:5px;font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.btn:hover{background:var(--green2)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);color:#fff}
+.auth-switch{text-align:center;margin-top:1.3rem;font-size:0.78rem;color:var(--muted)}
+.auth-switch a{color:var(--green);cursor:pointer;text-decoration:none;font-weight:600}
+.auth-msg{padding:0.7rem 0.9rem;border-radius:5px;font-size:0.78rem;margin-bottom:1rem;display:none}
+.auth-msg.error{background:rgba(229,92,77,0.12);border:1px solid rgba(229,92,77,0.3);color:#ff8a7a;display:block}
+.auth-msg.success{background:rgba(61,179,61,0.12);border:1px solid rgba(61,179,61,0.3);color:var(--green2);display:block}
+.lang-toggle{position:absolute;top:1.5rem;right:1.5rem;z-index:10;display:flex;gap:0.3rem;background:rgba(255,255,255,0.05);border:1px solid var(--line);border-radius:20px;padding:0.25rem}
+.lang-btn{background:none;border:none;color:var(--muted);font-family:"Montserrat",sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:1px;padding:0.25rem 0.7rem;border-radius:15px;cursor:pointer}
+.lang-btn.active{background:var(--green);color:#fff}
+
+/* ---------- APP SHELL ---------- */
+.app{display:none;min-height:100vh}
+.app.show{display:flex}
+.sidebar{width:230px;background:linear-gradient(180deg,var(--sidebar) 0%,var(--sidebar2) 100%);min-height:100vh;padding:1.5rem 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;transition:transform 0.3s}
+.sidebar-logo{padding:0 1.5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:1rem}
+.sidebar-logo .l1{font-family:"Montserrat",sans-serif;font-size:0.95rem;font-weight:900;letter-spacing:1.5px;color:#fff;display:block}
+.sidebar-logo .l2{font-family:"Montserrat",sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:4px;color:var(--green);display:block}
+.nav-item{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1.5rem;color:rgba(255,255,255,0.6);cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.5px;transition:all 0.2s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+.nav-item.active{background:rgba(61,179,61,0.1);color:var(--green);border-left-color:var(--green)}
+.nav-item .ico{font-size:1.1rem;width:22px;text-align:center}
+.sidebar-foot{padding:1rem 1.5rem;margin-top:1rem;border-top:1px solid rgba(255,255,255,0.08)}
+
+.main{flex:1;margin-left:230px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:1rem}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer}
+.topbar-title{font-family:"Montserrat",sans-serif;font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px}
+.topbar-right{display:flex;align-items:center;gap:1.2rem}
+.user-chip{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted)}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.8rem;color:#fff}
+
+.content{flex:1;padding:2rem;max-width:1100px}
+.view{display:none}.view.show{display:block}
+.page-title{font-family:"Montserrat",sans-serif;font-size:1.4rem;font-weight:900;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:0.3rem}
+.page-sub{color:var(--muted);font-size:0.85rem;margin-bottom:2rem}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:1rem}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1.4rem;position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--green)}
+.stat-label{font-family:"Montserrat",sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem}
+.stat-value{font-family:"Montserrat",sans-serif;font-size:1.8rem;font-weight:900;color:#fff}
+.stat-value.green{color:var(--green)}
+
+.tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tab{padding:0.7rem 1.2rem;font-family:"Montserrat",sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* TABLE */
+.table-wrap{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{background:rgba(255,255,255,0.03);text-align:left;padding:0.9rem 1rem;font-family:"Montserrat",sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+td{padding:0.9rem 1rem;font-size:0.82rem;border-bottom:1px solid var(--line);color:rgba(255,255,255,0.85)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:0.25rem 0.7rem;border-radius:20px;font-family:"Montserrat",sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
+.badge-submitted{background:rgba(120,140,255,0.15);color:#94a3ff}
+.badge-review{background:rgba(255,200,0,0.15);color:#f0c040}
+.badge-processing{background:rgba(255,160,60,0.15);color:#ffa83c}
+.badge-approved{background:rgba(61,179,61,0.15);color:var(--green2)}
+.badge-funded{background:rgba(61,179,61,0.25);color:var(--green2)}
+.badge-lost{background:rgba(229,92,77,0.15);color:#ff8a7a}
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:0.85rem}
+.empty .ico{font-size:2.5rem;margin-bottom:0.8rem;opacity:0.4}
+
+/* FORM CARD */
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2rem;max-width:640px}
+.opp-choice{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.opp-btn{background:rgba(255,255,255,0.03);border:1.5px solid var(--line);border-radius:8px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s}
+.opp-btn:hover{border-color:rgba(61,179,61,0.4);background:rgba(61,179,61,0.05)}
+.opp-btn.selected{border-color:var(--green);background:rgba(61,179,61,0.1)}
+.opp-btn .ico{font-size:1.8rem;margin-bottom:0.5rem}
+.opp-btn .lbl{font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.8)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* ANNOUNCEMENTS */
+.ann-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1.5rem;margin-bottom:1.2rem}
+.ann-date{font-family:"Montserrat",sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
+.ann-title{font-family:"Montserrat",sans-serif;font-size:1rem;font-weight:800;color:var(--green);margin-bottom:0.7rem}
+.ann-body{font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.8}
+
+/* SUPPORT */
+.support-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1.5rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1.2rem}
+.support-avatar{width:60px;height:60px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.support-info h4{font-family:"Montserrat",sans-serif;font-size:0.9rem;font-weight:800;margin-bottom:0.2rem}
+.support-info .role{font-size:0.75rem;color:var(--green);margin-bottom:0.4rem}
+.support-info .contact{font-size:0.78rem;color:var(--muted)}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:block}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .grid-2,.opp-choice{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="langEN" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="langES" onclick="setLang('es')">ES</button>
+</div>
+
+<!-- ============ AUTH SCREEN ============ -->
+<div class="auth-wrap" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="l1">NORK CAPITAL</span>
+      <span class="l2">LENDING</span>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+      <div class="auth-tag" data-i18n="partnerPortal">Partner Portal</div>
+      <div class="auth-title" data-i18n="welcomeBack">Welcome Back</div>
+      <div class="auth-msg" id="loginMsg"></div>
+      <div class="field"><label data-i18n="email">Email</label><input type="email" id="loginEmail" placeholder="you@example.com"/></div>
+      <div class="field"><label data-i18n="password">Password</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
+      <button class="btn" id="loginBtn" onclick="doLogin()" data-i18n="signIn">Sign In</button>
+      <div class="auth-switch"><span data-i18n="noAccount">Don't have an account?</span> <a onclick="showSignup()" data-i18n="registerHere">Register here</a></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signupForm" style="display:none">
+      <div class="auth-tag" data-i18n="joinProgram">Join the Program</div>
+      <div class="auth-title" data-i18n="becomePartner">Become a Partner</div>
+      <div class="auth-msg" id="signupMsg"></div>
+      <div class="grid-2">
+        <div class="field"><label data-i18n="firstName">First Name</label><input type="text" id="suFirst"/></div>
+        <div class="field"><label data-i18n="lastName">Last Name</label><input type="text" id="suLast"/></div>
+      </div>
+      <div class="field"><label data-i18n="email">Email</label><input type="email" id="suEmail"/></div>
+      <div class="field"><label data-i18n="phone">Phone</label><input type="tel" id="suPhone"/></div>
+      <div class="field"><label data-i18n="businessName">Corporation or Business Name</label><input type="text" id="suBiz"/></div>
+      <div class="field"><label data-i18n="partnerType">Partner Type</label>
+        <select id="suType">
+          <option value="affiliate" data-i18n="affiliate">Affiliate</option>
+          <option value="co-broker" data-i18n="coBroker">Co-Broker</option>
+        </select>
+      </div>
+      <div class="field"><label data-i18n="password">Password</label><input type="password" id="suPass" placeholder="Min. 6 characters"/></div>
+      <button class="btn" id="signupBtn" onclick="doSignup()" data-i18n="createAccount">Create Account</button>
+      <div class="auth-switch"><span data-i18n="haveAccount">Already have an account?</span> <a onclick="showLogin()" data-i18n="signInHere">Sign in here</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="l1">NORK CAPITAL</span>
+      <span class="l2">PARTNER PORTAL</span>
+    </div>
+    <div class="nav-item active" data-view="home" onclick="nav('home')"><span class="ico">🏠</span><span data-i18n="home">Home</span></div>
+    <div class="nav-item" data-view="newopp" onclick="nav('newopp')"><span class="ico">➕</span><span data-i18n="newOpps">New Opportunity</span></div>
+    <div class="nav-item" data-view="pipeline" onclick="nav('pipeline')"><span class="ico">📊</span><span data-i18n="pipeline">Pipeline</span></div>
+    <div class="nav-item" data-view="commissions" onclick="nav('commissions')"><span class="ico">💰</span><span data-i18n="commissions">Commissions</span></div>
+    <div class="nav-item" data-view="announcements" onclick="nav('announcements')"><span class="ico">📣</span><span data-i18n="announcements">Announcements</span></div>
+    <div class="nav-item" data-view="support" onclick="nav('support')"><span class="ico">🎧</span><span data-i18n="support">Support</span></div>
+    <div class="sidebar-foot">
+      <button class="btn btn-ghost" onclick="doLogout()" data-i18n="signOut">Sign Out</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <span class="topbar-title" id="topTitle" data-i18n="home">Home</span>
+      </div>
+      <div class="topbar-right">
+        <div class="lang-toggle" style="position:static">
+          <button class="lang-btn active" id="langEN2" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="langES2" onclick="setLang('es')">ES</button>
+        </div>
+        <div class="user-chip">
+          <div class="user-avatar" id="userInitials">JP</div>
+          <span id="userName">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- HOME / DASHBOARD -->
+      <div class="view show" id="view-home">
+        <div class="page-title"><span data-i18n="hello">Hello</span>, <span id="greetName">Partner</span> 👋</div>
+        <div class="page-sub" data-i18n="insightsToday">Here are your insights for today.</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label" data-i18n="totalDeals">Total Deals</div><div class="stat-value" id="stTotal">0</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="funded">Funded</div><div class="stat-value green" id="stFunded">0</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="pipelineValue">Pipeline Value</div><div class="stat-value" id="stValue">$0</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="totalCommission">Commissions</div><div class="stat-value green" id="stComm">$0</div></div>
+        </div>
+        <div style="margin-top:2rem">
+          <div class="tabs"><div class="tab active" data-i18n="recentPipeline">Recent Pipeline</div></div>
+          <div class="table-wrap" id="homePipeline"></div>
+        </div>
+      </div>
+
+      <!-- NEW OPPORTUNITY -->
+      <div class="view" id="view-newopp">
+        <div class="page-title" data-i18n="newFundingOpp">New Funding Opportunity</div>
+        <div class="page-sub" data-i18n="shareClient">Share a client who's actively exploring financing. Include key details so our team can follow up fast.</div>
+        <div class="form-card">
+          <div class="auth-msg" id="oppMsg"></div>
+          <div class="grid-2">
+            <div class="field"><label data-i18n="clientFirstName">Client First Name</label><input type="text" id="cFirst"/></div>
+            <div class="field"><label data-i18n="clientLastName">Client Last Name</label><input type="text" id="cLast"/></div>
+          </div>
+          <div class="field"><label data-i18n="company">Company</label><input type="text" id="cCompany"/></div>
+          <div class="grid-2">
+            <div class="field"><label data-i18n="clientEmail">Client Email</label><input type="email" id="cEmail"/></div>
+            <div class="field"><label data-i18n="clientPhone">Client Phone</label><input type="tel" id="cPhone"/></div>
+          </div>
+          <div class="grid-2">
+            <div class="field"><label data-i18n="loanType">Loan Type</label>
+              <select id="cLoanType">
+                <option value="Fix & Flip">Fix &amp; Flip</option>
+                <option value="Bridge">Bridge</option>
+                <option value="DSCR / Rental">DSCR / Rental</option>
+                <option value="New Construction">New Construction</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Cash-Out Refinance">Cash-Out Refinance</option>
+              </select>
+            </div>
+            <div class="field"><label data-i18n="amountRequested">Amount Requested</label><input type="number" id="cAmount" placeholder="$"/></div>
+          </div>
+          <div class="field"><label data-i18n="addNote">Add a Note</label><textarea id="cNotes" rows="3" data-i18n-ph="writeNote" placeholder="Write your note here"></textarea></div>
+          <button class="btn" id="oppSubmit" onclick="submitOpp()" data-i18n="submitOpp">Submit Opportunity</button>
+        </div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="view" id="view-pipeline">
+        <div class="page-title" data-i18n="pipeline">Pipeline</div>
+        <div class="page-sub" data-i18n="trackClients">Track every client you've referred and their current status.</div>
+        <div class="table-wrap" id="pipelineTable"></div>
+      </div>
+
+      <!-- COMMISSIONS -->
+      <div class="view" id="view-commissions">
+        <div class="page-title" data-i18n="commissions">Commissions</div>
+        <div class="page-sub" data-i18n="commissionsSub">Your earnings from funded deals.</div>
+        <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="stat-card"><div class="stat-label" data-i18n="paidOut">Paid Out</div><div class="stat-value green" id="cmPaid">$0</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="pending">Pending</div><div class="stat-value" id="cmPending">$0</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="lifetime">Lifetime</div><div class="stat-value green" id="cmTotal">$0</div></div>
+        </div>
+        <div class="table-wrap" id="commTable" style="margin-top:1rem"></div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="view" id="view-announcements">
+        <div class="page-title" data-i18n="announcements">Announcements</div>
+        <div class="page-sub" data-i18n="announcementsSub">Latest news and updates from the Nork Capital team.</div>
+        <div id="annList"></div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="view" id="view-support">
+        <div class="page-title" data-i18n="support">Support</div>
+        <div class="page-sub" data-i18n="supportSub">We're here to help you close more deals.</div>
+        <div class="support-card">
+          <div class="support-avatar">👤</div>
+          <div class="support-info">
+            <h4>Jean Paul Urquizo</h4>
+            <div class="role" data-i18n="partnerManager">Your Partner Relationship Manager</div>
+            <div class="contact">📞 (786) 556-0029 &nbsp;·&nbsp; ✉️ tc@nork.group</div>
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-avatar">🛠️</div>
+          <div class="support-info">
+            <h4 data-i18n="techSupport">Technical Support</h4>
+            <div class="role" data-i18n="techAssist">Technical Assistance</div>
+            <div class="contact">✉️ tc@nork.group</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// SUPABASE CONFIG — REPLACE THESE TWO VALUES WITH YOUR OWN
+// (Supabase Dashboard → Project Settings → API)
+// ============================================================
+const SUPABASE_URL = 'https://hptaeuzgtmrrmablwwvm.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_jbfFbmkxK5uUSsSfoM_KTA_wY_V_GIb';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentAffiliate = null;
+let currentClients = [];
+
+// ---------- TRANSLATIONS ----------
+const T = {
+  partnerPortal:{en:'Partner Portal',es:'Portal de Socios'},
+  welcomeBack:{en:'Welcome Back',es:'Bienvenido de Nuevo'},
+  email:{en:'Email',es:'Correo'},
+  password:{en:'Password',es:'Contraseña'},
+  signIn:{en:'Sign In',es:'Iniciar Sesión'},
+  noAccount:{en:"Don't have an account?",es:'¿No tienes cuenta?'},
+  registerHere:{en:'Register here',es:'Regístrate aquí'},
+  joinProgram:{en:'Join the Program',es:'Únete al Programa'},
+  becomePartner:{en:'Become a Partner',es:'Conviértete en Socio'},
+  firstName:{en:'First Name',es:'Nombre'},
+  lastName:{en:'Last Name',es:'Apellido'},
+  phone:{en:'Phone',es:'Teléfono'},
+  businessName:{en:'Corporation or Business Name',es:'Nombre de Corporación o Negocio'},
+  partnerType:{en:'Partner Type',es:'Tipo de Socio'},
+  affiliate:{en:'Affiliate',es:'Afiliado'},
+  coBroker:{en:'Co-Broker',es:'Co-Corredor'},
+  createAccount:{en:'Create Account',es:'Crear Cuenta'},
+  haveAccount:{en:'Already have an account?',es:'¿Ya tienes cuenta?'},
+  signInHere:{en:'Sign in here',es:'Inicia sesión aquí'},
+  home:{en:'Home',es:'Inicio'},
+  newOpps:{en:'New Opportunity',es:'Nueva Oportunidad'},
+  pipeline:{en:'Pipeline',es:'Cartera'},
+  commissions:{en:'Commissions',es:'Comisiones'},
+  announcements:{en:'Announcements',es:'Anuncios'},
+  support:{en:'Support',es:'Soporte'},
+  signOut:{en:'Sign Out',es:'Cerrar Sesión'},
+  hello:{en:'Hello',es:'Hola'},
+  insightsToday:{en:'Here are your insights for today.',es:'Aquí están tus datos para hoy.'},
+  totalDeals:{en:'Total Deals',es:'Total de Tratos'},
+  funded:{en:'Funded',es:'Financiados'},
+  pipelineValue:{en:'Pipeline Value',es:'Valor de Cartera'},
+  totalCommission:{en:'Commissions',es:'Comisiones'},
+  recentPipeline:{en:'Recent Pipeline',es:'Cartera Reciente'},
+  newFundingOpp:{en:'New Funding Opportunity',es:'Nueva Oportunidad de Financiamiento'},
+  shareClient:{en:"Share a client who's actively exploring financing. Include key details so our team can follow up fast.",es:'Comparte un cliente que busca financiamiento. Incluye detalles clave para que nuestro equipo dé seguimiento rápido.'},
+  clientFirstName:{en:'Client First Name',es:'Nombre del Cliente'},
+  clientLastName:{en:'Client Last Name',es:'Apellido del Cliente'},
+  company:{en:'Company',es:'Empresa'},
+  clientEmail:{en:'Client Email',es:'Correo del Cliente'},
+  clientPhone:{en:'Client Phone',es:'Teléfono del Cliente'},
+  loanType:{en:'Loan Type',es:'Tipo de Préstamo'},
+  amountRequested:{en:'Amount Requested',es:'Monto Solicitado'},
+  addNote:{en:'Add a Note',es:'Agregar Nota'},
+  writeNote:{en:'Write your note here',es:'Escribe tu nota aquí'},
+  submitOpp:{en:'Submit Opportunity',es:'Enviar Oportunidad'},
+  trackClients:{en:"Track every client you've referred and their current status.",es:'Da seguimiento a cada cliente referido y su estado actual.'},
+  commissionsSub:{en:'Your earnings from funded deals.',es:'Tus ganancias de tratos financiados.'},
+  paidOut:{en:'Paid Out',es:'Pagado'},
+  pending:{en:'Pending',es:'Pendiente'},
+  lifetime:{en:'Lifetime',es:'Total Histórico'},
+  announcementsSub:{en:'Latest news and updates from the Nork Capital team.',es:'Últimas noticias del equipo de Nork Capital.'},
+  partnerManager:{en:'Your Partner Relationship Manager',es:'Tu Gerente de Relaciones'},
+  techSupport:{en:'Technical Support',es:'Soporte Técnico'},
+  techAssist:{en:'Technical Assistance',es:'Asistencia Técnica'},
+  supportSub:{en:"We're here to help you close more deals.",es:'Estamos aquí para ayudarte a cerrar más tratos.'},
+  client:{en:'Client',es:'Cliente'},
+  status:{en:'Status',es:'Estado'},
+  amount:{en:'Amount',es:'Monto'},
+  commission:{en:'Commission',es:'Comisión'},
+  date:{en:'Date',es:'Fecha'},
+  notes:{en:'Notes',es:'Notas'},
+  noDeals:{en:'No deals yet. Submit your first opportunity!',es:'Aún no hay tratos. ¡Envía tu primera oportunidad!'},
+  loading:{en:'Loading...',es:'Cargando...'}
+};
+let lang = localStorage.getItem('nork_lang') || 'en';
+
+function setLang(l){
+  lang = l; localStorage.setItem('nork_lang', l);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(T[k]) el.textContent = T[k][l];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const k = el.getAttribute('data-i18n-ph');
+    if(T[k]) el.placeholder = T[k][l];
+  });
+  ['langEN','langEN2','langES','langES2'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('active')});
+  document.getElementById(l==='en'?'langEN':'langES').classList.add('active');
+  const e2=document.getElementById(l==='en'?'langEN2':'langES2'); if(e2)e2.classList.add('active');
+  if(currentAffiliate) renderAll();
+}
+function tr(k){return (T[k]&&T[k][lang])||k}
+
+// ---------- AUTH UI ----------
+function showSignup(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block'}
+function showLogin(){document.getElementById('signupForm').style.display='none';document.getElementById('loginForm').style.display='block'}
+function msg(id,text,type){const m=document.getElementById(id);m.textContent=text;m.className='auth-msg '+type}
+
+async function doSignup(){
+  const btn=document.getElementById('signupBtn');btn.disabled=true;
+  const email=document.getElementById('suEmail').value.trim();
+  const pass=document.getElementById('suPass').value;
+  const first=document.getElementById('suFirst').value.trim();
+  const last=document.getElementById('suLast').value.trim();
+  if(!email||!pass||!first){msg('signupMsg',lang==='en'?'Please fill in all required fields.':'Por favor completa los campos requeridos.','error');btn.disabled=false;return}
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  if(error){msg('signupMsg',error.message,'error');btn.disabled=false;return}
+  const uid=data.user.id;
+  const {error:e2}=await sb.from('affiliates').insert({
+    user_id:uid,first_name:first,last_name:last,email,
+    phone:document.getElementById('suPhone').value.trim(),
+    business_name:document.getElementById('suBiz').value.trim(),
+    partner_type:document.getElementById('suType').value,
+    role:'partner',status:'pending'
+  });
+  if(e2){msg('signupMsg',e2.message,'error');btn.disabled=false;return}
+  msg('signupMsg',lang==='en'?'Account created! You can now sign in.':'¡Cuenta creada! Ya puedes iniciar sesión.','success');
+  setTimeout(()=>{showLogin();document.getElementById('loginEmail').value=email},1500);
+  btn.disabled=false;
+}
+
+async function doLogin(){
+  const btn=document.getElementById('loginBtn');btn.disabled=true;
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){msg('loginMsg',error.message,'error');btn.disabled=false;return}
+  await loadAffiliate();
+  btn.disabled=false;
+}
+
+async function doLogout(){await sb.auth.signOut();location.reload()}
+
+async function loadAffiliate(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data,error}=await sb.from('affiliates').select('*').eq('user_id',user.id).single();
+  if(error||!data){msg('loginMsg',lang==='en'?'No partner profile found.':'No se encontró perfil.','error');return}
+  currentAffiliate=data;
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('app').classList.add('show');
+  const initials=((data.first_name||'?')[0]+(data.last_name||'')[0]||'').toUpperCase();
+  document.getElementById('userInitials').textContent=initials;
+  document.getElementById('userName').textContent=data.first_name+' '+data.last_name;
+  document.getElementById('greetName').textContent=data.first_name;
+  await loadClients();
+  setLang(lang);
+}
+
+async function loadClients(){
+  const {data}=await sb.from('clients').select('*').eq('affiliate_id',currentAffiliate.id).order('created_at',{ascending:false});
+  currentClients=data||[];
+  renderAll();
+}
+
+// ---------- RENDER ----------
+function statusBadge(s){
+  const map={'Opportunity Submitted':'badge-submitted','App Sent/Docs Requested':'badge-review','Processing Application':'badge-processing','Program Review':'badge-review','Offer Presented':'badge-review','Application Approved':'badge-approved','Funded':'badge-funded','Closed-Lost':'badge-lost'};
+  return '<span class="badge '+(map[s]||'badge-submitted')+'">'+s+'</span>';
+}
+function fmt(n){return '$'+(Number(n)||0).toLocaleString()}
+
+function renderAll(){
+  // Stats
+  const total=currentClients.length;
+  const funded=currentClients.filter(c=>c.status==='Funded').length;
+  const value=currentClients.reduce((s,c)=>s+(Number(c.loan_amount)||0),0);
+  const comm=currentClients.reduce((s,c)=>s+(Number(c.commission)||0),0);
+  document.getElementById('stTotal').textContent=total;
+  document.getElementById('stFunded').textContent=funded;
+  document.getElementById('stValue').textContent=fmt(value);
+  document.getElementById('stComm').textContent=fmt(comm);
+
+  const headers='<tr><th>'+tr('client')+'</th><th>'+tr('status')+'</th><th>'+tr('loanType')+'</th><th>'+tr('amount')+'</th><th>'+tr('commission')+'</th><th>'+tr('date')+'</th><th>'+tr('notes')+'</th></tr>';
+  function rows(list){
+    if(!list.length)return '<div class="empty"><div class="ico">📭</div>'+tr('noDeals')+'</div>';
+    let h='<table>'+headers;
+    list.forEach(c=>{
+      h+='<tr><td>'+(c.client_first_name||'')+' '+(c.client_last_name||'')+'</td><td>'+statusBadge(c.status)+'</td><td>'+(c.loan_type||'-')+'</td><td>'+fmt(c.loan_amount)+'</td><td style="color:var(--green2)">'+fmt(c.commission)+'</td><td>'+(c.date_submitted||'-')+'</td><td>'+(c.notes||'-')+'</td></tr>';
+    });
+    return h+'</table>';
+  }
+  document.getElementById('homePipeline').innerHTML=rows(currentClients.slice(0,5));
+  document.getElementById('pipelineTable').innerHTML=rows(currentClients);
+
+  // Commissions
+  const paid=currentClients.filter(c=>c.status==='Funded').reduce((s,c)=>s+(Number(c.commission)||0),0);
+  const pend=currentClients.filter(c=>c.status!=='Funded'&&c.status!=='Closed-Lost').reduce((s,c)=>s+(Number(c.commission)||0),0);
+  document.getElementById('cmPaid').textContent=fmt(paid);
+  document.getElementById('cmPending').textContent=fmt(pend);
+  document.getElementById('cmTotal').textContent=fmt(paid+pend);
+  const commList=currentClients.filter(c=>Number(c.commission)>0);
+  document.getElementById('commTable').innerHTML=rows(commList);
+
+  loadAnnouncements();
+}
+
+async function loadAnnouncements(){
+  const {data}=await sb.from('announcements').select('*').order('posted_date',{ascending:false});
+  const list=document.getElementById('annList');
+  if(!data||!data.length){list.innerHTML='<div class="empty"><div class="ico">📣</div>No announcements yet.</div>';return}
+  list.innerHTML=data.map(a=>'<div class="ann-card"><div class="ann-date">'+(a.posted_date||'')+'</div><div class="ann-title">'+a.title+'</div><div class="ann-body">'+(a.body||'').replace(/\n/g,'<br>')+'</div></div>').join('');
+}
+
+// ---------- NEW OPP ----------
+async function submitOpp(){
+  const btn=document.getElementById('oppSubmit');btn.disabled=true;
+  const first=document.getElementById('cFirst').value.trim();
+  if(!first){msg('oppMsg',lang==='en'?'Client first name is required.':'El nombre del cliente es requerido.','error');btn.disabled=false;return}
+  const {error}=await sb.from('clients').insert({
+    affiliate_id:currentAffiliate.id,
+    client_first_name:first,
+    client_last_name:document.getElementById('cLast').value.trim(),
+    company:document.getElementById('cCompany').value.trim(),
+    client_email:document.getElementById('cEmail').value.trim(),
+    client_phone:document.getElementById('cPhone').value.trim(),
+    loan_type:document.getElementById('cLoanType').value,
+    loan_amount:Number(document.getElementById('cAmount').value)||0,
+    notes:document.getElementById('cNotes').value.trim(),
+    status:'Opportunity Submitted'
+  });
+  if(error){msg('oppMsg',error.message,'error');btn.disabled=false;return}
+  msg('oppMsg',lang==='en'?'Opportunity submitted successfully!':'¡Oportunidad enviada con éxito!','success');
+  ['cFirst','cLast','cCompany','cEmail','cPhone','cAmount','cNotes'].forEach(id=>document.getElementById(id).value='');
+  await loadClients();
+  setTimeout(()=>{nav('pipeline')},1200);
+  btn.disabled=false;
+}
+
+// ---------- NAV ----------
+function nav(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById('view-'+view).classList.add('show');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="'+view+'"]').classList.add('active');
+  const titles={home:'home',newopp:'newOpps',pipeline:'pipeline',commissions:'commissions',announcements:'announcements',support:'support'};
+  document.getElementById('topTitle').textContent=tr(titles[view]);
+  closeSidebar();
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+
+// ---------- INIT ----------
+(async function(){
+  setLang(lang);
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) await loadAffiliate();
+})();
+</script>
+</body>
+</html>

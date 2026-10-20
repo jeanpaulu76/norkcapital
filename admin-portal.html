@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Portal — Nork Capital Lending</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#3DB33D;--green2:#4CC94C;--dark2:#14141f;--sidebar:#0f1b2d;--sidebar2:#16263d;--card:#1e1e2e;--white:#fff;--muted:rgba(255,255,255,0.55);--line:rgba(255,255,255,0.08)}
+body{font-family:"Open Sans",sans-serif;background:var(--dark2);color:#fff;min-height:100vh}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.auth-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 30%,rgba(61,179,61,0.08) 0%,transparent 70%)}
+.auth-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:2.5rem;max-width:400px;width:100%;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.auth-logo{text-align:center;margin-bottom:1rem}
+.auth-logo .l1{font-family:"Montserrat",sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:2px;color:#fff;display:block}
+.auth-logo .l2{font-family:"Montserrat",sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:5px;color:var(--green);display:block}
+.admin-badge{text-align:center;background:rgba(229,92,77,0.15);border:1px solid rgba(229,92,77,0.3);color:#ff8a7a;font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.3rem;border-radius:5px;margin-bottom:1.5rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-family:"Montserrat",sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.45rem}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:0.8rem 0.95rem;font-size:0.85rem;font-family:"Open Sans",sans-serif;color:#fff;outline:none;transition:border-color 0.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);background:rgba(61,179,61,0.06)}
+.field select option{background:#1e1e2e}
+.btn{width:100%;background:var(--green);color:#fff;border:none;padding:0.9rem;border-radius:5px;font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.btn:hover{background:var(--green2)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-sm{width:auto;padding:0.45rem 0.9rem;font-size:0.6rem}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.auth-msg{padding:0.7rem 0.9rem;border-radius:5px;font-size:0.78rem;margin-bottom:1rem;display:none}
+.auth-msg.error{background:rgba(229,92,77,0.12);border:1px solid rgba(229,92,77,0.3);color:#ff8a7a;display:block}
+.auth-msg.success{background:rgba(61,179,61,0.12);border:1px solid rgba(61,179,61,0.3);color:var(--green2);display:block}
+
+.app{display:none;min-height:100vh}
+.app.show{display:flex}
+.sidebar{width:230px;background:linear-gradient(180deg,var(--sidebar) 0%,var(--sidebar2) 100%);min-height:100vh;padding:1.5rem 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;transition:transform 0.3s}
+.sidebar-logo{padding:0 1.5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:1rem}
+.sidebar-logo .l1{font-family:"Montserrat",sans-serif;font-size:0.95rem;font-weight:900;letter-spacing:1.5px;color:#fff;display:block}
+.sidebar-logo .l2{font-family:"Montserrat",sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:3px;color:#ff8a7a;display:block}
+.nav-item{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1.5rem;color:rgba(255,255,255,0.6);cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.75rem;font-weight:600;transition:all 0.2s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+.nav-item.active{background:rgba(61,179,61,0.1);color:var(--green);border-left-color:var(--green)}
+.nav-item .ico{font-size:1.1rem;width:22px;text-align:center}
+.sidebar-foot{padding:1rem 1.5rem;margin-top:1rem;border-top:1px solid rgba(255,255,255,0.08)}
+.main{flex:1;margin-left:230px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:"Montserrat",sans-serif;font-size:0.95rem;font-weight:800;text-transform:uppercase}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;margin-right:1rem}
+.content{flex:1;padding:2rem;max-width:1200px}
+.view{display:none}.view.show{display:block}
+.page-title{font-family:"Montserrat",sans-serif;font-size:1.4rem;font-weight:900;text-transform:uppercase;margin-bottom:0.3rem}
+.page-sub{color:var(--muted);font-size:0.85rem;margin-bottom:2rem}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1.4rem;position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--green)}
+.stat-label{font-family:"Montserrat",sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem}
+.stat-value{font-family:"Montserrat",sans-serif;font-size:1.8rem;font-weight:900}
+.stat-value.green{color:var(--green)}
+.table-wrap{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{background:rgba(255,255,255,0.03);text-align:left;padding:0.9rem 1rem;font-family:"Montserrat",sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+td{padding:0.8rem 1rem;font-size:0.8rem;border-bottom:1px solid var(--line);color:rgba(255,255,255,0.85);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:0.25rem 0.7rem;border-radius:20px;font-family:"Montserrat",sans-serif;font-size:0.55rem;font-weight:700;text-transform:uppercase}
+.badge-pending{background:rgba(255,200,0,0.15);color:#f0c040}
+.badge-active{background:rgba(61,179,61,0.15);color:var(--green2)}
+.badge-suspended{background:rgba(229,92,77,0.15);color:#ff8a7a}
+.mini-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:0.4rem 0.5rem;font-size:0.75rem;color:#fff;width:100%;outline:none}
+.mini-input:focus{border-color:var(--green)}
+.mini-select{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:0.4rem 0.5rem;font-size:0.72rem;color:#fff;outline:none}
+.mini-select option{background:#1e1e2e}
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.empty .ico{font-size:2.5rem;margin-bottom:0.8rem;opacity:0.4}
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2rem;max-width:560px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+.row-actions{display:flex;gap:0.4rem;align-items:center}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}.stat-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="auth-wrap" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo"><span class="l1">NORK CAPITAL</span><span class="l2">LENDING</span></div>
+    <div class="admin-badge">🔒 Admin Access Only</div>
+    <div class="auth-msg" id="loginMsg"></div>
+    <div class="field"><label>Admin Email</label><input type="email" id="loginEmail" placeholder="jp@thetrigon.com"/></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
+    <button class="btn" id="loginBtn" onclick="doLogin()">Sign In to Admin</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><span class="l1">NORK CAPITAL</span><span class="l2">ADMIN PORTAL</span></div>
+    <div class="nav-item active" data-view="dash" onclick="nav('dash')"><span class="ico">📊</span>Dashboard</div>
+    <div class="nav-item" data-view="deals" onclick="nav('deals')"><span class="ico">💼</span>All Deals</div>
+    <div class="nav-item" data-view="affiliates" onclick="nav('affiliates')"><span class="ico">👥</span>Affiliates</div>
+    <div class="nav-item" data-view="announce" onclick="nav('announce')"><span class="ico">📣</span>Announcements</div>
+    <div class="sidebar-foot"><button class="btn btn-ghost" onclick="doLogout()">Sign Out</button></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <span class="topbar-title" id="topTitle">Dashboard</span>
+      </div>
+      <div style="font-size:0.78rem;color:var(--muted)">👤 <span id="adminName">Admin</span></div>
+    </div>
+
+    <div class="content">
+      <!-- DASHBOARD -->
+      <div class="view show" id="view-dash">
+        <div class="page-title">Admin Dashboard</div>
+        <div class="page-sub">Overview of all partner activity.</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Total Affiliates</div><div class="stat-value" id="dAff">0</div></div>
+          <div class="stat-card"><div class="stat-label">Total Deals</div><div class="stat-value" id="dDeals">0</div></div>
+          <div class="stat-card"><div class="stat-label">Pipeline Value</div><div class="stat-value green" id="dValue">$0</div></div>
+          <div class="stat-card"><div class="stat-label">Total Commissions</div><div class="stat-value green" id="dComm">$0</div></div>
+        </div>
+        <div class="page-sub" style="margin-bottom:1rem">Pending affiliate approvals</div>
+        <div class="table-wrap" id="pendingTable"></div>
+      </div>
+
+      <!-- ALL DEALS -->
+      <div class="view" id="view-deals">
+        <div class="page-title">All Deals</div>
+        <div class="page-sub">Update status, commission, and notes. Changes save instantly.</div>
+        <div class="table-wrap" id="dealsTable"></div>
+      </div>
+
+      <!-- AFFILIATES -->
+      <div class="view" id="view-affiliates">
+        <div class="page-title">Affiliates</div>
+        <div class="page-sub">Approve, activate, or suspend partner accounts.</div>
+        <div class="table-wrap" id="affTable"></div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="view" id="view-announce">
+        <div class="page-title">Announcements</div>
+        <div class="page-sub">Post updates visible to all partners in their portal.</div>
+        <div class="form-card" style="margin-bottom:2rem">
+          <div class="auth-msg" id="annMsg"></div>
+          <div class="field"><label>Title</label><input type="text" id="annTitle" placeholder="Announcement title"/></div>
+          <div class="field"><label>Message</label><textarea id="annBody" rows="4" placeholder="Write your message..."></textarea></div>
+          <button class="btn" id="annBtn" onclick="postAnn()">Post Announcement</button>
+        </div>
+        <div id="annList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://hptaeuzgtmrrmablwwvm.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_jbfFbmkxK5uUSsSfoM_KTA_wY_V_GIb';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+let allDeals=[],allAff=[];
+const STATUSES=['Opportunity Submitted','App Sent/Docs Requested','Processing Application','Program Review','Offer Presented','Application Approved','Funded','Closed-Lost'];
+
+function msg(id,t,type){const m=document.getElementById(id);m.textContent=t;m.className='auth-msg '+type}
+function fmt(n){return '$'+(Number(n)||0).toLocaleString()}
+
+async function doLogin(){
+  const btn=document.getElementById('loginBtn');btn.disabled=true;
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const {error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){msg('loginMsg',error.message,'error');btn.disabled=false;return}
+  await verifyAdmin();btn.disabled=false;
+}
+async function doLogout(){await sb.auth.signOut();location.reload()}
+
+async function verifyAdmin(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data}=await sb.from('affiliates').select('*').eq('user_id',user.id).single();
+  if(!data||data.role!=='admin'){msg('loginMsg','Access denied. This account is not an admin.','error');await sb.auth.signOut();return}
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('app').classList.add('show');
+  document.getElementById('adminName').textContent=data.first_name+' '+data.last_name;
+  await loadAll();
+}
+
+async function loadAll(){
+  const {data:deals}=await sb.from('clients').select('*, affiliates(first_name,last_name,business_name)').order('created_at',{ascending:false});
+  allDeals=deals||[];
+  const {data:affs}=await sb.from('affiliates').select('*').order('created_at',{ascending:false});
+  allAff=affs||[];
+  render();
+}
+
+function render(){
+  document.getElementById('dAff').textContent=allAff.filter(a=>a.role!=='admin').length;
+  document.getElementById('dDeals').textContent=allDeals.length;
+  document.getElementById('dValue').textContent=fmt(allDeals.reduce((s,d)=>s+(Number(d.loan_amount)||0),0));
+  document.getElementById('dComm').textContent=fmt(allDeals.reduce((s,d)=>s+(Number(d.commission)||0),0));
+
+  // Pending affiliates
+  const pending=allAff.filter(a=>a.status==='pending');
+  document.getElementById('pendingTable').innerHTML=pending.length?affRows(pending):'<div class="empty"><div class="ico">✅</div>No pending approvals.</div>';
+
+  // All affiliates
+  document.getElementById('affTable').innerHTML=allAff.filter(a=>a.role!=='admin').length?affRows(allAff.filter(a=>a.role!=='admin')):'<div class="empty"><div class="ico">👥</div>No affiliates yet.</div>';
+
+  // Deals
+  document.getElementById('dealsTable').innerHTML=allDeals.length?dealRows():'<div class="empty"><div class="ico">💼</div>No deals submitted yet.</div>';
+
+  loadAnn();
+}
+
+function affRows(list){
+  let h='<table><tr><th>Name</th><th>Business</th><th>Email</th><th>Type</th><th>Status</th><th>Action</th></tr>';
+  list.forEach(a=>{
+    const bcls=a.status==='active'?'badge-active':a.status==='suspended'?'badge-suspended':'badge-pending';
+    h+='<tr><td>'+(a.first_name||'')+' '+(a.last_name||'')+'</td><td>'+(a.business_name||'-')+'</td><td>'+(a.email||'-')+'</td><td>'+(a.partner_type||'-')+'</td><td><span class="badge '+bcls+'">'+a.status+'</span></td><td><div class="row-actions"><select class="mini-select" onchange="setAffStatus(\''+a.id+'\',this.value)"><option value="">Set...</option><option value="active">Activate</option><option value="pending">Pending</option><option value="suspended">Suspend</option></select></div></td></tr>';
+  });
+  return h+'</table>';
+}
+
+function dealRows(){
+  let h='<table><tr><th>Client</th><th>Partner</th><th>Loan Type</th><th>Amount</th><th>Status</th><th>Commission</th><th>Notes</th></tr>';
+  allDeals.forEach(d=>{
+    const partner=d.affiliates?(d.affiliates.first_name+' '+d.affiliates.last_name):'-';
+    let opts=STATUSES.map(s=>'<option value="'+s+'"'+(s===d.status?' selected':'')+'>'+s+'</option>').join('');
+    h+='<tr><td>'+(d.client_first_name||'')+' '+(d.client_last_name||'')+'</td><td>'+partner+'</td><td>'+(d.loan_type||'-')+'</td><td>'+fmt(d.loan_amount)+'</td>'+
+       '<td><select class="mini-select" onchange="setDeal(\''+d.id+'\',\'status\',this.value)">'+opts+'</select></td>'+
+       '<td><input class="mini-input" type="number" value="'+(d.commission||0)+'" style="width:90px" onblur="setDeal(\''+d.id+'\',\'commission\',this.value)"/></td>'+
+       '<td><input class="mini-input" value="'+(d.notes||'').replace(/"/g,'&quot;')+'" onblur="setDeal(\''+d.id+'\',\'notes\',this.value)"/></td></tr>';
+  });
+  return h+'</table>';
+}
+
+async function setAffStatus(id,status){
+  if(!status)return;
+  await sb.from('affiliates').update({status}).eq('id',id);
+  await loadAll();
+}
+async function setDeal(id,field,value){
+  const upd={};upd[field]=field==='commission'?Number(value)||0:value;upd.updated_at=new Date().toISOString();
+  await sb.from('clients').update(upd).eq('id',id);
+  const d=allDeals.find(x=>x.id===id);if(d)d[field]=upd[field];
+  render();
+}
+
+async function postAnn(){
+  const btn=document.getElementById('annBtn');btn.disabled=true;
+  const title=document.getElementById('annTitle').value.trim();
+  const body=document.getElementById('annBody').value.trim();
+  if(!title){msg('annMsg','Title is required.','error');btn.disabled=false;return}
+  const {error}=await sb.from('announcements').insert({title,body});
+  if(error){msg('annMsg',error.message,'error');btn.disabled=false;return}
+  msg('annMsg','Announcement posted!','success');
+  document.getElementById('annTitle').value='';document.getElementById('annBody').value='';
+  loadAnn();btn.disabled=false;
+}
+async function loadAnn(){
+  const {data}=await sb.from('announcements').select('*').order('posted_date',{ascending:false});
+  const list=document.getElementById('annList');
+  if(!data||!data.length){list.innerHTML='<div class="empty"><div class="ico">📣</div>No announcements.</div>';return}
+  list.innerHTML=data.map(a=>'<div class="form-card" style="margin-bottom:1rem;max-width:100%"><div style="display:flex;justify-content:space-between;align-items:start"><div><div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.3rem">'+(a.posted_date||'')+'</div><div style="font-family:Montserrat;font-weight:800;color:var(--green);margin-bottom:0.5rem">'+a.title+'</div><div style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.7">'+(a.body||'').replace(/\n/g,'<br>')+'</div></div><button class="btn btn-sm" style="background:rgba(229,92,77,0.15);color:#ff8a7a" onclick="delAnn(\''+a.id+'\')">Delete</button></div></div>').join('');
+}
+async function delAnn(id){await sb.from('announcements').delete().eq('id',id);loadAnn()}
+
+function nav(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById('view-'+view).classList.add('show');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="'+view+'"]').classList.add('active');
+  const t={dash:'Dashboard',deals:'All Deals',affiliates:'Affiliates',announce:'Announcements'};
+  document.getElementById('topTitle').textContent=t[view];closeSidebar();
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+
+(async function(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session)await verifyAdmin();
+})();
+</script>
+</body>
+</html>
