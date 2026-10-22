@@ -6,8 +6,7 @@
 <title>Home Equity &mdash; Nork Capital Lending</title>
 <meta name="description" content="Home equity options — Fixed-Rate HELOC, P&amp;L HELOC, and Home Equity Investment (HEI) — through Nork Capital Lending's licensed broker partner. English and Spanish."/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
+<style>*{box-sizing:border-box;margin:0;padding:0}
 :root{--green:#3DB33D;--green2:#4CC94C;--dark:#1C1C1C;--dark2:#222222;--white:#FFFFFF;--muted:#666;--grey:#F2F2F2;--radius:3px}
 body{font-family:'Open Sans',sans-serif;background:var(--white);color:var(--dark);line-height:1.7;overflow-x:hidden}
 nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);border-bottom:2px solid var(--green);height:70px;display:flex;justify-content:space-between;align-items:center;padding:0 2.5rem}
@@ -30,7 +29,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);borde
 .hero-caption h1 span{color:var(--green2)}
 .hero-caption p{color:rgba(255,255,255,0.85);font-size:0.92rem;line-height:1.8;margin-bottom:1.5rem}
 .hero-actions{display:flex;flex-wrap:wrap;gap:0.9rem}
-.btn-green{background:var(--green);color:#fff;padding:0.9rem 1.7rem;border-radius:var(--radius);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.btn-green{background:var(--green);color:#fff;padding:0.9rem 1.7rem;border-radius:var(--radius);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;text-decoration:none;transition:background .2s;border:none;cursor:pointer}
 .btn-green:hover{background:var(--green2)}
 .btn-outline-w{border:1.5px solid rgba(255,255,255,0.5);color:#fff;padding:0.85rem 1.6rem;border-radius:var(--radius);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
 .btn-outline-w:hover{border-color:var(--green);color:var(--green2)}
@@ -39,18 +38,33 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);borde
 .disclosure .ic{font-size:1.4rem}
 .disclosure h3{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#8a6d00;margin-bottom:0.4rem}
 .disclosure p{font-size:0.86rem;color:#5c5024;line-height:1.75}
-.section{max-width:1080px;margin:0 auto;padding:60px 2.5rem}
+.section{max-width:1100px;margin:0 auto;padding:60px 2.5rem}
 .sec-tag{font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.7rem}
-.sec-title{font-family:'Montserrat',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:900;text-transform:uppercase;margin-bottom:1rem;line-height:1.15}
+.sec-title{font-family:'Montserrat',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:900;text-transform:uppercase;margin-bottom:0.6rem;line-height:1.15}
+.sec-sub{color:#555;font-size:0.92rem;max-width:620px;margin-bottom:0.5rem}
 .explain-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center}
 .explain-grid p{font-size:0.92rem;color:#444;line-height:1.9;margin-bottom:1rem}
 .explain-grid img{width:100%;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.15);display:block}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:1.5rem}
-.card{background:#fff;border-radius:6px;padding:1.6rem;border-top:3px solid var(--green);box-shadow:0 6px 24px rgba(0,0,0,0.06)}
-.card .ic{font-size:1.7rem;margin-bottom:0.5rem}
-.card h4{font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;text-transform:uppercase;margin-bottom:0.5rem;line-height:1.3}
-.card p{font-size:0.82rem;color:#555;line-height:1.7}
-.card .tagline{display:inline-block;margin-top:0.7rem;font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--green)}
+/* OPTION CARDS (detailed) */
+.opt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2rem}
+.ocard{background:#fff;border:1px solid #e8e8e8;border-top:3px solid var(--green);border-radius:8px;padding:1.7rem;display:flex;flex-direction:column;box-shadow:0 8px 28px rgba(0,0,0,0.05)}
+.ocard .otag{display:inline-block;align-self:flex-start;background:#EAF7EA;color:#2b7a2b;font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:4px;margin-bottom:0.9rem}
+.ocard h3{font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:800;line-height:1.25;margin-bottom:0.7rem;color:#111}
+.ocard .lead{font-size:0.82rem;color:#555;line-height:1.7;margin-bottom:0.3rem}
+.orow{padding:0.8rem 0;border-top:1px solid #eee}
+.orow .ol{font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#333;margin-bottom:0.25rem}
+.orow .ot{font-size:0.8rem;color:#666;line-height:1.6}
+.oarea{font-size:0.75rem;color:#888;margin:0.9rem 0 1rem;font-style:italic}
+.olink{margin-top:auto;display:inline-block;font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--green);text-decoration:none}
+.olink:hover{color:var(--green2)}
+/* GOALS */
+.goals{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:1.8rem}
+.goal{border-top:2px solid var(--green);padding-top:1rem}
+.goal .gn{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;color:var(--green);margin-bottom:0.4rem}
+.goal h4{font-family:'Montserrat',sans-serif;font-size:0.92rem;font-weight:800;margin-bottom:0.5rem;color:#111}
+.goal a{font-size:0.76rem;color:#666;text-decoration:none}
+.goal a:hover{color:var(--green)}
+.goal-note{font-size:0.78rem;color:#888;margin-top:1.6rem;line-height:1.7;border-top:1px solid #eee;padding-top:1rem}
 .prep{background:var(--grey);padding:60px 2.5rem}
 .prep-inner{max-width:1000px;margin:0 auto;text-align:center}
 .prep .badge{display:inline-block;background:var(--dark);color:var(--green2);font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.4rem 1rem;border-radius:20px;margin-bottom:1rem}
@@ -64,7 +78,27 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);borde
 .step .n{font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;color:var(--green);margin-bottom:0.3rem}
 .step h4{font-family:'Montserrat',sans-serif;font-size:0.9rem;font-weight:800;margin-bottom:0.3rem}
 .step p{font-size:0.82rem;color:#555}
-.cta{background:var(--dark);text-align:center;padding:65px 2.5rem;position:relative;overflow:hidden}
+/* CONTACT */
+.contact{background:var(--dark);padding:60px 2.5rem}
+.contact-inner{max-width:620px;margin:0 auto}
+.contact .sec-tag{color:var(--green2);text-align:center}
+.contact h2{font-family:'Montserrat',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:900;text-transform:uppercase;color:#fff;text-align:center;margin-bottom:0.5rem}
+.contact p.cs{color:rgba(255,255,255,0.6);font-size:0.88rem;text-align:center;margin-bottom:2rem}
+.cform .cfield{margin-bottom:1rem}
+.cform label{display:block;font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.4rem}
+.cform label.req::after{content:" *";color:var(--green2)}
+.cform input,.cform select,.cform textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);border-radius:4px;padding:0.8rem 0.9rem;font-size:0.85rem;font-family:'Open Sans',sans-serif;color:#fff;outline:none}
+.cform textarea{min-height:90px;resize:vertical}.cform select option{background:#242438}
+.cform input:focus,.cform select:focus,.cform textarea:focus{border-color:var(--green)}
+.cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,0.25)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cform .btn-green{width:100%;margin-top:0.5rem}
+.cfine{font-size:0.68rem;color:rgba(255,255,255,0.3);text-align:center;margin-top:0.9rem;line-height:1.6}
+.csuccess{display:none;text-align:center;color:#fff;padding:1.5rem}
+.csuccess.show{display:block}.csuccess .ic{font-size:2.6rem;margin-bottom:0.8rem}
+.csuccess h3{font-family:'Montserrat',sans-serif;font-size:1.2rem;font-weight:900;text-transform:uppercase;margin-bottom:0.5rem}.csuccess h3 span{color:var(--green2)}
+.csuccess p{color:rgba(255,255,255,0.65);font-size:0.86rem}
+.cta{background:#111;text-align:center;padding:60px 2.5rem;position:relative;overflow:hidden}
 .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 50% 50%,rgba(61,179,61,0.12),transparent 70%)}
 .cta h2{font-family:'Montserrat',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:900;text-transform:uppercase;color:#fff;margin-bottom:0.7rem;position:relative;z-index:2}
 .cta h2 span{color:var(--green)}
@@ -74,9 +108,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);borde
 footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3rem;font-family:'Montserrat',sans-serif;font-size:0.65rem;letter-spacing:1px;text-transform:uppercase}
 .wa-float{position:fixed;bottom:22px;right:22px;z-index:900;display:flex;align-items:center;gap:0.6rem;background:#25D366;color:#fff;padding:0.7rem 1.1rem 0.7rem 0.85rem;border-radius:40px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.74rem;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,0.35)}
 .wa-float svg{width:24px;height:24px;fill:#fff}
-@media(max-width:850px){.explain-grid{grid-template-columns:1fr;gap:1.5rem}.cards,.steps{grid-template-columns:1fr}.hero-caption{padding:0 1.5rem}.nav-portal2{display:none}}
-@media(max-width:600px){.wa-float span{display:none}.wa-float{padding:0.8rem;border-radius:50%}}
-</style>
+@media(max-width:900px){.opt-cards{grid-template-columns:1fr}.goals{grid-template-columns:1fr 1fr}}
+@media(max-width:850px){.explain-grid{grid-template-columns:1fr;gap:1.5rem}.steps{grid-template-columns:1fr}.hero-caption{padding:0 1.5rem}.nav-portal2{display:none}.cgrid{grid-template-columns:1fr}}
+@media(max-width:600px){.wa-float span{display:none}.wa-float{padding:0.8rem;border-radius:50%}.goals{grid-template-columns:1fr}}</style>
 </head>
 <body>
 <nav>
@@ -106,7 +140,7 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3
     <div class="ic">&#128205;</div>
     <div>
       <h3 data-es="Aviso Importante">Important Notice</h3>
-      <p data-es="Nuestros programas de Home Equity se ofrecen en asociaci&oacute;n con un corredor (broker) con licencia: Luke Roasst (NMLS# 2311093), con orientaci&oacute;n sobre el capital provista a trav&eacute;s de Edge Home Finance, LLC (NMLS# 891464). Igualdad de Oportunidad de Vivienda. A trav&eacute;s de nuestro corredor con licencia compartimos el conocimiento y los detalles de cada programa y te conectamos directamente con ellos. Para obtener la informaci&oacute;n completa del programa &mdash; y para precalificar &mdash; debes trabajar directamente con el corredor con licencia. La precalificaci&oacute;n y la aprobaci&oacute;n est&aacute;n disponibles &uacute;nicamente a trav&eacute;s de ellos. Lo que Nork Capital Lending ofrece aqu&iacute; es el primer paso: ayudarte a entender los programas y preparar tu informaci&oacute;n.">Our Home Equity programs are offered in partnership with a licensed broker: Luke Roasst (NMLS# 2311093), with equity guidance provided through Edge Home Finance, LLC (NMLS# 891464). Equal Housing Lender. Through our licensed broker partner, we share the knowledge and details of each program and connect you directly with them. For complete program information &mdash; and to get pre-qualified &mdash; you must work directly with the licensed broker. Pre-qualification and approval are available only through them. What Nork Capital Lending provides here is the first step: helping you understand the programs and prepare your information.</p>
+      <p data-es="Nuestros programas de Home Equity se ofrecen en asociaci&oacute;n con un corredor (broker) con licencia (Igualdad de Oportunidad de Vivienda). A trav&eacute;s de nuestro corredor con licencia compartimos el conocimiento y los detalles de cada programa y te conectamos directamente con ellos. Para obtener la informaci&oacute;n completa del programa &mdash; y para precalificar &mdash; debes trabajar directamente con el corredor con licencia. La precalificaci&oacute;n y la aprobaci&oacute;n est&aacute;n disponibles &uacute;nicamente a trav&eacute;s de ellos. Lo que Nork Capital Lending ofrece aqu&iacute; es el primer paso: ayudarte a entender los programas y preparar tu informaci&oacute;n.">Our Home Equity programs are offered in partnership with a licensed broker partner (Equal Housing Lender). Through our licensed broker partner, we share the knowledge and details of each program and connect you directly with them. For complete program information &mdash; and to get pre-qualified &mdash; you must work directly with the licensed broker partner. Pre-qualification and approval are available only through them. What Nork Capital Lending provides here is the first step: helping you understand the programs and prepare your information.</p>
     </div>
   </div>
 </div>
@@ -122,19 +156,52 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3
   </div>
 </section>
 <section class="section" id="options" style="padding-top:0">
-  <div class="sec-tag" data-es="Tres Maneras de Acceder a tu Capital">Three Ways to Access Your Equity</div>
-  <h2 class="sec-title" data-es="Opciones de Home Equity">Your Equity Options</h2>
-  <div class="cards">
-    <div class="card"><div class="ic">&#127970;</div><h4 data-es="HELOC de Tasa Fija (Primer Retiro)">Fixed-Rate HELOC (Initial Draw)</h4><p data-es="Pide prestado contra el capital elegible y paga el monto retirado m&aacute;s intereses. El primer retiro usa una tasa fija; retiros posteriores pueden tener t&eacute;rminos diferentes.">Borrow against your eligible equity and repay the amount drawn plus interest. The initial draw uses a fixed rate; later draws may have different terms.</p><span class="tagline" data-es="Pide contra el capital. Paga el pr&eacute;stamo.">Borrow against equity. Repay the loan.</span></div>
-    <div class="card"><div class="ic">&#128188;</div><h4 data-es="P&amp;L HELOC (Trabajadores Independientes)">P&amp;L HELOC (Self-Employed)</h4><p data-es="Documenta tu ingreso con un estado de p&eacute;rdidas y ganancias (P&amp;L) de 12 o 24 meses &mdash; sin estados de cuenta bancarios para el c&aacute;lculo del ingreso. Es una l&iacute;nea de tasa variable garantizada por la propiedad.">Document your income with a 12- or 24-month profit-and-loss (P&amp;L) statement &mdash; no bank statements for the income calculation. It&rsquo;s a variable-rate line secured by the property.</p><span class="tagline" data-es="Solo P&amp;L describe c&oacute;mo documentas tu ingreso.">P&amp;L-only is how your income is documented.</span></div>
-    <div class="card"><div class="ic">&#127969;</div><h4 data-es="Inversi&oacute;n sobre el Capital (HEI)">Home Equity Investment (HEI)</h4><p data-es="El proveedor te financia a cambio de una parte acordada del valor futuro de tu casa. No hay pago mensual del HEI; sigues pagando tu hipoteca, impuestos, seguro y mantenimiento. Un pago único se liquida m&aacute;s adelante, sujeto a un tope contractual.">A provider funds you in exchange for an agreed share of your home&rsquo;s future value. There&rsquo;s no monthly HEI payment; you keep paying your mortgage, taxes, insurance, and upkeep. A lump sum settles later, subject to a contractual cap.</p><span class="tagline" data-es="Sin pago mensual no significa sin costo.">No monthly payment doesn&rsquo;t mean no cost.</span></div>
-  </div>
+  <div class="sec-tag" data-es="Tres Opciones. Diferentes Compromisos.">Three Options. Different Commitments.</div>
+  <h2 class="sec-title" data-es="Mira M&aacute;s All&aacute; del Efectivo que Recibes.">Look Beyond the Cash You Receive.</h2>
+  <p class="sec-sub" data-es="Dos enfoques de HELOC y una inversi&oacute;n de capital. C&oacute;mo calificas &mdash; y a qu&eacute; te comprometes &mdash; importa.">Two HELOC approaches and an equity investment. How you qualify &mdash; and what you commit to &mdash; matters.</p>
+  <div class="opt-cards"><div class="ocard">
+  <span class="otag">Fixed-Rate Initial-Draw HELOC</span>
+  <h3 data-es="Pide contra el capital. Paga el pr&eacute;stamo.">Borrow against equity. Repay the loan.</h3>
+  <p class="lead" data-es="Una l&iacute;nea de cr&eacute;dito sobre el capital de tu casa te permite pedir prestado contra el capital elegible y pagar el monto retirado m&aacute;s intereses.">A home equity line of credit lets you borrow against eligible property equity and repay the amount drawn plus interest.</p>
+  <div class="orow"><div class="ol" data-es="Qu&eacute; comparar">What to compare</div><div class="ot" data-es="El monto que recibes, la APR, los cargos y las obligaciones de pago en la oferta por escrito.">The amount you receive, APR, fees and repayment obligations in the written offer.</div></div>
+  <div class="orow"><div class="ol" data-es="C&oacute;mo funciona el programa">How the program works</div><div class="ot" data-es="El primer retiro usa una tasa fija. Retiros posteriores y compras con tarjeta pueden tener estructuras de tasa y t&eacute;rminos diferentes.">The initial draw uses a fixed rate. Later draws and card purchases can have different rate structures and terms.</div></div>
+  <div class="orow"><div class="ol" data-es="Qu&eacute; revisaremos">What we'll look at</div><div class="ot" data-es="Ingreso, cr&eacute;dito, deuda existente, capital disponible, uso y propiedad del inmueble.">Income, credit, existing debt, available equity, property use and ownership.</div></div>
+  <div class="orow"><div class="ol" data-es="El compromiso">The tradeoff</div><div class="ot" data-es="Una obligaci&oacute;n de pr&eacute;stamo garantizada y costos de financiamiento, sin un acuerdo para compartir el valor futuro de la casa.">A secured loan obligation and borrowing costs, without an agreement to share the home&rsquo;s future value.</div></div>
+  <div class="oarea" data-es="&Aacute;rea de revisi&oacute;n actual: CA, FL, TN y WA.">Current review area: CA, FL, TN and WA.</div>
+  <a href="#contact" class="olink" data-es="Conversar sobre este HELOC &rarr;">Discuss this HELOC &rarr;</a>
+</div><div class="ocard">
+  <span class="otag">P&amp;L HELOC</span>
+  <h3 data-es="Ingreso de negocio. Otra forma de documentar.">Business income. A different documentation path.</h3>
+  <p class="lead" data-es="Para prestatarios trabajadores independientes elegibles: usa un estado de p&eacute;rdidas y ganancias (P&amp;L) de 12 o 24 meses, sin estados de cuenta bancarios para calificar el ingreso.">For eligible self-employed borrowers: use a 12- or 24-month profit-and-loss statement without supporting bank statements for income qualification.</p>
+  <div class="orow"><div class="ol" data-es="Requisitos iniciales">Starting qualifications</div><div class="ot" data-es="Puntaje m&iacute;nimo de 740, hasta 80% de LTV combinado, dos a&ntilde;os de trabajo independiente en el mismo rubro y al menos 50% de propiedad del negocio.">740 minimum credit score, up to 80% combined loan-to-value, two years self-employed in the same line of work and at least 50% business ownership.</div></div>
+  <div class="orow"><div class="ol" data-es="Qui&eacute;n firma el P&amp;L">Who can sign the P&amp;L</div><div class="ot" data-es="Un CPA, agente inscrito, o preparador de impuestos con PTIN. El estado no necesita auditor&iacute;a.">A CPA, enrolled agent, or tax preparer with a PTIN. The statement does not need to be audited.</div></div>
+  <div class="orow"><div class="ol" data-es="El compromiso inicial">The initial commitment</div><div class="ot" data-es="Al menos 80% de la l&iacute;nea aprobada debe retirarse al cierre. Los costos y pagos requeridos reducen el efectivo disponible.">At least 80% of the approved line must be drawn at closing. Costs and required payoffs reduce cash in hand.</div></div>
+  <div class="orow"><div class="ol" data-es="El compromiso">The tradeoff</div><div class="ot" data-es="Documentaci&oacute;n de ingreso diferente, con una nueva deuda garantizada y costos. Todos los dem&aacute;s requisitos siguen aplicando.">Different income documentation, with a new secured debt and borrowing costs. All other qualification requirements still apply.</div></div>
+  <div class="oarea" data-es="&Aacute;rea de revisi&oacute;n actual: CA, FL, TN y WA.">Current review area: CA, FL, TN and WA.</div>
+  <a href="#contact" class="olink" data-es="Ver detalles del P&amp;L HELOC &rarr;">See P&amp;L HELOC details &rarr;</a>
+</div><div class="ocard">
+  <span class="otag">Home Equity Investment</span>
+  <h3 data-es="Sin pago mensual del HEI. Una liquidaci&oacute;n futura.">No monthly HEI payment. A future settlement.</h3>
+  <p class="lead" data-es="Una inversi&oacute;n sobre el capital te da fondos a cambio de una parte acordada del valor futuro de tu casa.">A home equity investment provides funds in exchange for an agreed share of the home&rsquo;s future value.</p>
+  <div class="orow"><div class="ol" data-es="C&oacute;mo funciona la liquidaci&oacute;n">How settlement works</div><div class="ot" data-es="Un pago &uacute;nico posterior basado en el acuerdo y el valor de la casa, sujeto a un tope contractual.">A later lump-sum payment based on the agreement and the home&rsquo;s value, subject to a contractual cap.</div></div>
+  <div class="orow"><div class="ol" data-es="Qu&eacute; contin&uacute;a">What continues</div><div class="ot" data-es="Sigues pagando tu hipoteca, impuestos, seguro y mantenimiento.">You still pay your existing mortgage, property taxes, insurance and upkeep.</div></div>
+  <div class="orow"><div class="ol" data-es="Qu&eacute; revisaremos">What we'll look at</div><div class="ot" data-es="Capital, cr&eacute;dito, grav&aacute;menes y elegibilidad de la propiedad. Esta opci&oacute;n puede ayudar cuando la calificaci&oacute;n de ingreso y el valor de la casa limitan el financiamiento tradicional.">Equity, credit, liens and property eligibility. This option may help when income qualification and the home&rsquo;s value limit traditional borrowing.</div></div>
+  <div class="orow"><div class="ol" data-es="El compromiso">The tradeoff</div><div class="ot" data-es="Sin pago mensual del HEI, pero con costos de liquidaci&oacute;n potencialmente altos y menos capital para ti m&aacute;s adelante.">No monthly HEI payment, but potentially substantial settlement costs and less equity left for you later.</div></div>
+  <div class="oarea" data-es="&Aacute;rea de revisi&oacute;n actual: CA, FL, TN y WA.">Current review area: CA, FL, TN and WA.</div>
+  <a href="#contact" class="olink" data-es="Conversar sobre una inversi&oacute;n de capital &rarr;">Discuss an equity investment &rarr;</a>
+</div></div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="sec-tag" data-es="Empieza con lo que te Importa">Start With What Matters to You</div>
+  <h2 class="sec-title" data-es="&iquest;Qu&eacute; Podr&iacute;a Lograr tu Capital?">What Could Your Equity Help You Do?</h2>
+  <div class="goals"><div class="goal"><div class="gn">01</div><h4 data-es="Pagar otras deudas">Pay down other debt</h4><a href="#contact" data-es="Explora los pros y contras &#8599;">Explore the tradeoffs &#8599;</a></div><div class="goal"><div class="gn">02</div><h4 data-es="Mejorar una propiedad">Improve a property</h4><a href="#contact" data-es="Planea tu pr&oacute;ximo proyecto &#8599;">Plan your next project &#8599;</a></div><div class="goal"><div class="gn">03</div><h4 data-es="Financia tu pr&oacute;ximo paso">Fund your next move</h4><a href="#contact" data-es="Metas de inversi&oacute;n o negocio &#8599;">Investment or business goals &#8599;</a></div><div class="goal"><div class="gn">04</div><h4 data-es="Cubrir un gasto importante">Cover a major expense</h4><a href="#contact" data-es="Conversa tus necesidades &#8599;">Talk through your needs &#8599;</a></div></div>
+  <p class="goal-note" data-es="Usar el capital de tu propiedad para pagar otras deudas crea una nueva obligaci&oacute;n garantizada por tu propiedad. Compara tanto el impacto mensual como el costo total.">Using property equity to pay other debts creates a new obligation secured by your property. Compare both the monthly impact and the total cost.</p>
 </section>
 <section class="prep" id="hei">
   <div class="prep-inner">
     <div class="badge" data-es="Inversi&oacute;n sobre el Capital (HEI) / Cash-Out">Home Equity Investment (HEI) / Cash-Out</div>
     <h2 data-es="Prepara tu Informaci&oacute;n">Prepare Your Information</h2>
-    <p class="sub" data-es="Re&uacute;ne tus datos y responde unas preguntas sencillas. Con esto te conectamos con el corredor con licencia, qui&eacute;n conoce cada programa y completa tu precalificaci&oacute;n. Toma unos minutos y no afecta tu cr&eacute;dito.">Gather your details and answer a few simple questions. With this, we connect you to the licensed broker, who knows every program and completes your pre-qualification. It takes just a few minutes and doesn&rsquo;t affect your credit.</p>
+    <p class="sub" data-es="Re&uacute;ne tus datos y responde unas preguntas sencillas. Con esto te conectamos con el corredor con licencia. Toma unos minutos y no afecta tu cr&eacute;dito.">Gather your details and answer a few simple questions. With this, we connect you to the licensed broker. It takes just a few minutes and doesn&rsquo;t affect your credit.</p>
     <div class="prep-actions">
       <a href="hei-form.html" class="btn-green" data-es="Comenzar &mdash; Prepara tu Informaci&oacute;n &rarr;">Start &mdash; Prepare Your Information &rarr;</a>
     </div>
@@ -153,12 +220,39 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3
     <div class="step"><div class="n">03</div><h4 data-es="Precalifica con el Corredor">Pre-Qualify with the Broker</h4><p data-es="El corredor con licencia revisa tu caso, responde tus preguntas y realiza tu precalificaci&oacute;n.">The licensed broker reviews your case, answers your questions, and handles your pre-qualification.</p></div>
   </div>
 </section>
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="sec-tag" data-es="Hablemos">Let&rsquo;s Talk</div>
+    <h2 data-es="Cu&eacute;ntame Qu&eacute; Buscas">Tell Me What You&rsquo;re Looking For</h2>
+    <p class="cs" data-es="Env&iacute;ame tus datos y me comunico contigo directamente para conversar la mejor opci&oacute;n de capital para ti.">Send me your details and I&rsquo;ll reach out to you directly to discuss the right equity option for you.</p>
+    <form class="cform" id="cForm" onsubmit="return eqContact(event)">
+      <div class="cgrid">
+        <div class="cfield"><label class="req" data-es="Nombre">Name</label><input type="text" name="Name" required/></div>
+        <div class="cfield"><label class="req" data-es="Tel&eacute;fono">Phone</label><input type="tel" name="Phone" placeholder="(786) 000-0000" required/></div>
+      </div>
+      <div class="cfield"><label class="req" data-es="Correo Electr&oacute;nico">Email</label><input type="email" name="Email" placeholder="you@example.com" required/></div>
+      <div class="cfield"><label data-es="&iquest;Qu&eacute; opci&oacute;n te interesa?">Which option interests you?</label>
+        <select name="Option of Interest">
+          <option value="" data-es="Selecciona...">Select...</option>
+          <option value="Fixed-Rate HELOC" data-es="HELOC de Tasa Fija">Fixed-Rate HELOC</option>
+          <option value="P&amp;L HELOC" data-es="P&amp;L HELOC">P&amp;L HELOC</option>
+          <option value="Home Equity Investment (HEI)" data-es="Inversi&oacute;n sobre el Capital (HEI)">Home Equity Investment (HEI)</option>
+          <option value="Not sure yet" data-es="A&uacute;n no estoy seguro">Not sure yet</option>
+        </select>
+      </div>
+      <div class="cfield"><label data-es="Mensaje (opcional)">Message (optional)</label><textarea name="Message" placeholder="Tell me about your property and goal..." data-es-ph="Cu&eacute;ntame sobre tu propiedad y tu meta..."></textarea></div>
+      <button type="submit" class="btn-green" id="cBtn" data-es="Enviar &mdash; Cont&aacute;ctame">Send &mdash; Contact Me</button>
+      <p class="cfine" data-es="&#128274; Tu informaci&oacute;n es segura. Esto no consulta tu cr&eacute;dito. La precalificaci&oacute;n es a trav&eacute;s del corredor con licencia.">&#128274; Your information is secure. This does not run your credit. Pre-qualification is through the licensed broker partner.</p>
+    </form>
+    <div class="csuccess" id="cOk"><div class="ic">&#9989;</div><h3 data-es-html="&iexcl;Mensaje <span>Enviado!</span>">Message <span>Sent!</span></h3><p data-es="Gracias. Me comunicar&eacute; contigo muy pronto para conversar tus opciones de capital.">Thank you. I&rsquo;ll reach out to you shortly to discuss your equity options.</p></div>
+  </div>
+</section>
 <section class="cta">
   <h2 data-es-html="&iquest;Listo para Usar el <span>Capital de tu Casa?</span>">Ready to Tap Into <span>Your Home&rsquo;s Equity?</span></h2>
   <p data-es="Prepara tu informaci&oacute;n hoy y te conectamos con el corredor con licencia.">Prepare your information today and we&rsquo;ll connect you with the licensed broker.</p>
   <a href="hei-form.html" class="btn-green" data-es="Prepara tu Informaci&oacute;n &rarr;">Prepare Your Information &rarr;</a>
 </section>
-<div class="disc-fine" data-es="Los programas de Home Equity (HELOC de tasa fija, P&amp;L HELOC e Inversi&oacute;n sobre el Capital/HEI) se ofrecen a trav&eacute;s de un corredor con licencia: Luke Roasst (NMLS# 2311093), orientaci&oacute;n a trav&eacute;s de Edge Home Finance, LLC (NMLS# 891464). Igualdad de Oportunidad de Vivienda. Las tres opciones colocan un grav&aacute;men sobre la propiedad; incumplir las obligaciones puede poner en riesgo la propiedad. Esto no es una aprobaci&oacute;n de pr&eacute;stamo ni un compromiso de prestar, ni una oferta para celebrar un acuerdo. Todos los productos est&aacute;n sujetos a aprobaci&oacute;n de cr&eacute;dito y de la propiedad; la disponibilidad var&iacute;a seg&uacute;n el producto, el uso de la propiedad y el estado. Nork Capital Lending brinda informaci&oacute;n y te conecta con el corredor; no realiza la precalificaci&oacute;n ni la aprobaci&oacute;n. Preparar tu informaci&oacute;n no consulta tu cr&eacute;dito.">Home Equity programs (Fixed-Rate HELOC, P&amp;L HELOC, and Home Equity Investment/HEI) are offered through a licensed broker: Luke Roasst (NMLS# 2311093), with guidance through Edge Home Finance, LLC (NMLS# 891464). Equal Housing Lender. All three options place a lien on the property; failure to meet obligations can put the property at risk. This is not a loan approval or commitment to lend, and not an offer to enter an agreement. All products are subject to credit and property approval; availability varies by product, property use, and state. Nork Capital Lending provides information and connects you with the broker; it does not perform pre-qualification or approval. Preparing your information does not run your credit.</div>
+<div class="disc-fine" data-es="Los programas de Home Equity (HELOC de tasa fija, P&amp;L HELOC e Inversi&oacute;n sobre el Capital/HEI) se ofrecen a trav&eacute;s de un corredor con licencia (Igualdad de Oportunidad de Vivienda). Las tres opciones colocan un grav&aacute;men sobre la propiedad; incumplir las obligaciones puede poner en riesgo la propiedad. Esto no es una aprobaci&oacute;n de pr&eacute;stamo ni un compromiso de prestar, ni una oferta para celebrar un acuerdo. Todos los productos est&aacute;n sujetos a aprobaci&oacute;n de cr&eacute;dito y de la propiedad; la disponibilidad var&iacute;a seg&uacute;n el producto, el uso de la propiedad y el estado. Nork Capital Lending brinda informaci&oacute;n y te conecta con el corredor; no realiza la precalificaci&oacute;n ni la aprobaci&oacute;n. Preparar tu informaci&oacute;n no consulta tu cr&eacute;dito.">Home Equity programs (Fixed-Rate HELOC, P&amp;L HELOC, and Home Equity Investment/HEI) are offered through a licensed broker partner (Equal Housing Lender). All three options place a lien on the property; failure to meet obligations can put the property at risk. This is not a loan approval or commitment to lend, and not an offer to enter an agreement. All products are subject to credit and property approval; availability varies by product, property use, and state. Nork Capital Lending provides information and connects you with the broker; it does not perform pre-qualification or approval. Preparing your information does not run your credit.</div>
 <footer><span data-es="&copy; 2026 Nork Capital Lending &middot; Una compa&ntilde;&iacute;a de Nork Group &middot; tc@nork.group">&copy; 2026 Nork Capital Lending &middot; A Nork Group Company &middot; tc@nork.group</span></footer>
 <a href="https://wa.me/17863696335?text=Hi%20Nork%20Capital%20Lending%2C%20I%27d%20like%20more%20information%20about%20Home%20Equity" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18.3a8.3 8.3 0 01-4.2-1.2l-.3-.2-2.9.8.8-2.8-.2-.3a8.3 8.3 0 1113.5-6.3 8.3 8.3 0 01-8.3 8.3zm4.6-6.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.8 6.8 0 01-2-1.2 7.5 7.5 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5a.5.5 0 000-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3c-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.3z"/></svg><span data-es="Chatea con Nosotros">Chat with Us</span></a>
 <script>
@@ -172,6 +266,17 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3
   var sv='en';try{sv=localStorage.getItem('nork_lang')||'en';}catch(e){}
   if(sv==='es')apply('es');else{var b=document.getElementById('langBtn');if(b)b.textContent='ES';}
 })();
+function eqContact(e){
+  e.preventDefault();var es=(localStorage.getItem('nork_lang')==='es');
+  var b=document.getElementById('cBtn');b.disabled=true;b.textContent=es?'Enviando...':'Sending...';
+  var fd=new FormData(e.target);var d={};fd.forEach(function(v,k){d[k]=v;});
+  d['_subject']='Home Equity — Discuss / Contact Request';d['Form Type']='Home Equity Contact';
+  fetch('https://formspree.io/f/mgoqvynl',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(d)})
+   .then(function(r){if(r.ok){document.getElementById('cForm').style.display='none';document.getElementById('cOk').classList.add('show');}
+     else{b.disabled=false;b.textContent=es?'Enviar':'Send';alert('Error / Error al enviar. tc@nork.group');}})
+   .catch(function(){b.disabled=false;b.textContent=es?'Enviar':'Send';alert('Connection error / Error. tc@nork.group');});
+  return false;
+}
 </script>
 </body>
 </html>
