@@ -21,6 +21,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--dark);borde
 .nav-back:hover{color:var(--green)}
 .nav-cta{background:var(--green);color:#fff;padding:0.55rem 1.3rem;border-radius:var(--radius);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none}
 .nav-cta:hover{background:var(--green2)}
+.nav-links{list-style:none;display:flex;gap:1.6rem;margin:0;padding:0;align-items:center}
+.nav-links a{color:#fff;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--green)}
+@media(max-width:1024px){.nav-links{display:none}}
 .hero{padding:130px 2.5rem 70px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:3.5rem;align-items:center}
 .tag{font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:1rem}
 .hero h1{font-family:'Montserrat',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;line-height:1.08;text-transform:none;margin-bottom:1.3rem;color:#111}
@@ -69,6 +73,14 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:1.3
 <body>
 <nav>
   <a href="index.html" class="nav-brand"><span class="l1">NORK CAPITAL</span><span class="l2">LENDING</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-es="Inicio">Home</a></li>
+    <li><a href="index.html#programs" data-es="Programas de Préstamo">Loan Programs</a></li>
+    <li><a href="index.html#how" data-es="Cómo Funciona">How It Works</a></li>
+    <li><a href="index.html#markets" data-es="Mercados">Markets</a></li>
+    <li><a href="affiliate.html" data-es="Programa de Afiliados">Affiliate Programs</a></li>
+    <li><a href="lenders.html" data-es="Prestamistas">Lenders</a></li>
+  </ul>
   <div class="nav-right">
     <button class="lang-toggle" id="langBtn" onclick="toggleLang()">ES</button>
     <a href="index.html" class="nav-back" data-es="&larr; Volver al Inicio">&larr; Back to Home</a>
