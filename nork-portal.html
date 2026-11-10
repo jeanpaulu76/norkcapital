@@ -255,6 +255,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .file > span:not(.pill){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
 .file button{background:none;border:0;cursor:pointer;color:var(--muted);padding:0;display:grid}
 .upl{position:relative;overflow:hidden}
+.helpbar{background:var(--green);color:var(--on-green);font-size:14px}
+.helpbar .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-block:9px}
+.helpbar .wrap>span{flex:1;min-width:200px}
+.helpbar .btn{background:var(--on-green);color:var(--green);border-color:transparent}
 .fname{background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;font-size:12.5px}
 .fname:hover{color:var(--green);text-decoration:underline}
 .spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);animation:sp 0.9s linear infinite;margin:0 auto 14px}
@@ -380,10 +384,10 @@ const blankEntity = () => ({id:null,name:'',type:'',state:'',ein:'',formed:'',me
 const fresh = () => ({ lang:'en', role:null, email:'', uid:null, me:null,
   profile:blankProfile(), docs:{}, entity:blankEntity(), edocs:{}, appdocs:{},
   track:[], apps:[], payoffs:[], letters:[], draft:null, payoffDraft:null, letterDraft:null, afterAuth:null, ref:'',
-  team:{apps:[],payoffs:[],letters:[],people:[]}, realtorApps:[] });
+  team:{apps:[],payoffs:[],letters:[],people:[]}, realtorApps:[], helping:null, my:{first:'',last:''}, subjEmail:'', consent:false });
 let S = fresh();
 try{ const p = JSON.parse(localStorage.getItem(PREFS)||'{}'); ['lang','draft','afterAuth','ref'].forEach(k=>{ if(p[k]!=null) S[k]=p[k]; }); }catch(e){}
-const U = { view:'loading', role:'borrower', authMode:'signin', authTab:'email', otpSent:false, recovery:RECOVERY, tstep:1, tdraft:null, modal:null, tab:'pipeline', filter:'', q:'', err:'' };
+const U = { view:'loading', role:'borrower', authMode:'signin', authTab:'email', otpSent:false, recovery:RECOVERY, tstep:1, tdraft:null, modal:null, tab:'clients', filter:'', q:'', err:'' };
 function save(){ try{ localStorage.setItem(PREFS, JSON.stringify({lang:S.lang, draft:S.draft, afterAuth:S.afterAuth, ref:S.ref})); }catch(e){} }
 
 const L = (en, es) => S.lang === 'es' ? es : en;
@@ -502,8 +506,11 @@ function checklistHTML(a, opts={}){
       const got=h.includes(it[0]); const pill = got?`<span class="pill ok">${ic('check')} ${L('Received','Recibido')}</span>`: it[3]==='nork'?`<span class="pill neu">${L('Nork requests','Lo pide Nork')}</span>`: it[4]==='optional'?`<span class="pill neu">${L('If applicable','Si aplica')}</span>`:`<span class="pill bad">${L('Missing','Falta')}</span>`;
       return `<div class="uwi"><span class="dot ${got?'done':''}">${got?ic('check'):''}</span><div class="uwb"><b>${it[1]}</b>${it[2]?`<p>${it[2]}</p>`:''}${it[5]?`<ul>${it[5].map(x=>`<li>${x}</li>`).join('')}</ul>`:''}</div><div class="uwa">${pill}${opts.team?teamItemBtns(a,it[0],got):''}</div></div>`; }).join('')}</div>`; }).join('')}</div>`;
 }
-const myName = () => (S.profile.first+' '+S.profile.last).trim() || S.email;
-const allApps = () => S.role==='team' ? S.team.apps : S.role==='realtor' ? S.realtorApps : S.apps.map(a=>({...a, borrower: myName()}));
+const myName = () => (S.profile.first+' '+S.profile.last).trim() || S.subjEmail || S.email;
+const SUBJ = () => S.helping ? S.helping.id : S.uid;
+const isHelper = () => S.role==='team' || (S.role==='realtor' && !!(S.me && S.me.approved));
+function personName(id){ if(!id) return ''; if(id===S.uid) return ((S.my.first+' '+S.my.last).trim()||S.email); const p=(S.team.people||[]).find(x=>x.id===id); return p ? ((((p.first_name||'')+' '+(p.last_name||'')).trim())||p.email) : 'Nork'; }
+const allApps = () => (isHelper() && !S.helping) ? S.team.apps : S.apps.map(a=>({...a, borrower: myName()}));
 
 /* ---------- small builders ---------- */
 function field(label, path, o={}){
@@ -527,7 +534,7 @@ function docCard(scope, key, def){
   return `<div class="dcard ${files.length?'has':(req?'need':'')}" data-drop="${scope}.${key}">
     <div class="top"><div class="di">${ic(icn)}</div><div style="min-width:0"><b>${title}${req?' <span class="req">*</span>':''}</b>${files.length?` <span class="pill ok">${ic('check')} ${L('Received','Recibido')}</span>`:''}<p>${desc}</p></div>
     <label class="btn out sm up upl">${ic('upload')} ${L('Upload','Subir')}<input type="file" multiple data-upload="${scope}.${key}" aria-label="${esc(title)}"></label></div>
-    ${files.length?`<div class="files">${files.map((f,i)=>`<div class="file">${ic('doc')}<button type="button" class="fname" data-viewfile="${esc(f.path)}" title="${L('Open','Abrir')}">${esc(f.name)}</button><small class="muted">${f.kb} KB</small><button data-rmfile="${scope}.${key}" data-i="${i}" aria-label="${L('Remove','Quitar')}">${ic('x')}</button></div>`).join('')}</div>`:''}
+    ${files.length?`<div class="files">${files.map((f,i)=>`<div class="file">${ic('doc')}<button type="button" class="fname" data-viewfile="${esc(f.path)}" title="${L('Open','Abrir')}">${esc(f.name)}</button><small class="muted">${f.kb} KB${f.by&&f.owner&&f.by!==f.owner?' · '+esc(L('by ','por ')+personName(f.by)):''}</small><button data-rmfile="${scope}.${key}" data-i="${i}" aria-label="${L('Remove','Quitar')}">${ic('x')}</button></div>`).join('')}</div>`:''}
   </div>`;
 }
 function contactCard(title){
@@ -551,7 +558,7 @@ function toast(msg){ document.querySelectorAll('.toast').forEach(x=>x.remove());
 function demoStrip(){ return ''; }
 function header(){
   const signed = !!S.uid && !!S.role;
-  const name = (S.profile.first ? (S.profile.first+' '+(S.profile.last||'')).trim() : (S.email||'').split('@')[0]) || L('Account','Cuenta');
+  const name = (S.my.first ? (S.my.first+' '+(S.my.last||'')).trim() : (S.email||'').split('@')[0]) || L('Account','Cuenta');
   return `<header class="hdr"><div class="wrap">
     <button class="brand" data-go="${signed?home():'landing'}" aria-label="NORK PORTAL"><img src="${LOGO}" alt=""><span><span class="wm">NORK <span>PORTAL</span></span><small>Nork Capital Lending · Nork Group</small></span></button>
     <div class="sp"></div>
@@ -560,7 +567,8 @@ function header(){
     ${signed?`<div class="uchip"><span class="avatar">${esc(name.slice(0,2).toUpperCase())}</span><span>${esc(name)}${S.role==='team'?` <span class="pill neu">${L('Nork team','Equipo Nork')}</span>`:S.role==='realtor'?' <span class="pill neu">Realtor</span>':''}</span><button class="linkbtn" data-act="signout">${ic('logout')} ${L('Sign out','Salir')}</button></div>`:''}
   </div></header>`;
 }
-const home = () => S.role==='team' ? 'team' : S.role==='realtor' ? 'realtor' : 'dash';
+const home = () => S.helping ? 'dash' : S.role==='team' ? 'team' : S.role==='realtor' ? 'realtor' : 'dash';
+function helpBar(){ if(!S.helping) return ''; return `<div class="helpbar"><div class="wrap">${ic('users')}<span>${L('You are helping','Estás ayudando a')} <b>${esc(S.helping.name)}</b>. ${L('Everything you add or upload saves to their file.','Todo lo que agregues o subas se guarda en su expediente.')}</span><button class="btn sm" data-act="exithelp">${ic('back')} ${S.role==='team'?L('Back to pipeline','Volver al pipeline'):L('Back to my clients','Volver a mis clientes')}</button></div></div>`; }
 
 /* ---------- views ---------- */
 function vLanding(){
@@ -644,6 +652,7 @@ function authCard(){
         ${role==='realtor'?field(L('Brokerage','Correduría'),'profile.brokerage',{})+field(L('License #','Licencia #'),'profile.license',{}):''}
         <div class="fld full"><label for="pw2">${L('Create a password','Crea una contraseña')} <span class="req">*</span></label><input id="pw2" type="password" autocomplete="new-password" placeholder="${L('At least 8 characters, with upper & lower case and a number','Mínimo 8 caracteres, con mayúscula, minúscula y un número')}"></div>
       </div>
+      ${role!=='realtor'?`<label class="chk small"><input type="checkbox" id="helpok"> <span>${L('Allow the Nork team and my realtor to see my information and documents and help complete my loan file. I can turn this off any time.','Permito que el equipo Nork y mi realtor vean mi información y documentos y me ayuden a completar mi expediente. Puedo desactivarlo cuando quiera.')}</span></label>`:''}
       <label class="chk small"><input type="checkbox" id="agree"> <span>${L('I agree to the Terms and Privacy Policy and to receive loan updates by text and email.','Acepto los Términos y la Política de Privacidad y recibir actualizaciones por texto y email.')}</span></label>
       <button class="btn pri block" type="submit">${S.afterAuth==='apply'?L('Create account & start application','Crear cuenta y comenzar solicitud'):L('Create my account','Crear mi cuenta')} ${ic('arrow')}</button>
     </form>
@@ -702,9 +711,10 @@ function vDash(){
   const item = (ok, t, d, go) => `<div class="ritem"><span class="dot ${ok?'done':''}">${ok?ic('check'):''}</span><div><b>${t}</b><span>${d}</span></div><button class="add" data-go="${go}">${ok?L('Edit','Editar'):L('Add','Agregar')}</button></div>`;
   const name = S.profile.first || '';
   return `<div class="wrap page">
-    <div class="pagehead"><div><h1>${L('Welcome back','Bienvenido de nuevo')}${name?', '+esc(name):''}!</h1><p class="muted">${L('Track your loan applications and documents','Sigue tus solicitudes de préstamo y documentos')}</p></div>
+    <div class="pagehead"><div><h1>${S.helping?esc(S.helping.name)+L('’s loan file',' · expediente'):L('Welcome back','Bienvenido de nuevo')+(name?', '+esc(name):'')+'!'}</h1><p class="muted">${L('Track your loan applications and documents','Sigue tus solicitudes de préstamo y documentos')}</p></div>
       <div class="row"><button class="btn out" data-act="refresh">${ic('refresh')} ${L('Refresh','Actualizar')}</button><button class="btn pri" data-act="startapp">${ic('plus')} ${L('New application','Nueva solicitud')}</button></div></div>
     <div class="dash"><div class="stack">
+      ${!S.helping && S.role==='borrower' && !S.consent ? `<div class="note ok">${ic('users')}<div style="flex:1"><b>${L('Want help completing your file?','¿Quieres ayuda para completar tu expediente?')}</b><div class="small">${L('Allow the Nork team and your realtor to see your information and documents and upload them for you. You can turn this off any time in My profile.','Permite que el equipo Nork y tu realtor vean tu información y documentos y los suban por ti. Puedes desactivarlo cuando quieras en Mi perfil.')}</div></div><button class="btn pri sm" data-act="allowhelp">${L('Allow','Permitir')}</button></div>`:''}
       <div class="card pad ready">
         <div class="row between"><div><h3 style="font-size:17px">${L('Ready for your next deal','Listo para tu próximo negocio')}</h3><p class="small muted">${L('Everything below carries over to every application, so you only set it up once.','Todo lo de abajo se usa en cada solicitud, así que solo lo configuras una vez.')}</p></div>
         <div class="small" style="text-align:right"><b>${done===6?L('All set','Todo listo'):L("Let's get you started",'Comencemos')}</b><br><span class="muted">${done} ${L('of 6 in place','de 6 listos')}</span></div></div>
@@ -762,7 +772,7 @@ function vProfile(){
         ${field(L('Residency status','Estatus de residencia'),'profile.residency',{options:[['citizen',L('US citizen','Ciudadano/a de EE. UU.')],['pr',L('Permanent resident','Residente permanente')],['nonperm',L('Non-permanent resident','Residente no permanente')],['foreign',L('Foreign national','Extranjero/a')]]})}
       </div></div>
       <div class="sect"><h3>${ic('phone')} ${L('Contact information','Información de contacto')}</h3><div class="grid2">
-        <div class="fld"><label>${L('Email address','Correo electrónico')}</label><input value="${esc(S.email)}" readonly aria-readonly="true"><small>${L('This is your sign-in email. Contact your Nork team to change it.','Es tu email de acceso. Contacta a tu equipo Nork para cambiarlo.')}</small></div>
+        <div class="fld"><label>${L('Email address','Correo electrónico')}</label><input value="${esc(S.subjEmail||S.email)}" readonly aria-readonly="true"><small>${L('This is your sign-in email. Contact your Nork team to change it.','Es tu email de acceso. Contacta a tu equipo Nork para cambiarlo.')}</small></div>
         ${field(L('Phone number','Teléfono'),'profile.phone',{type:'tel',ph:'(555) 123-4567',ac:'tel'})}
         <div class="fld full"><label>${L('SMS notifications','Notificaciones por SMS')}</label><div class="row between"><span class="small muted" style="max-width:44ch">${L('I agree to receive text message updates about my loan applications.','Acepto recibir actualizaciones por mensaje de texto sobre mis solicitudes.')}</span>${seg('profile.sms',[[true,L('Yes','Sí')],[false,'No']])}</div></div>
       </div></div>
@@ -773,6 +783,7 @@ function vProfile(){
       <div class="sect"><h3>${ic('building')} ${L('Companies & entities','Empresas y entidades')}</h3>
         ${S.entity.name?`<div class="row between"><div><b>${esc(S.entity.name)}</b><div class="small muted">${esc(S.entity.type||'')} · ${S.entity.members.length} ${L('members','miembros')}</div></div><button type="button" class="btn out sm" data-go="entity">${L('Manage','Administrar')}</button></div>`
         :`<div class="row between"><span class="muted small">${L('No companies linked to your profile yet.','Aún no hay empresas vinculadas a tu perfil.')}</span><button type="button" class="btn out sm" data-go="entity">${ic('plus')} ${L('Add company','Agregar empresa')}</button></div>`}</div>
+      <div class="sect"><h3>${ic('users')} ${L('Who can help with my file','Quién puede ayudarme con mi expediente')}</h3><div class="row between"><span class="small muted" style="max-width:52ch">${L('Allow the Nork team and my approved realtor to see my information and documents and help complete my loan file.','Permito que el equipo Nork y mi realtor aprobado vean mi información y documentos y me ayuden a completar mi expediente.')}</span>${S.helping?(S.consent?`<span class="pill ok">${ic('check')} ${L('Allowed','Permitido')}</span>`:`<span class="pill neu">${L('Not allowed','No permitido')}</span>`):`<div class="seg"><button type="button" class="${S.consent?'on':''}" data-act="allowhelp">${L('Allow','Permitir')}</button><button type="button" class="${!S.consent?'on':''}" data-act="denyhelp">${L('Don’t allow','No permitir')}</button></div>`}</div></div>
       <div class="note info">${ic('doc')} ${L('Your profile information pre-fills loan applications. Changes apply to future applications.','Tu perfil llena automáticamente las solicitudes. Los cambios aplican a solicitudes futuras.')}</div>
       <div class="row" style="justify-content:flex-end"><button class="btn pri" type="submit">${ic('check')} ${L('Save profile','Guardar perfil')}</button></div>
     </form></div>`;
@@ -861,7 +872,7 @@ function vTrack(){
 }
 
 /* ---- application wizard ---- */
-function newDraft(){ const p=S.profile; return {step:1, occ:'', affirm:'', affirmed:false, purpose:'', addr:'', unit:'', first:p.first, last:p.last, phone:p.phone, email:p.email||S.email, ptype:'', price:'', rehabNeed:'', rehabAmt:'', close:'', occStatus:'', arv:'', beds:'', baths:'', sqft:'', year:'', collat:'no', collatAddr:'', sms:'yes', props:'', credit:'', cash:'', residency:p.residency, home:[p.street,p.city,p.state,p.zip].filter(Boolean).join(', '), homeUnit:p.unit, lic:[], strategy:'', entityYes: S.entity.name?'yes':'no', entityName:S.entity.name, realtor:S.ref||'', tdocs:{}, tdocIds:[]}; }
+function newDraft(){ const p=S.profile; return {step:1, occ:'', affirm:'', affirmed:false, purpose:'', addr:'', unit:'', first:p.first, last:p.last, phone:p.phone, email:p.email||S.subjEmail||S.email, ptype:'', price:'', rehabNeed:'', rehabAmt:'', close:'', occStatus:'', arv:'', beds:'', baths:'', sqft:'', year:'', collat:'no', collatAddr:'', sms:'yes', props:'', credit:'', cash:'', residency:p.residency, home:[p.street,p.city,p.state,p.zip].filter(Boolean).join(', '), homeUnit:p.unit, lic:[], strategy:'', entityYes: S.entity.name?'yes':'no', entityName:S.entity.name, realtor:(S.helping&&S.role==='realtor')?S.email:(S.ref||''), tdocs:{}, tdocIds:[], for:SUBJ()}; }
 const WSTEPS = () => [[L('Loan type','Tipo de préstamo'),'key'],[L('Deal info','Datos del negocio'),'doc'],[L('Property info','Propiedad'),'home'],[L('Borrower info','Prestatario'),'user'],[L('Submit','Enviar'),'upload']];
 function vApply(){
   const d = S.draft; const st = d.step;
@@ -956,7 +967,7 @@ function vSubmitted(){
 }
 
 function vPayoff(){
-  if(!S.payoffDraft){ const p=S.profile; S.payoffDraft={loan:'',addr:'',name:(p.first+' '+p.last).trim(),entity:S.entity.name,phone:p.phone,email:p.email||S.email,from:today(),to:'',reason:'',close:'',sendTo:'me',tcName:'',tcContact:'',tcEmail:'',tcPhone:'',tcFile:'',notes:'',sign:'',auth:false}; }
+  if(!S.payoffDraft){ const p=S.profile; S.payoffDraft={loan:'',addr:'',name:(p.first+' '+p.last).trim(),entity:S.entity.name,phone:p.phone,email:p.email||S.subjEmail||S.email,from:today(),to:'',reason:'',close:'',sendTo:'me',tcName:'',tcContact:'',tcEmail:'',tcPhone:'',tcFile:'',notes:'',sign:'',auth:false}; }
   const P2=(lab,k,o={})=>field(lab,'payoffDraft.'+k,o); const d=S.payoffDraft;
   return `<div class="wrap page" style="max-width:820px">
     ${backTo()}
@@ -1005,68 +1016,66 @@ function vLetter(){
 
 /* ---- realtor ---- */
 function vRealtor(){
-  if(!S.me?.approved) return `<div class="wrap page" style="max-width:620px"><div class="card pad center" style="padding:32px"><div class="empty" style="padding:0 0 8px"><div class="ico">${ic('clock')}</div></div><h1 style="font-size:24px">${L('Your realtor account is waiting for approval','Tu cuenta de realtor está pendiente de aprobación')}</h1><p class="muted" style="margin:10px 0 20px">${L('Nork reviews every new realtor partner. We’ll email you as soon as your account is approved, usually within one business day.','Nork revisa a cada nuevo socio realtor. Te avisaremos por email cuando tu cuenta esté aprobada, normalmente en un día hábil.')}</p><div style="text-align:left">${contactCard()}</div></div></div>`;
-  const mine = S.realtorApps;
-  const active = mine.filter(a=>a.stage<7).length, funded = mine.filter(a=>a.stage===7).length, closing = mine.filter(a=>a.stage===6).length;
-  return `<div class="wrap page">
-    <div class="pagehead"><div><h1>${L('Welcome','Bienvenido')}${S.profile.first?', '+esc(S.profile.first):''}</h1><p class="muted">${L('Follow your clients’ loans from application to funding.','Sigue los préstamos de tus clientes desde la solicitud hasta el fondeo.')}</p></div>
-      <div class="row"><button class="btn out" data-act="refresh">${ic('refresh')} ${L('Refresh','Actualizar')}</button><button class="btn pri" data-act="copyref">${ic('link')} ${L('Copy client invite link','Copiar enlace para clientes')}</button></div></div>
-    <div class="stats"><div class="card stat"><b>${mine.length}</b><span>${L('Clients referred','Clientes referidos')}</span></div><div class="card stat"><b>${active}</b><span>${L('In process','En proceso')}</span></div><div class="card stat"><b>${closing}</b><span>${L('Clear to close','Listos para cerrar')}</span></div><div class="card stat"><b>${funded}</b><span>${L('Funded','Fondeados')}</span></div></div>
-    <div class="dash"><div class="stack">
-      ${mine.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Client','Cliente')}</th><th>${L('Property','Propiedad')}</th><th>${L('Loan','Préstamo')}</th><th>${L('Stage','Etapa')}</th><th>${L('Missing items','Pendientes')}</th><th></th></tr></thead><tbody>
-      ${mine.map(a=>{ const miss=reqKeysFor(a).filter(k=>!appHave(a).includes(k)); return `<tr><td><b>${esc(a.borrower)}</b></td><td>${esc(a.addr)}</td><td>${purp(a.purpose)}</td><td><span class="pill ${a.stage>=6?'ok':a.stage>=3?'warn':'neu'}">${stageName(a.stage)}</span></td><td>${miss.length?`<span class="pill bad">${miss.length} ${L('missing','faltan')}</span>`:`<span class="pill ok">${L('Complete','Completo')}</span>`}</td><td><button class="btn out sm" data-open="${a.id}">${L('View','Ver')}</button></td></tr>`; }).join('')}
-      </tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('users')}</div><b>${L('No clients yet','Aún no hay clientes')}</b><p class="muted small" style="margin-top:4px">${L('Share your invite link. When a client applies with it, or types your email in the application, their loan shows up here.','Comparte tu enlace. Cuando un cliente aplique con él, o escriba tu email en la solicitud, su préstamo aparecerá aquí.')}</p></div>`}
-      <div class="note info small">${ic('lock')}<div>${L('Realtors see each client’s stage and which items are missing. SSNs, bank statements and other private documents are visible to the Nork team only.','Los realtors ven la etapa de cada cliente y qué falta. SSN, estados de cuenta y otros documentos privados solo los ve el equipo Nork.')}</div></div>
-    </div><aside class="stack">
-      <div class="card pad"><div class="eyebrow" style="margin-bottom:10px">${L('Your client invite link','Tu enlace para clientes')}</div><p class="small muted" style="margin-bottom:10px">${L('Clients who apply through this link are linked to you automatically.','Los clientes que apliquen con este enlace quedan vinculados a ti automáticamente.')}</p>
-        <div class="file" style="padding:9px 10px"><span id="reflink">${esc(SITE+'?ref='+encodeURIComponent(S.email))}</span><button data-act="copyref" aria-label="${L('Copy','Copiar')}">${ic('copy')}</button></div></div>
-      ${contactCard()}
-    </aside></div></div>`;
+  if(!S.me?.approved) return `<div class="wrap page" style="max-width:620px"><div class="card pad center" style="padding:32px"><div class="empty" style="padding:0 0 8px"><div class="ico">${ic('clock')}</div></div><h1 style="font-size:24px">${L('Your realtor account is waiting for approval','Tu cuenta de realtor está pendiente de aprobación')}</h1><p class="muted" style="margin:10px 0 20px">${L('Nork reviews every new realtor partner. We’ll let you know as soon as your account is approved.','Nork revisa a cada nuevo socio realtor. Te avisaremos cuando tu cuenta esté aprobada.')}</p><div style="text-align:left">${contactCard()}</div></div></div>`;
+  return vTeam();
 }
 
-/* ---- team ---- */
 function payPill(st){ return st==='sent'?`<span class="pill ok">${L('Sent','Enviado')}</span>`:st==='in_preparation'?`<span class="pill warn">${L('In preparation','En preparación')}</span>`:`<span class="pill neu">${L('Requested','Solicitado')}</span>`; }
 function letPill(st){ return st==='issued'?`<span class="pill ok">${L('Issued','Emitida')}</span>`:st==='declined'?`<span class="pill bad">${L('Declined','Rechazada')}</span>`:`<span class="pill warn">${L('Under review','En revisión')}</span>`; }
 function vTeam(){
-  const T=S.team, apps = T.apps; const tab=U.tab; const isAdmin = S.me?.role==='admin';
+  const T=S.team, apps = T.apps; const isTeam = S.role==='team'; const isAdmin = S.me?.role==='admin';
+  const tabs = isTeam ? ['clients','pipeline','payoffs','letters','people'] : ['clients','pipeline','payoffs','letters'];
+  if(!tabs.includes(U.tab)) U.tab='clients'; const tab=U.tab;
+  const clients = T.people.filter(p=>p.role==='borrower');
+  const helpers = T.people.filter(p=>(p.role==='realtor'&&p.approved)||p.role==='team'||p.role==='admin');
   const counts = s => apps.filter(a=>a.stage===s).length;
-  let list = apps.filter(a => (U.filter===''||String(a.stage)===U.filter) && (!U.q || (a.borrower+' '+a.addr+' '+a.id+' '+a.email).toLowerCase().includes(U.q.toLowerCase())));
+  const q = (U.q||'').toLowerCase();
+  let list = apps.filter(a => (U.filter===''||String(a.stage)===U.filter) && (!q || (a.borrower+' '+a.addr+' '+a.id+' '+a.email).toLowerCase().includes(q)));
+  const clist = clients.filter(p => !q || (((p.first_name||'')+' '+(p.last_name||'')+' '+p.email+' '+(p.phone||'')).toLowerCase().includes(q)));
   const vol = apps.filter(a=>a.stage<7).reduce((s,a)=>s+Number(a.amount||0),0);
   const openPay = T.payoffs.filter(p=>p.status!=='sent').length;
   const pendingRealtors = T.people.filter(p=>p.role==='realtor' && !p.approved).length;
+  const nm = p => (((p.first_name||'')+' '+(p.last_name||'')).trim()) || p.email;
   const sel = (attr, id, cur, opts) => `<select data-${attr}="${id}" aria-label="Status" style="min-height:34px;padding:4px 8px;border-radius:7px;border:1px solid var(--line-2);background:var(--card)">${opts.map(o=>`<option value="${o[0]}" ${o[0]===cur?'selected':''}>${o[1]}</option>`).join('')}</select>`;
+  const search = `<div class="fld" style="flex:1;min-width:200px"><input id="teamq" placeholder="${L('Search name, email, property or file #','Buscar nombre, email, propiedad o expediente')}" value="${esc(U.q)}" data-uq="1" aria-label="Search"></div>`;
+  const tabLabel = {clients:[L('Clients','Clientes'),clients.length], pipeline:[L('Loan files','Expedientes'),apps.length], payoffs:[L('Payoff requests','Pagos totales'),T.payoffs.length], letters:[L('Pre-approval letters','Cartas de preaprobación'),T.letters.length], people:[L('People','Personas'),T.people.length]};
   return `<div class="wrap page">
-    <div class="pagehead"><div><h1>${L('Nork pipeline','Pipeline de Nork')}</h1><p class="muted">${L('Every borrower file, document and payoff request in one place.','Cada expediente, documento y solicitud de pago total en un solo lugar.')}</p></div>
-      <div class="row"><button class="btn out" data-act="refresh">${ic('refresh')} ${L('Refresh','Actualizar')}</button><button class="btn pri" data-act="copyinvite">${ic('link')} ${L('Copy borrower invite link','Copiar enlace para prestatarios')}</button></div></div>
-    <div class="stats"><div class="card stat"><b>${apps.filter(a=>a.stage<7).length}</b><span>${L('Active files','Expedientes activos')}</span></div><div class="card stat"><b>${money(vol)}</b><span>${L('Est. active loan volume','Volumen activo estimado')}</span></div><div class="card stat"><b>${apps.filter(a=>reqKeysFor(a).some(k=>!appHave(a).includes(k))).length}</b><span>${L('Files missing documents','Expedientes con documentos pendientes')}</span></div><div class="card stat"><b>${openPay}</b><span>${L('Open payoff requests','Solicitudes de pago total abiertas')}</span></div></div>
-    <div class="tabbar"><button class="${tab==='pipeline'?'on':''}" data-tab="pipeline">${L('Pipeline','Pipeline')} (${apps.length})</button><button class="${tab==='payoffs'?'on':''}" data-tab="payoffs">${L('Payoff requests','Pagos totales')} (${T.payoffs.length})</button><button class="${tab==='letters'?'on':''}" data-tab="letters">${L('Pre-approval letters','Cartas de preaprobación')} (${T.letters.length})</button><button class="${tab==='people'?'on':''}" data-tab="people">${L('People','Personas')} (${T.people.length})${pendingRealtors?` <span class="pill warn">${pendingRealtors}</span>`:''}</button></div>
+    <div class="pagehead"><div><h1>${isTeam?L('Nork pipeline','Pipeline de Nork'):L('My clients','Mis clientes')}${S.my.first&&!isTeam?`<span class="muted" style="font-size:.55em;font-weight:500"> · ${esc(S.my.first)}</span>`:''}</h1><p class="muted">${isTeam?L('Every client, loan file, document and payoff request in one place.','Cada cliente, expediente, documento y solicitud de pago total en un solo lugar.'):L('Open a client’s portal to complete their information and upload their documents.','Abre el portal de un cliente para completar su información y subir sus documentos.')}</p></div>
+      <div class="row"><button class="btn out" data-act="refresh">${ic('refresh')} ${L('Refresh','Actualizar')}</button><button class="btn pri" data-act="copyref">${ic('link')} ${L('Copy my client invite link','Copiar mi enlace para clientes')}</button></div></div>
+    <div class="stats"><div class="card stat"><b>${clients.length}</b><span>${L('Clients','Clientes')}</span></div><div class="card stat"><b>${apps.filter(a=>a.stage<7).length}</b><span>${L('Active loan files','Expedientes activos')}</span></div><div class="card stat"><b>${apps.filter(a=>reqKeysFor(a).some(k=>!appHave(a).includes(k))).length}</b><span>${L('Files missing documents','Expedientes con documentos pendientes')}</span></div><div class="card stat"><b>${isTeam?openPay:money(vol)}</b><span>${isTeam?L('Open payoff requests','Solicitudes de pago total abiertas'):L('Est. loan volume','Volumen estimado')}</span></div></div>
+    <div class="tabbar">${tabs.map(t=>`<button class="${tab===t?'on':''}" data-tab="${t}">${tabLabel[t][0]} (${tabLabel[t][1]})${t==='people'&&pendingRealtors?` <span class="pill warn">${pendingRealtors}</span>`:''}</button>`).join('')}</div>
+    ${tab==='clients'?`<div class="row" style="margin-bottom:12px">${search}</div>
+      ${clist.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Client','Cliente')}</th><th>${L('Phone','Teléfono')}</th><th>${L('Loan files','Expedientes')}</th>${isTeam?`<th>${L('Assigned to','Asignado a')}</th><th>${L('Allows help','Permite ayuda')}</th>`:''}<th>${L('Joined','Registro')}</th><th></th></tr></thead><tbody>
+      ${clist.map(p=>{ const n=apps.filter(a=>a.borrowerId===p.id).length; return `<tr><td><b>${esc(nm(p))}</b><div class="small muted">${esc(p.email)}</div></td><td>${esc(p.phone||'—')}</td><td>${n?`<span class="pill neu">${n}</span>`:'—'}</td>${isTeam?`<td>${sel('assign',p.id,p.assigned_to||'',[['',L('— Unassigned —','— Sin asignar —')]].concat(helpers.map(h=>[h.id, nm(h)+(h.role==='realtor'?' · Realtor':' · Nork')])))}</td><td>${p.helper_consent?`<span class="pill ok">${L('Yes','Sí')}</span>`:`<span class="pill neu">${L('Not yet','Aún no')}</span>`}</td>`:''}<td>${esc((p.created_at||'').slice(0,10))}</td><td><button class="btn pri sm" data-help="${p.id}">${ic('users')} ${L('Open client portal','Abrir portal del cliente')}</button></td></tr>`; }).join('')}
+      </tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('users')}</div><b>${L('No clients yet','Aún no hay clientes')}</b><p class="muted small" style="margin-top:4px;max-width:52ch;margin-inline:auto">${isTeam?L('Clients appear here as soon as they create an account.','Los clientes aparecen aquí en cuanto crean su cuenta.'):L('Send your invite link. Clients who sign up with it and allow help appear here. The Nork team can also assign clients to you.','Envía tu enlace. Los clientes que se registren con él y permitan ayuda aparecerán aquí. El equipo Nork también puede asignarte clientes.')}</p></div>`}
+      ${!isTeam?`<p class="small muted" style="margin-top:10px">${L('You only see clients assigned to you who allowed help. Everything you upload is marked with your name.','Solo ves a los clientes asignados a ti que permitieron ayuda. Todo lo que subas queda marcado con tu nombre.')}</p>`:''}`:''}
     ${tab==='pipeline'?`
-      <div class="row" style="margin-bottom:12px"><div class="fld" style="flex:1;min-width:200px"><input id="teamq" placeholder="${L('Search borrower, email, property or file #','Buscar prestatario, email, propiedad o expediente')}" value="${esc(U.q)}" data-uq="1" aria-label="Search"></div>
+      <div class="row" style="margin-bottom:12px">${search}
         <div class="fld" style="min-width:200px"><select id="teamf" data-ufilter="1" aria-label="Stage"><option value="">${L('All stages','Todas las etapas')} (${apps.length})</option>${STAGES.map((s,i)=>`<option value="${i}" ${U.filter===String(i)?'selected':''}>${L(...s)} (${counts(i)})</option>`).join('')}</select></div></div>
       ${apps.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('File #','Expediente')}</th><th>${L('Borrower','Prestatario')}</th><th>${L('Property','Propiedad')}</th><th>${L('Loan','Préstamo')}</th><th class="num">${L('Est. amount','Monto est.')}</th><th>${L('Stage','Etapa')}</th><th>${L('Docs','Docs')}</th><th>Realtor</th><th>${L('Received','Recibida')}</th><th></th></tr></thead><tbody>
       ${list.map(a=>{ const rq=reqKeysFor(a); const h=rq.filter(k=>appHave(a).includes(k)).length; return `<tr><td>${a.id}</td><td><b>${esc(a.borrower)}</b><div class="small muted">${esc(a.email)}</div></td><td>${esc(a.addr)}</td><td>${purp(a.purpose)}</td><td class="num">${money(a.amount)}</td><td><span class="pill ${a.stage>=6?'ok':a.stage>=3?'warn':'neu'}">${stageName(a.stage)}</span></td><td><span class="pill ${h===rq.length?'ok':'bad'}">${h}/${rq.length}</span></td><td>${esc(a.realtor||'—')}</td><td>${esc(a.created)}</td><td><button class="btn out sm" data-open="${a.id}">${L('Open','Abrir')}</button></td></tr>`; }).join('') || `<tr><td colspan="10" class="center muted">${L('No files match.','No hay expedientes que coincidan.')}</td></tr>`}
-      </tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('inbox')}</div><b>${L('No applications yet','Aún no hay solicitudes')}</b><p class="muted small" style="margin-top:4px">${L('When a borrower submits an application, it appears here.','Cuando un prestatario envíe una solicitud, aparecerá aquí.')}</p></div>`}`:''}
-    ${tab==='payoffs'?(T.payoffs.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Loan #','Préstamo #')}</th><th>${L('Borrower','Prestatario')}</th><th>${L('Property','Propiedad')}</th><th>${L('Good from','Desde')}</th><th>${L('Through','Hasta')}</th><th>${L('Send to','Enviar a')}</th><th>${L('Reason','Motivo')}</th><th>${L('Contact','Contacto')}</th><th>${L('Status','Estado')}</th></tr></thead><tbody>${T.payoffs.map(p=>`<tr><td>${esc(p.loan_number)}</td><td><b>${esc(p.borrower_name)}</b>${p.entity_name?`<div class="small muted">${esc(p.entity_name)}</div>`:''}</td><td>${esc(p.property_address)}</td><td>${esc(p.good_from)}</td><td>${esc(p.good_through)}</td><td>${esc(p.send_to==='me'?L('Borrower only','Solo prestatario'):(p.third_party_name||'')+' · '+(p.third_party_email||'')+(p.third_party_file_number?' · #'+p.third_party_file_number:''))}</td><td>${esc(p.reason||'—')}${p.notes?`<div class="small muted">${esc(p.notes)}</div>`:''}</td><td><div class="small">${esc(p.phone)}</div><div class="small">${esc(p.email)}</div></td><td>${sel('paystatus',p.id,p.status,[['requested',L('Requested','Solicitado')],['in_preparation',L('In preparation','En preparación')],['sent',L('Sent','Enviado')]])}</td></tr>`).join('')}</tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('dollar')}</div><p class="muted">${L('No payoff requests yet. Borrowers submit them from Quick links → Request payoff.','Aún no hay solicitudes. Los prestatarios las envían desde Accesos rápidos → Solicitar pago total.')}</p></div>`):''}
-    ${tab==='letters'?(T.letters.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Requested by','Solicitada por')}</th><th>${L('Property','Propiedad')}</th><th class="num">${L('Price','Precio')}</th><th class="num">${L('Loan','Préstamo')}</th><th>${L('Needed by','Para')}</th><th>${L('Addressed to','Dirigida a')}</th><th>${L('Status','Estado')}</th></tr></thead><tbody>${T.letters.map(l=>`<tr><td><b>${esc(l.requester)}</b></td><td>${esc(l.property_address)}${l.notes?`<div class="small muted">${esc(l.notes)}</div>`:''}</td><td class="num">${money(l.offer_price)}</td><td class="num">${money(l.loan_amount)}</td><td>${esc(l.needed_by||'—')}</td><td>${esc(l.addressed_to||'—')}</td><td>${sel('letstatus',l.id,l.status,[['requested',L('Under review','En revisión')],['issued',L('Issued','Emitida')],['declined',L('Declined','Rechazada')]])}</td></tr>`).join('')}</tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('letter')}</div><p class="muted">${L('No letter requests yet.','Aún no hay solicitudes de cartas.')}</p></div>`):''}
-    ${tab==='people'?`<div class="tbl-wrap"><table><thead><tr><th>${L('Name','Nombre')}</th><th>Email</th><th>${L('Phone','Teléfono')}</th><th>${L('Role','Rol')}</th><th>${L('Realtor approved','Realtor aprobado')}</th><th>${L('Joined','Registro')}</th></tr></thead><tbody>${T.people.map(p=>`<tr><td><b>${esc(((p.first_name||'')+' '+(p.last_name||'')).trim()||'—')}</b>${p.brokerage?`<div class="small muted">${esc(p.brokerage)}${p.license_number?' · #'+esc(p.license_number):''}</div>`:''}</td><td>${esc(p.email)}</td><td>${esc(p.phone||'—')}</td><td>${isAdmin&&p.id!==S.uid?sel('roleof',p.id,p.role,[['borrower',L('Borrower','Prestatario')],['realtor','Realtor'],['team',L('Nork team','Equipo Nork')],['admin','Admin']]):esc(p.role)}</td><td>${p.role==='realtor'?`<label class="chk"><input type="checkbox" data-approve="${p.id}" ${p.approved?'checked':''}> <span class="small">${p.approved?L('Approved','Aprobado'):L('Approve','Aprobar')}</span></label>`:'—'}</td><td>${esc((p.created_at||'').slice(0,10))}</td></tr>`).join('')}</tbody></table></div>
-      <p class="small muted" style="margin-top:10px">${isAdmin?L('As admin you can change anyone’s role. Team members see every file; realtors only see their own clients after you approve them.','Como admin puedes cambiar el rol de cualquiera. El equipo ve todos los expedientes; los realtors solo ven a sus clientes cuando los apruebas.'):L('Only an admin can change roles.','Solo un admin puede cambiar roles.')}</p>`:''}
+      </tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('inbox')}</div><b>${L('No loan files yet','Aún no hay expedientes')}</b><p class="muted small" style="margin-top:4px">${L('When a client submits an application — or you submit one for them — it appears here.','Cuando un cliente envíe una solicitud, o tú la envíes por él, aparecerá aquí.')}</p></div>`}`:''}
+    ${tab==='payoffs'?(T.payoffs.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Loan #','Préstamo #')}</th><th>${L('Borrower','Prestatario')}</th><th>${L('Property','Propiedad')}</th><th>${L('Good from','Desde')}</th><th>${L('Through','Hasta')}</th><th>${L('Send to','Enviar a')}</th><th>${L('Reason','Motivo')}</th><th>${L('Contact','Contacto')}</th><th>${L('Status','Estado')}</th></tr></thead><tbody>${T.payoffs.map(p=>`<tr><td>${esc(p.loan_number)}</td><td><b>${esc(p.borrower_name)}</b>${p.entity_name?`<div class="small muted">${esc(p.entity_name)}</div>`:''}</td><td>${esc(p.property_address)}</td><td>${esc(p.good_from)}</td><td>${esc(p.good_through)}</td><td>${esc(p.send_to==='me'?L('Borrower only','Solo prestatario'):(p.third_party_name||'')+' · '+(p.third_party_email||'')+(p.third_party_file_number?' · #'+p.third_party_file_number:''))}</td><td>${esc(p.reason||'—')}${p.notes?`<div class="small muted">${esc(p.notes)}</div>`:''}</td><td><div class="small">${esc(p.phone)}</div><div class="small">${esc(p.email)}</div></td><td>${isTeam?sel('paystatus',p.id,p.status,[['requested',L('Requested','Solicitado')],['in_preparation',L('In preparation','En preparación')],['sent',L('Sent','Enviado')]]):payPill(p.status)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('dollar')}</div><p class="muted">${L('No payoff requests yet.','Aún no hay solicitudes de pago total.')}</p></div>`):''}
+    ${tab==='letters'?(T.letters.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('Requested by','Solicitada por')}</th><th>${L('Property','Propiedad')}</th><th class="num">${L('Price','Precio')}</th><th class="num">${L('Loan','Préstamo')}</th><th>${L('Needed by','Para')}</th><th>${L('Addressed to','Dirigida a')}</th><th>${L('Status','Estado')}</th></tr></thead><tbody>${T.letters.map(l=>`<tr><td><b>${esc(l.requester)}</b></td><td>${esc(l.property_address)}${l.notes?`<div class="small muted">${esc(l.notes)}</div>`:''}</td><td class="num">${money(l.offer_price)}</td><td class="num">${money(l.loan_amount)}</td><td>${esc(l.needed_by||'—')}</td><td>${esc(l.addressed_to||'—')}</td><td>${isTeam?sel('letstatus',l.id,l.status,[['requested',L('Under review','En revisión')],['issued',L('Issued','Emitida')],['declined',L('Declined','Rechazada')]]):letPill(l.status)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="card empty"><div class="ico">${ic('letter')}</div><p class="muted">${L('No letter requests yet.','Aún no hay solicitudes de cartas.')}</p></div>`):''}
+    ${tab==='people'&&isTeam?`<div class="tbl-wrap"><table><thead><tr><th>${L('Name','Nombre')}</th><th>Email</th><th>${L('Phone','Teléfono')}</th><th>${L('Role','Rol')}</th><th>${L('Realtor approved','Realtor aprobado')}</th><th>${L('Joined','Registro')}</th></tr></thead><tbody>${T.people.map(p=>`<tr><td><b>${esc(((p.first_name||'')+' '+(p.last_name||'')).trim()||'—')}</b>${p.brokerage?`<div class="small muted">${esc(p.brokerage)}${p.license_number?' · #'+esc(p.license_number):''}</div>`:''}</td><td>${esc(p.email)}</td><td>${esc(p.phone||'—')}</td><td>${isAdmin&&p.id!==S.uid?sel('roleof',p.id,p.role,[['borrower',L('Borrower','Prestatario')],['realtor','Realtor'],['team',L('Nork team','Equipo Nork')],['admin','Admin']]):esc(p.role)}</td><td>${p.role==='realtor'?`<label class="chk"><input type="checkbox" data-approve="${p.id}" ${p.approved?'checked':''}> <span class="small">${p.approved?L('Approved','Aprobado'):L('Approve','Aprobar')}</span></label>`:'—'}</td><td>${esc((p.created_at||'').slice(0,10))}</td></tr>`).join('')}</tbody></table></div>
+      <p class="small muted" style="margin-top:10px">${isAdmin?L('Approve a realtor only after they pass the background check and the Nork certification. Approved realtors can open and update their assigned clients’ files.','Aprueba a un realtor solo después de que pase la verificación de antecedentes y la certificación Nork. Los realtors aprobados pueden abrir y actualizar los expedientes de sus clientes asignados.'):L('Only an admin can change roles.','Solo un admin puede cambiar roles.')}</p>`:''}
   </div>`;
 }
 
 function vModal(){
   const a = allApps().find(x=>x.id===U.modal); if(!a) return '';
-  const isTeam = S.role==='team'; const req=reqKeysFor(a); const h=appHave(a); const got=req.filter(k=>h.includes(k)).length;
+  const isTeam = S.role==='team'; const helper = isHelper(); const req=reqKeysFor(a); const h=appHave(a); const got=req.filter(k=>h.includes(k)).length;
   return `<div class="scrim" data-act="closemodal"><div class="modal" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
     <header><div><div class="small muted">${a.id}${a.ex?' <span class="ex">'+L('Example','Ejemplo')+'</span>':''}</div><h3 style="font-size:19px">${esc(a.borrower)}</h3><div class="small muted">${esc(a.addr)}</div></div><button class="linkbtn" data-act="closemodal" aria-label="${L('Close','Cerrar')}">${ic('x')}</button></header>
     <div class="mb">
       <dl class="kv" style="grid-template-columns:auto 1fr auto 1fr"><dt>${L('Loan','Préstamo')}</dt><dd style="text-align:left">${purp(a.purpose)}</dd><dt>${L('Amount','Monto')}</dt><dd style="text-align:left">${money(a.amount)}</dd>
         ${isTeam?`<dt>${L('Phone','Teléfono')}</dt><dd style="text-align:left">${esc(a.phone||'—')}</dd><dt>Email</dt><dd style="text-align:left">${esc(a.email||'—')}</dd><dt>${L('Credit','Crédito')}</dt><dd style="text-align:left">${esc(a.credit||'—')}</dd><dt>${L('Properties','Propiedades')}</dt><dd style="text-align:left">${esc(a.props??'—')}</dd>`:''}
         <dt>Realtor</dt><dd style="text-align:left">${esc(a.realtor||'—')}</dd><dt>${L('Documents','Documentos')}</dt><dd style="text-align:left"><span class="pill ${got===req.length?'ok':'bad'}">${got}/${req.length} ${L('received','recibidos')}</span></dd></dl>
-      <div><div class="row between" style="margin-bottom:8px"><div class="eyebrow">${L('Status','Estado')}</div>${isTeam?`<button class="btn out sm" data-zip="${a.uuid}">${ic('download')} ${L('Download all (ZIP)','Descargar todo (ZIP)')}</button>`:''}</div>
-        ${stageList(a.stage, checklistHTML(a,{team:isTeam}))}
+      <div><div class="row between" style="margin-bottom:8px"><div class="eyebrow">${L('Status','Estado')}</div>${helper?`<button class="btn pri sm" data-help="${a.borrowerId}">${ic('users')} ${L('Open client portal','Abrir portal del cliente')}</button> <button class="btn out sm" data-zip="${a.uuid}">${ic('download')} ${L('Download all (ZIP)','Descargar todo (ZIP)')}</button>`:''}</div>
+        ${stageList(a.stage, checklistHTML(a,{team:helper}))}
         ${isTeam?`<div class="fld" style="margin-top:12px;max-width:320px"><label for="stagesel">${L('Move to stage','Mover a etapa')}</label><select id="stagesel" data-stage="${a.uuid}">${STAGES.map((s,i)=>`<option value="${i}" ${i===a.stage?'selected':''}>${L(...s)}</option>`).join('')}</select></div>`:''}</div>
-      ${isTeam?`<div class="row"><a class="btn ink" href="${remindHref(a)}">${ic('mail')} ${L('Email borrower the missing list','Enviar lista de pendientes al prestatario')}</a><span class="small muted">${L('Opens your email with the list filled in.','Abre tu email con la lista ya escrita.')}</span></div>${a.strategy?`<div><div class="eyebrow" style="margin-bottom:6px">${L('Execution strategy','Estrategia')}</div><p class="small" style="white-space:pre-wrap">${esc(a.strategy)}</p></div>`:''}`:''}
-      ${S.role==='realtor'?`<div class="note info small">${ic('lock')}<div>${L('You can see which items are in. The files themselves are visible to the Nork team only.','Puedes ver qué documentos ya están. Los archivos solo los ve el equipo Nork.')}</div></div>`:''}
+      ${helper?`<div class="row"><a class="btn ink" href="${remindHref(a)}">${ic('mail')} ${L('Email borrower the missing list','Enviar lista de pendientes al prestatario')}</a><span class="small muted">${L('Opens your email with the list filled in.','Abre tu email con la lista ya escrita.')}</span></div>${a.strategy?`<div><div class="eyebrow" style="margin-bottom:6px">${L('Execution strategy','Estrategia')}</div><p class="small" style="white-space:pre-wrap">${esc(a.strategy)}</p></div>`:''}`:''}
+      
     </div></div></div>`;
 }
 
@@ -1075,7 +1084,7 @@ function render(){
   const v = U.view;
   const views = {loading:vLoading, checkemail:vCheckEmail, newpw:vNewPw, landing:vLanding, signin:vSignin, dash:vDash, profile:vProfile, docs:vDocs, entity:vEntity, track:vTrack, apply:vApply, referral:vReferral, submitted:vSubmitted, payoff:vPayoff, letter:vLetter, realtor:vRealtor, team:vTeam};
   document.documentElement.lang = S.lang;
-  document.getElementById('app').innerHTML = demoStrip() + (U.view==='loading'?'':header()) + `<main>${(views[v]||vLanding)()}</main>` + (U.modal?vModal():'');
+  document.getElementById('app').innerHTML = demoStrip() + (U.view==='loading'?'':header()+helpBar()) + `<main>${(views[v]||vLanding)()}</main>` + (U.modal?vModal():'');
 }
 
 
@@ -1117,7 +1126,7 @@ const num = v => { if(v===''||v==null) return null; const n=Number(String(v).rep
 const int = v => { const n=num(v); return n==null?null:Math.round(n); };
 const PMAP = {first:'first_name',last:'last_name',occupation:'occupation',ssn4:'ssn_last4',dob:'date_of_birth',marital:'marital_status',residency:'residency_status',phone:'phone',sms:'sms_opt_in',street:'street',unit:'unit',city:'city',state:'state',zip:'zip',brokerage:'brokerage',license:'license_number'};
 const estAmount = r => { const price=Number(r.price||0), reh=r.rehab_needed?Number(r.rehab_amount||0):0; return Math.round(price*(['refi','cashout','dscr'].includes(r.loan_purpose)?0.75:0.9)+reh); };
-const fileItem = d => ({id:d.id, name:d.file_name, kb:Math.max(1,Math.round((d.size_bytes||0)/1024)), path:d.storage_path, type:d.doc_type});
+const fileItem = d => ({id:d.id, name:d.file_name, kb:Math.max(1,Math.round((d.size_bytes||0)/1024)), path:d.storage_path, type:d.doc_type, by:d.uploaded_by, owner:d.owner_id});
 const safeName = n => n.normalize('NFKD').replace(/[^\w.\-]+/g,'_').slice(-120);
 function errText(e){
   const m = (e && (e.message || e.error_description || e.msg)) || '';
@@ -1139,10 +1148,18 @@ function fail(e){ console.error(e); toast(errText(e)); }
 
 /* ---------- data loading ---------- */
 async function loadAll(){
-  const uid=S.uid;
-  const me = await must(sb.from('profiles').select('*').eq('id',uid).single());
+  const me = await must(sb.from('profiles').select('*').eq('id',S.uid).single());
   S.me=me; S.role = (me.role==='admin'||me.role==='team') ? 'team' : me.role; S.email=me.email||S.email;
-  const p=blankProfile(); Object.entries(PMAP).forEach(([k,c])=>{ p[k]= me[c]==null ? (k==='sms'?false:'') : me[c]; }); p.email=me.email||''; S.profile=p;
+  S.my = {first:me.first_name||'', last:me.last_name||''};
+  if(S.helping && !isHelper()) S.helping=null;
+  const subj = S.helping ? await must(sb.from('profiles').select('*').eq('id',S.helping.id).single()) : me;
+  await loadSubject(subj);
+  if(isHelper()) await loadTeam();
+}
+async function loadSubject(row){
+  const uid=row.id;
+  const p=blankProfile(); Object.entries(PMAP).forEach(([k,c])=>{ p[k]= row[c]==null ? (k==='sms'?false:'') : row[c]; }); p.email=row.email||''; S.profile=p;
+  S.subjEmail=row.email||''; S.consent=!!row.helper_consent;
   const [docs, ents, tr, apps, pays, lets] = await Promise.all([
     must(sb.from('documents').select('*').eq('owner_id',uid).order('uploaded_at')),
     must(sb.from('entities').select('*, entity_members(*)').eq('owner_id',uid).order('created_at')),
@@ -1154,7 +1171,7 @@ async function loadAll(){
   const e = ents[0];
   S.entity = e ? {id:e.id, name:e.legal_name||'', type:e.entity_type||'', state:e.state_of_formation||'', ein:e.ein||'', formed:e.formed_on||'', members:(e.entity_members||[]).map(m=>({id:m.id,name:m.full_name,email:m.email||'',pct:m.ownership_pct,role:m.member_role||''}))} : blankEntity();
   S.docs={}; S.edocs={}; S.appdocs={}; const ev={};
-  const pending = new Set((S.draft && S.draft.tdocIds) || []);
+  const pending = new Set((S.draft && S.draft.for===uid && S.draft.tdocIds) || []);
   docs.forEach(d=>{ const f=fileItem(d);
     if(d.track_record_id){ (ev[d.track_record_id]=ev[d.track_record_id]||[]).push(f); return; }
     if(d.application_id){ const a=(S.appdocs[d.application_id]=S.appdocs[d.application_id]||{}); (a[d.doc_type]=a[d.doc_type]||[]).push(f); return; }
@@ -1165,8 +1182,6 @@ async function loadAll(){
   S.apps = apps.map(r=>{ if(!S.appdocs[r.id]) S.appdocs[r.id]={}; return {uuid:r.id, id:r.file_number, addr:[r.property_address, r.property_unit].filter(Boolean).join(' #'), purpose:r.loan_purpose, amount:estAmount(r), stage:r.status, entity:!!r.entity_id, rehab:!!r.rehab_needed, realtor:r.realtor_email||'', created:r.created_at}; });
   S.payoffs = pays.map(r=>({id:r.id, loan:r.loan_number, addr:r.property_address, from:r.good_from, to:r.good_through, date:(r.created_at||'').slice(0,10), status:r.status}));
   S.letters = lets.map(r=>({id:r.id, addr:r.property_address, price:r.offer_price, status:r.status}));
-  if(S.role==='team') await loadTeam();
-  if(S.role==='realtor' && me.approved) await loadRealtor();
 }
 async function loadTeam(){
   const [apps, docs, tr, pays, lets, people] = await Promise.all([
@@ -1191,11 +1206,7 @@ async function loadTeam(){
   S.team.payoffs = pays.map(r=>({...r, requester: nm(byId[r.requester_id])}));
   S.team.letters = lets.map(r=>({...r, requester: nm(byId[r.requester_id])}));
 }
-async function loadRealtor(){
-  const rows = await must(sb.rpc('realtor_pipeline'));
-  S.realtorApps = (rows||[]).map(r=>({id:r.file_number, uuid:r.file_number, borrower:r.borrower_name, addr:r.property_address||'', purpose:r.loan_purpose, stage:r.status,
-    amount: estAmount({price:r.price, rehab_needed:r.rehab_needed, rehab_amount:r.rehab_amount, loan_purpose:r.loan_purpose}), entity:!!r.uses_entity, rehab:!!r.rehab_needed, have:r.docs_received||[]}));
-}
+async function loadRealtor(){ return loadTeam(); }
 async function reload(){ try{ await loadAll(); render(); }catch(e){ fail(e); } }
 
 /* ---------- auth ---------- */
@@ -1203,7 +1214,7 @@ async function onAuth(event, session){
   if(event==='PASSWORD_RECOVERY'){ U.recovery=true; if(session) S.uid=session.user.id; return go('newpw'); }
   if(event==='TOKEN_REFRESHED' || event==='USER_UPDATED') return;
   if(!session){
-    const keep={lang:S.lang, draft:S.draft, ref:S.ref, afterAuth:S.afterAuth}; S=fresh(); Object.assign(S,keep);
+    const keep={lang:S.lang, draft:S.draft, ref:S.ref, afterAuth:S.afterAuth}; S=fresh(); Object.assign(S,keep); U.tab='clients';
     if(U.view!=='checkemail') go('landing'); return;
   }
   if(S.uid===session.user.id && S.me) return;
@@ -1215,8 +1226,8 @@ async function onAuth(event, session){
 }
 function startApp(){
   if(!S.uid){ S.afterAuth='apply'; save(); U.role='borrower'; U.authMode='signup'; return toAuth(); }
-  if(S.role!=='borrower'){ return copyText(SITE+(S.role==='realtor'?'?ref='+encodeURIComponent(S.email):''), L('Invite link copied — send it to your client.','Enlace copiado: envíalo a tu cliente.')); }
-  if(!S.draft) S.draft = newDraft(); save(); go('apply');
+  if(S.role!=='borrower' && !S.helping){ return copyText(SITE+'?ref='+encodeURIComponent(S.email), L('Invite link copied — send it to your client.','Enlace copiado: envíalo a tu cliente.')); }
+  if(!S.draft || S.draft.for!==SUBJ()) S.draft = newDraft(); save(); go('apply');
 }
 function toAuth(){ go('landing'); const c=document.getElementById('authcard'); if(c){ c.scrollIntoView({block:'center'}); const f=c.querySelector('input'); if(f) f.focus({preventScroll:true}); } }
 function validateStep(d){
@@ -1231,10 +1242,10 @@ async function submitApp(){
   try{
     let entity_id=null;
     if(d.entityYes==='yes'){
-      if(!S.entity.id && d.entityName){ const r=await must(sb.from('entities').insert({owner_id:S.uid, legal_name:d.entityName}).select().single()); S.entity.id=r.id; S.entity.name=d.entityName; }
+      if(!S.entity.id && d.entityName){ const r=await must(sb.from('entities').insert({owner_id:SUBJ(), legal_name:d.entityName}).select().single()); S.entity.id=r.id; S.entity.name=d.entityName; }
       entity_id=S.entity.id||null;
     }
-    const row={ borrower_id:S.uid, realtor_email:(d.realtor||'').trim()||null, occupancy:d.occ, business_purpose_affirmed:!!d.affirmed, loan_purpose:d.purpose,
+    const row={ borrower_id:SUBJ(), realtor_email:(d.realtor||'').trim()||null, occupancy:d.occ, business_purpose_affirmed:!!d.affirmed, loan_purpose:d.purpose,
       property_address:d.addr, property_unit:d.unit||null, contact_first:d.first, contact_last:d.last, contact_phone:d.phone, contact_email:d.email,
       property_type:d.ptype||null, price:num(d.price), rehab_needed:d.rehabNeed==='yes', rehab_amount:num(d.rehabAmt), arv:num(d.arv), target_close:d.close||null,
       occupancy_status:d.occStatus||null, beds:int(d.beds), baths:num(d.baths), sqft:int(d.sqft), year_built:int(d.year),
@@ -1243,7 +1254,7 @@ async function submitApp(){
     const app = await must(sb.from('applications').insert(row).select().single());
     if(d.tdocIds && d.tdocIds.length) await must(sb.from('documents').update({application_id:app.id}).in('id', d.tdocIds));
     const pu={}; if(!S.profile.first&&d.first) pu.first_name=d.first; if(!S.profile.last&&d.last) pu.last_name=d.last; if(!S.profile.phone&&d.phone) pu.phone=d.phone;
-    if(Object.keys(pu).length) await must(sb.from('profiles').update(pu).eq('id',S.uid));
+    if(Object.keys(pu).length) await must(sb.from('profiles').update(pu).eq('id',SUBJ()));
     S.draft=null; save(); await loadAll(); go('submitted');
   }catch(e){ fail(e); } finally { U.busy=false; }
 }
@@ -1252,13 +1263,13 @@ async function submitApp(){
 async function addFiles(path, fileList){
   if(!S.uid) return;
   const parts=path.split('.'); const key=parts[parts.length-1];
-  const meta={owner_id:S.uid, doc_type:key};
+  const meta={owner_id:SUBJ(), doc_type:key};
   if(parts[0]==='edocs'){ if(!S.entity.id){ toast(L('Save the entity first, then upload its documents.','Guarda primero la entidad y luego sube sus documentos.')); return; } meta.entity_id=S.entity.id; }
   if(parts[0]==='appdocs') meta.application_id=parts[1];
   const list = getP(S,path) || []; let skipped=0, done=0;
   for(const f of fileList){
     if(f.size>10*1024*1024){ skipped++; continue; }
-    const p=`${S.uid}/${key}/${Date.now()}-${safeName(f.name)}`;
+    const p=`${SUBJ()}/${key}/${Date.now()}-${safeName(f.name)}`;
     try{
       toast(L('Uploading','Subiendo')+' '+f.name+'…');
       await must(sb.storage.from(BUCKET).upload(p, f, {contentType:f.type||'application/octet-stream', upsert:false}));
@@ -1311,7 +1322,7 @@ function copyText(txt, okMsg){
 
 /* ---------- clicks ---------- */
 document.addEventListener('click', async e => {
-  const el = e.target.closest('[data-go],[data-act],[data-lang],[data-signin],[data-authtab],[data-set],[data-occ],[data-lic],[data-wstep],[data-rmfile],[data-rmmember],[data-rmtrack],[data-open],[data-tab],[data-authmode],[data-pickrole],[data-viewfile],[data-dl],[data-zip]');
+  const el = e.target.closest('[data-go],[data-act],[data-lang],[data-signin],[data-authtab],[data-set],[data-occ],[data-lic],[data-wstep],[data-rmfile],[data-rmmember],[data-rmtrack],[data-open],[data-help],[data-tab],[data-authmode],[data-pickrole],[data-viewfile],[data-dl],[data-zip]');
   if(!el) return;
   const ds = el.dataset;
   if(el.tagName==='A' && (el.getAttribute('href')||'')==='#') e.preventDefault();
@@ -1332,6 +1343,7 @@ document.addEventListener('click', async e => {
   if(ds.rmmember){ const m=S.entity.members[Number(ds.rmmember)]; if(!m) return; try{ await must(sb.from('entity_members').delete().eq('id',m.id)); S.entity.members.splice(Number(ds.rmmember),1); render(); }catch(err){ fail(err); } return; }
   if(ds.rmtrack){ const t=S.track[Number(ds.rmtrack)]; if(!t) return; try{ await must(sb.from('track_records').delete().eq('id',t.id)); S.track.splice(Number(ds.rmtrack),1); render(); toast(L('Property removed','Propiedad eliminada')); }catch(err){ fail(err); } return; }
   if(ds.open){ U.modal=ds.open; return render(); }
+  if(ds.help){ const p=S.team.people.find(x=>x.id===ds.help); S.helping={id:ds.help, name: p ? ((((p.first_name||'')+' '+(p.last_name||'')).trim())||p.email) : L('client','cliente')}; U.modal=null; U.view='loading'; render(); await reload(); go('dash'); return toast(L('Opened client portal','Portal del cliente abierto')); }
   if(ds.tab){ U.tab=ds.tab; return render(); }
   const a = ds.act;
   if(a==='startapp') return startApp();
@@ -1349,7 +1361,7 @@ document.addEventListener('click', async e => {
   if(a==='tback'){ U.tstep--; U.err=''; return render(); }
   if(a==='tnext'){ const t=U.tdraft; if(U.tstep===1 && (!t.street||!t.city||!t.state||!t.zip)){ U.err=L('Street, city, state and ZIP are required.','Calle, ciudad, estado y código postal son obligatorios.'); return render(); } U.err=''; U.tstep++; return render(); }
   if(a==='tsave'){ const t=U.tdraft;
-    try{ await must(sb.from('track_records').insert({owner_id:S.uid, street:t.street, city:t.city, state:t.state, zip:t.zip, property_type:t.ptype, outcome:t.outcome,
+    try{ await must(sb.from('track_records').insert({owner_id:SUBJ(), street:t.street, city:t.city, state:t.state, zip:t.zip, property_type:t.ptype, outcome:t.outcome,
         purchase_price:num(t.price), purchase_date:t.pdate||null, rehab_spent:num(t.rehab), outcome_value:num(t.v1),
         outcome_date: t.outcome==='rental'?null:(t.d1||null), monthly_rent: t.outcome==='rental'?num(t.d1):null, notes:t.notes||null}));
       U.tdraft=null; U.tstep=1; await reload(); toast(L('Property saved to your track record.','Propiedad guardada en tu historial.')); }catch(err){ fail(err); } return; }
@@ -1361,12 +1373,14 @@ document.addEventListener('click', async e => {
       S.entity.members.push({id:r.id, name:r.full_name, email:r.email||'', pct:r.ownership_pct, role:r.member_role||''}); render(); }catch(err){ fail(err); } return; }
   if(a==='closemodal'){ U.modal=null; return render(); }
   if(a==='copyref'){ return copyText(SITE+'?ref='+encodeURIComponent(S.email), L('Invite link copied','Enlace copiado')); }
+  if(a==='exithelp'){ S.helping=null; U.view='loading'; render(); await reload(); return go(home()); }
+  if(a==='allowhelp'||a==='denyhelp'){ try{ await must(sb.from('profiles').update({helper_consent:a==='allowhelp'}).eq('id',S.uid)); S.consent=(a==='allowhelp'); render(); toast(a==='allowhelp'?L('Thanks — your Nork team and realtor can now help with your file.','Gracias: tu equipo Nork y tu realtor ya pueden ayudarte.'):L('Help turned off.','Ayuda desactivada.')); }catch(err){ fail(err); } return; }
   if(a==='copyinvite'){ return copyText(SITE, L('Portal link copied','Enlace del portal copiado')); }
 });
 
 async function saveEntity(quiet){
   const e=S.entity;
-  const row={owner_id:S.uid, legal_name:e.name, entity_type:e.type||null, state_of_formation:e.state||null, ein:e.ein||null, formed_on:e.formed||null};
+  const row={owner_id:SUBJ(), legal_name:e.name, entity_type:e.type||null, state_of_formation:e.state||null, ein:e.ein||null, formed_on:e.formed||null};
   if(e.id) await must(sb.from('entities').update(row).eq('id',e.id));
   else { const r=await must(sb.from('entities').insert(row).select().single()); e.id=r.id; }
   if(!quiet) toast(L('Entity saved','Entidad guardada'));
@@ -1388,13 +1402,14 @@ document.addEventListener('change', async e => {
   if(ds.upload && el.files && el.files.length){ addFiles(ds.upload, [...el.files]); }
   if(ds.teamupload && el.files && el.files.length){ teamUpload(ds.teamupload, ds.doctype, [...el.files]); }
   if(ds.evidence && el.files && el.files.length){ const t=S.track[Number(ds.evidence)];
-    try{ for(const f of el.files){ const p=`${S.uid}/track_evidence/${Date.now()}-${safeName(f.name)}`; await must(sb.storage.from(BUCKET).upload(p,f,{contentType:f.type||'application/octet-stream'}));
-        await must(sb.from('documents').insert({owner_id:S.uid, track_record_id:t.id, doc_type:'track_evidence', storage_path:p, file_name:f.name, size_bytes:f.size})); }
+    try{ for(const f of el.files){ const p=`${SUBJ()}/track_evidence/${Date.now()}-${safeName(f.name)}`; await must(sb.storage.from(BUCKET).upload(p,f,{contentType:f.type||'application/octet-stream'}));
+        await must(sb.from('documents').insert({owner_id:SUBJ(), track_record_id:t.id, doc_type:'track_evidence', storage_path:p, file_name:f.name, size_bytes:f.size})); }
       await reload(); toast(L('Evidence attached','Evidencia adjunta')); }catch(err){ fail(err); } }
   try{
     if(ds.stage){ await must(sb.from('applications').update({status:Number(el.value)}).eq('id',ds.stage)); await loadTeam(); render(); toast(L('Stage updated — the borrower and realtor see it now.','Etapa actualizada: el prestatario y el realtor ya la ven.')); }
     if(ds.paystatus){ await must(sb.from('payoff_requests').update({status:el.value}).eq('id',ds.paystatus)); await loadTeam(); render(); toast(L('Payoff status updated','Estado actualizado')); }
     if(ds.letstatus){ await must(sb.from('letter_requests').update({status:el.value}).eq('id',ds.letstatus)); await loadTeam(); render(); toast(L('Letter status updated','Estado actualizado')); }
+    if(ds.assign!==undefined){ await must(sb.from('profiles').update({assigned_to:el.value||null}).eq('id',ds.assign)); await loadTeam(); render(); toast(L('Client assigned','Cliente asignado')); }
     if(ds.roleof){ await must(sb.from('profiles').update({role:el.value}).eq('id',ds.roleof)); await loadTeam(); render(); toast(L('Role updated','Rol actualizado')); }
     if(ds.approve){ await must(sb.from('profiles').update({approved:el.checked}).eq('id',ds.approve)); await loadTeam(); render(); toast(el.checked?L('Realtor approved','Realtor aprobado'):L('Approval removed','Aprobación retirada')); }
   }catch(err){ fail(err); await reload(); }
@@ -1423,7 +1438,7 @@ document.addEventListener('submit', async e => {
       const role = U.role==='realtor' ? 'realtor' : 'borrower';
       save();
       const data = await must(sb.auth.signUp({email, password:pw, options:{ emailRedirectTo: SITE,
-        data:{role, first_name:p.first, last_name:p.last, phone:p.phone, brokerage:p.brokerage||null, license_number:p.license||null, lang:S.lang}}}));
+        data:{role, first_name:p.first, last_name:p.last, phone:p.phone, brokerage:p.brokerage||null, license_number:p.license||null, lang:S.lang, ref:S.ref||null, consent: role==='borrower' && !!(document.getElementById('helpok')||{}).checked ? 'true' : 'false'}}}));
       if(!data.session){ S.email=email; return go('checkemail'); }
       return;
     }
@@ -1437,8 +1452,8 @@ document.addEventListener('submit', async e => {
     if(f==='profile'){
       const upd={}; Object.entries(PMAP).forEach(([k,c])=>{ let v=S.profile[k]; if(v==='') v=null; upd[c]=v; });
       if(upd.ssn_last4 && !/^\d{4}$/.test(upd.ssn_last4)){ return toast(L('SSN: enter only the last 4 digits.','SSN: escribe solo los últimos 4 dígitos.')); }
-      upd.preferred_language=S.lang;
-      await must(sb.from('profiles').update(upd).eq('id',S.uid)); toast(L('Profile saved','Perfil guardado')); await loadAll(); return go('dash');
+      if(!S.helping) upd.preferred_language=S.lang;
+      await must(sb.from('profiles').update(upd).eq('id',SUBJ())); toast(L('Profile saved','Perfil guardado')); await loadAll(); return go('dash');
     }
     if(f==='entity'){ if(!S.entity.name) return toast(L('Enter the legal entity name.','Escribe el nombre legal de la entidad.')); await saveEntity(); return render(); }
     if(f==='payoff'){
@@ -1447,14 +1462,14 @@ document.addEventListener('submit', async e => {
       if(d.to<d.from){ U.err=L('“Good through” must be on or after “Good from”.','“Válido hasta” debe ser igual o posterior a “Válido desde”.'); return render(); }
       if(d.sendTo!=='me' && (!d.tcName||!d.tcEmail)){ U.err=L('Add the name and email of who should receive the payoff.','Agrega nombre y email de quien recibirá el pago total.'); return render(); }
       if(!d.auth){ U.err=L('Check the authorization box to continue.','Marca la casilla de autorización para continuar.'); return render(); }
-      await must(sb.from('payoff_requests').insert({requester_id:S.uid, loan_number:d.loan, property_address:d.addr, borrower_name:d.name, entity_name:d.entity||null, phone:d.phone, email:d.email,
+      await must(sb.from('payoff_requests').insert({requester_id:SUBJ(), loan_number:d.loan, property_address:d.addr, borrower_name:d.name, entity_name:d.entity||null, phone:d.phone, email:d.email,
         good_from:d.from, good_through:d.to, reason:d.reason||null, expected_closing:d.close||null, send_to:d.sendTo, third_party_name:d.tcName||null, third_party_contact:d.tcContact||null,
         third_party_email:d.tcEmail||null, third_party_phone:d.tcPhone||null, third_party_file_number:d.tcFile||null, notes:d.notes||null, signature_name:d.sign, authorized:true}));
       S.payoffDraft=null; await reload(); window.scrollTo(0,document.body.scrollHeight); return toast(L('Payoff request sent to the Nork team.','Solicitud de pago total enviada al equipo Nork.'));
     }
     if(f==='letter'){
       const d=S.letterDraft; if(!d.addr||!num(d.price)){ U.err=L('Add the property and offer price.','Agrega la propiedad y el precio de oferta.'); return render(); }
-      await must(sb.from('letter_requests').insert({requester_id:S.uid, property_address:d.addr, offer_price:num(d.price), loan_amount:num(d.loan), needed_by:d.by||null, addressed_to:d.to||null, notes:d.notes||null}));
+      await must(sb.from('letter_requests').insert({requester_id:SUBJ(), property_address:d.addr, offer_price:num(d.price), loan_amount:num(d.loan), needed_by:d.by||null, addressed_to:d.to||null, notes:d.notes||null}));
       S.letterDraft=null; await reload(); return toast(L('Letter request sent to the Nork team.','Solicitud de carta enviada al equipo Nork.'));
     }
   }catch(err){ U.err=errText(err); render(); }
